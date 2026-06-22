@@ -1,5 +1,5 @@
-import { resolve } from 'node:path'
 import { writeFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
 import { createApp } from './app'
 import { env } from './env'
 

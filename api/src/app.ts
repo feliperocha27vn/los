@@ -1,5 +1,6 @@
 import fastifyCors from '@fastify/cors'
 import fastifySwagger from '@fastify/swagger'
+import { controllers } from '@http/controllers'
 import ScalarApiReference from '@scalar/fastify-api-reference'
 import fastify from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
@@ -8,8 +9,6 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod'
-import { env } from './env'
-import { controllers } from '@http/controllers'
 
 export function createApp() {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
