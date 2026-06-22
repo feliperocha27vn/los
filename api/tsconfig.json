@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "types": ["vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "@factories/*": ["./src/factories/*"],
+      "@use-cases/*": ["./src/use-cases/*"],
+      "@repositories/*": ["./src/repositories/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@errors/*": ["./src/errors/*"],
+      "@middlewares/*": ["./src/middlewares/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@db/*": ["./src/db/*"],
+      "@http/*": ["./src/http/*"],
+      "@in-memory/*": ["./src/in-memory/*"]
+    }
+  },
+  "include": ["src", "drizzle.config.ts", "vitest.config.ts", "tsup.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}

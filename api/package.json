@@ -1,0 +1,41 @@
+{
+  "name": "los-api",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/server.ts",
+    "build": "tsup",
+    "start": "node dist/server.js",
+    "lint": "biome lint ./src",
+    "lint:fix": "biome lint --write ./src",
+    "format": "biome format --write ./src",
+    "check": "biome check ./src",
+    "test": "pnpm exec vitest",
+    "test:run": "pnpm exec vitest run",
+    "test:e2e": "pnpm exec vitest run --config vitest.e2e.config.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "@fastify/swagger": "^9.7.0",
+    "@scalar/fastify-api-reference": "^1.57.5",
+    "drizzle-orm": "^0.45.2",
+    "fastify": "^5.8.5",
+    "fastify-type-provider-zod": "^5.0.3",
+    "postgres": "^3.4.9",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.15",
+    "@types/node": "^24.12.4",
+    "@types/supertest": "^7.2.0",
+    "drizzle-kit": "^0.31.10",
+    "supertest": "^7.2.2",
+    "tsup": "^8.5.1",
+    "tsx": "^4.22.3",
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.7"
+  }
+}
