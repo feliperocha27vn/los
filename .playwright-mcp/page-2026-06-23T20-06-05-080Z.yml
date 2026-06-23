@@ -1,0 +1,105 @@
+- generic [ref=e9]:
+  - generic [ref=e119]:
+    - complementary [ref=e120]:
+      - generic [ref=e121]:
+        - generic [ref=e122]:
+          - img [ref=e124]
+          - generic [ref=e126]: Life OS
+        - navigation [ref=e127]:
+          - link "Dashboard" [ref=e128] [cursor=pointer]:
+            - /url: /
+            - img [ref=e129]
+            - generic [ref=e134]: Dashboard
+          - generic [ref=e135]:
+            - img [ref=e136]
+            - generic [ref=e139]: Finanças
+          - generic [ref=e140]:
+            - img [ref=e141]
+            - generic [ref=e144]: Organização
+          - generic [ref=e145]:
+            - img [ref=e146]
+            - generic [ref=e148]: Agenda
+          - link "Cofre" [ref=e149] [cursor=pointer]:
+            - /url: /cofre
+            - img [ref=e150]
+            - generic [ref=e154]: Cofre
+          - generic [ref=e155]:
+            - img [ref=e156]
+            - generic [ref=e159]: Configurações
+      - generic [ref=e160]:
+        - generic [ref=e161]:
+          - generic [ref=e162]: A
+          - generic [ref=e163]:
+            - generic [ref=e164]: Admin
+            - generic [ref=e165]: admin@lifeos.com
+        - button "Sair da conta" [ref=e166] [cursor=pointer]:
+          - img [ref=e167]
+    - main [ref=e171]:
+      - generic [ref=e172]:
+        - heading "Olá, Admin" [level=1] [ref=e173]
+        - paragraph [ref=e174]: Hoje é segunda-feira, 22 de junho de 2026.
+      - generic [ref=e175]:
+        - generic [ref=e176]:
+          - generic [ref=e177]: Saldo Atual
+          - generic [ref=e178]:
+            - text: R$ 12.450,80
+            - generic [ref=e179]: +4.2% em relação a ontem
+        - generic [ref=e180]:
+          - generic [ref=e181]: Balanço do Mês
+          - generic [ref=e182]:
+            - text: +R$ 4.700,00
+            - generic [ref=e183]: "Entradas: R$ 8.900 | Saídas: R$ 4.200"
+        - generic [ref=e184]:
+          - generic [ref=e185]: Últimas Transações
+          - generic [ref=e186]:
+            - generic [ref=e187]:
+              - generic [ref=e188]: Mercado
+              - generic [ref=e189]: "-R$ 250,00"
+            - generic [ref=e190]:
+              - generic [ref=e191]: Rendimento
+              - generic [ref=e192]: +R$ 45,00
+      - generic [ref=e193]:
+        - generic [ref=e194]:
+          - generic [ref=e195]:
+            - heading "Organização de Hoje" [level=3] [ref=e196]
+            - generic [ref=e197]: 2/4 pendentes
+          - generic [ref=e198]:
+            - generic [ref=e199] [cursor=pointer]:
+              - img [ref=e201]
+              - generic [ref=e204]: Revisar orçamento do mês
+            - generic [ref=e205] [cursor=pointer]:
+              - img [ref=e207]
+              - generic [ref=e209]: Ir à academia às 18h
+            - generic [ref=e210] [cursor=pointer]:
+              - img [ref=e212]
+              - generic [ref=e214]: Comprar suprimentos para o jantar
+            - generic [ref=e215] [cursor=pointer]:
+              - img [ref=e217]
+              - generic [ref=e220]: Responder e-mails de trabalho
+        - generic [ref=e221]:
+          - generic [ref=e222]:
+            - heading "Próximos Compromissos" [level=3] [ref=e223]
+            - button "Ver agenda cheia" [ref=e224]
+          - generic [ref=e225]:
+            - generic [ref=e228]:
+              - generic [ref=e229]:
+                - generic [ref=e230]: 10:00
+                - generic [ref=e231]: 60 min
+              - generic [ref=e232]:
+                - generic [ref=e233]: Reunião de Alinhamento
+                - generic [ref=e234]: Sincronização semanal do time de design
+            - generic [ref=e237]:
+              - generic [ref=e238]:
+                - generic [ref=e239]: 14:30
+                - generic [ref=e240]: 90 min
+              - generic [ref=e241]:
+                - generic [ref=e242]: Consulta Médica
+                - generic [ref=e243]: Exames de rotina cardiológica
+  - generic:
+    - contentinfo:
+      - button "Open TanStack Router Devtools" [ref=e45] [cursor=pointer]:
+        - generic [ref=e46]:
+          - img [ref=e48]
+          - img [ref=e83]
+        - generic [ref=e117]: "-"
+        - generic [ref=e118]: TanStack Router
