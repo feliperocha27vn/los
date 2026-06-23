@@ -1,6 +1,11 @@
+import fastifyCookie from '@fastify/cookie'
 import fastifyCors from '@fastify/cors'
+import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
 import { controllers } from '@http/controllers'
+import type { UsersRepository } from '@repositories/users-repository'
+import type { CofreEntriesRepository } from '@repositories/cofre-entries-repository'
+import type { NotesRepository } from '@repositories/notes-repository'
 import ScalarApiReference from '@scalar/fastify-api-reference'
 import fastify from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
@@ -9,8 +14,9 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod'
+import { env } from './env'
 
-export function createApp() {
+export function createApp(usersRepository: UsersRepository, cofreEntriesRepository?: CofreEntriesRepository, notesRepository?: NotesRepository) {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
 
   app.setSerializerCompiler(serializerCompiler)
@@ -20,6 +26,35 @@ export function createApp() {
     origin: ['http://localhost:5173'],
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'OPTIONS'],
     credentials: true,
+  })
+
+  app.register(fastifyCookie)
+
+  app.register(fastifyJwt, {
+    secret: env.JWT_SECRET,
+  })
+
+  app.addHook('preHandler', async (request, reply) => {
+    if (request.routeOptions.config?.public) {
+      return
+    }
+
+    if (request.url.startsWith('/docs')) {
+      return
+    }
+
+    const token = request.cookies?.token
+
+    if (!token) {
+      return reply.status(401).send({ message: 'Não autorizado' })
+    }
+
+    try {
+      const payload = app.jwt.verify(token)
+      request.user = payload
+    } catch {
+      return reply.status(401).send({ message: 'Não autorizado' })
+    }
   })
 
   app.register(fastifySwagger, {
@@ -36,11 +71,13 @@ export function createApp() {
     routePrefix: '/docs',
   })
 
-  app.get('/health', async () => {
+  app.get('/health', {
+    config: { public: true },
+  }, async () => {
     return { status: 'ok', timestamp: new Date().toISOString() }
   })
 
-  app.register(controllers)
+  app.register(controllers({ usersRepository, cofreEntriesRepository, notesRepository }))
 
   return app
 }

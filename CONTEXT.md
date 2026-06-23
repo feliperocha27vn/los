@@ -76,6 +76,14 @@ _Avoid_: Tela de notas
 A área principal do Painel de Notas onde a nota selecionada é visualizada e editada, oferecendo suporte a formatação livre em Markdown.
 _Avoid_: Visualizador de notas
 
+**Rastreador de Hábitos**:
+O sub-módulo de Organização estruturado como uma tabela diária para acompanhar hábitos, pontuações de produtividade e métricas subjetivas de bem-estar.
+_Avoid_: Planilha de hábitos, Tabela de rotinas, Habit Tracker
+
+**Registro Diário**:
+Cada linha na tabela do Rastreador de Hábitos, correspondendo a um dia específico, onde são assinalados os hábitos cumpridos e registradas as notas de qualidade e energia do dia.
+_Avoid_: Linha de hábito, Entrada de tracker
+
 
 
 
