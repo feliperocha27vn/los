@@ -88,6 +88,22 @@ _Avoid_: Linha de hábito, Entrada de tracker
 Um item individual de trabalho dentro do quadro Kanban do sub-módulo Tarefas de Organização, classificado em uma das três colunas fixas (A Fazer, Em Progresso, Concluído) e identificado por Título, Descrição opcional, coluna e posição dentro da coluna.
 _Avoid_: Card, Item, To-do
 
+**Estudo**:
+O sub-módulo de Organização estruturado como uma árvore hierárquica de conhecimento pessoal, composto por Cursos no topo, Módulos dentro de Cursos, e Páginas (documentos Markdown) dentro de Módulos.
+_Avoid_: Knowledge base, Cursos, Aprendizado
+
+**Curso**:
+A unidade de escopo do topo da hierarquia do sub-módulo Estudo, representando um assunto ou área de estudo (ex: "React", "Node.js", "Inglês") e que agrupa Módulos.
+_Avoid_: Disciplina, Matéria, Tópico
+
+**Módulo**:
+Um agrupamento temático dentro de um Curso do sub-módulo Estudo (ex: "1 - Interatividade"), que contém Páginas.
+_Avoid_: Capítulo, Seção, Lição
+
+**Página de Estudo**:
+Um documento Markdown dentro de um Módulo do sub-módulo Estudo, contendo Título e Conteúdo, que pode ser livremente editado e auto-salvo.
+_Avoid_: Anotação, Folha, Nota de estudo
+
 
 
 
