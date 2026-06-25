@@ -5,8 +5,9 @@ import { env } from './env'
 import { usersRepository } from '@repositories/adapters/drizzle/drizzle-users-repository'
 import { cofreEntriesRepository } from '@repositories/adapters/drizzle/drizzle-cofre-entries-repository'
 import { notesRepository } from '@repositories/adapters/drizzle/drizzle-notes-repository'
+import { tasksRepository } from '@repositories/adapters/drizzle/drizzle-tasks-repository'
 
-const app = createApp(usersRepository, cofreEntriesRepository, notesRepository)
+const app = createApp(usersRepository, cofreEntriesRepository, notesRepository, tasksRepository)
 
 app
   .listen({

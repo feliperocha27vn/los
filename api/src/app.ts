@@ -6,6 +6,7 @@ import { controllers } from '@http/controllers'
 import type { UsersRepository } from '@repositories/users-repository'
 import type { CofreEntriesRepository } from '@repositories/cofre-entries-repository'
 import type { NotesRepository } from '@repositories/notes-repository'
+import type { TasksRepository } from '@repositories/tasks-repository'
 import ScalarApiReference from '@scalar/fastify-api-reference'
 import fastify from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
@@ -16,7 +17,12 @@ import {
 } from 'fastify-type-provider-zod'
 import { env } from './env'
 
-export function createApp(usersRepository: UsersRepository, cofreEntriesRepository?: CofreEntriesRepository, notesRepository?: NotesRepository) {
+export function createApp(
+  usersRepository: UsersRepository,
+  cofreEntriesRepository?: CofreEntriesRepository,
+  notesRepository?: NotesRepository,
+  tasksRepository?: TasksRepository
+) {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
 
   app.setSerializerCompiler(serializerCompiler)
@@ -77,7 +83,7 @@ export function createApp(usersRepository: UsersRepository, cofreEntriesReposito
     return { status: 'ok', timestamp: new Date().toISOString() }
   })
 
-  app.register(controllers({ usersRepository, cofreEntriesRepository, notesRepository }))
+  app.register(controllers({ usersRepository, cofreEntriesRepository, notesRepository, tasksRepository }))
 
   return app
 }
