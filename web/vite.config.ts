@@ -25,6 +25,10 @@ export default defineConfig({
         target: 'http://localhost:3333',
         changeOrigin: true,
       },
+      '/tasks': {
+        target: 'http://localhost:3333',
+        changeOrigin: true,
+      },
     },
   },
   resolve: {
