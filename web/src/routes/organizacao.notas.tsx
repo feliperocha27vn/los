@@ -14,6 +14,7 @@ import {
   CalendarDays
 } from 'lucide-react';
 import { AppShell } from '@layouts/AppShell';
+import { ConfirmModal } from '@ui/ConfirmModal';
 import { 
   useGetNotes, 
   useGetNotesId, 
@@ -195,9 +196,15 @@ function NotesComponent() {
   };
 
   // Exclusão de nota ativa
-  const handleDeleteNote = async () => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+
+  const handleDeleteNote = () => {
     if (!selectedId) return;
-    if (!confirm('Deseja realmente excluir esta nota?')) return;
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDeleteNote = async () => {
+    if (!selectedId) return;
     
     // Cancela qualquer salvamento pendente antes de deletar
     if (debounceTimerRef.current) {
@@ -211,6 +218,7 @@ function NotesComponent() {
       queryClient.invalidateQueries({ queryKey: getNotesQueryKey() });
       setSelectedId(undefined);
       setEditorNoteId(null);
+      setIsDeleteModalOpen(false);
     } catch (err) {
       alert('Erro ao deletar nota.');
     }
@@ -524,6 +532,14 @@ function NotesComponent() {
         )}
 
       </div>
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDeleteNote}
+        title="Excluir Nota"
+        description="Tem certeza que deseja excluir esta nota? Esta ação não pode ser desfeita."
+        isLoading={deleteMutation.isPending}
+      />
     </AppShell>
   );
 }

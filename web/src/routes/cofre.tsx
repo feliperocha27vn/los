@@ -21,6 +21,7 @@ import {
 import { Button } from '@ui/button';
 import { Input } from '@ui/input';
 import { AppShell } from '@layouts/AppShell';
+import { ConfirmModal } from '@ui/ConfirmModal';
 import { 
   useGetCofreEntries, 
   useGetCofreEntriesId, 
@@ -249,15 +250,22 @@ function CofreComponent() {
     }
   };
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+
   // Ação de Excluir Entrada
-  const handleDeleteEntry = async () => {
+  const handleDeleteEntry = () => {
     if (!selectedId) return;
-    if (!confirm('Deseja realmente excluir esta entrada do cofre?')) return;
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDeleteEntry = async () => {
+    if (!selectedId) return;
     
     try {
       await deleteMutation.mutateAsync({ id: selectedId });
       queryClient.invalidateQueries({ queryKey: getCofreEntriesQueryKey() });
       setSelectedId(undefined);
+      setIsDeleteModalOpen(false);
     } catch (err: any) {
       alert(err.data?.message || 'Erro ao deletar entrada.');
     }
@@ -976,6 +984,14 @@ function CofreComponent() {
         </section>
 
       </div>
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={confirmDeleteEntry}
+        title="Excluir Entrada"
+        description="Tem certeza que deseja excluir esta entrada? Esta ação não pode ser desfeita."
+        isLoading={deleteMutation.isPending}
+      />
     </AppShell>
   );
 }
