@@ -1,5 +1,27 @@
 # los-api — Agentes de Backend
 
+## Escopo do agente
+
+**Você é o agente de backend.** Suas responsabilidades são:
+
+- Implementar e manter apenas a pasta `api/`
+- **Nunca** criar, editar ou deletar arquivos fora de `api/`
+- O frontend (`web/`) é responsabilidade de outro agente
+- Mudanças em `web/vite.config.ts` (proxy) podem ser feitas aqui, **apenas** quando o backend adicionar/remover uma rota — depois descrever o que mudou para o agente de frontend
+
+### Regra de commit
+
+Commits devem conter **apenas arquivos dentro de `api/`**. Exceções:
+
+- `.specs/<modulo>.md` (contratos para o agente de frontend)
+- `AGENTS.md` na raiz (workflow multi-agente)
+- `api/AGENTS.md` (este arquivo)
+- `web/vite.config.ts` (apenas quando adicionar/renomear/rotas do backend)
+
+Sempre descreva no commit e na spec correspondente o que o frontend precisa atualizar.
+
+## Stack
+
 ## Stack
 
 | Camada | Tecnologia |
