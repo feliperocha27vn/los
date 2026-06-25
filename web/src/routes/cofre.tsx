@@ -988,8 +988,16 @@ function CofreComponent() {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={confirmDeleteEntry}
-        title="Excluir Entrada"
-        description="Tem certeza que deseja excluir esta entrada? Esta ação não pode ser desfeita."
+        title={`Excluir ${
+          detailData?.entry?.category === 'credential' ? 'Credencial' :
+          detailData?.entry?.category === 'secure_note' ? 'Nota Segura' :
+          detailData?.entry?.category === 'api_key' ? 'Chave de API' : 'Entrada'
+        }`}
+        description={`Tem certeza que deseja excluir esta ${
+          detailData?.entry?.category === 'credential' ? 'credencial' :
+          detailData?.entry?.category === 'secure_note' ? 'nota segura' :
+          detailData?.entry?.category === 'api_key' ? 'chave de API' : 'entrada'
+        }? Esta ação não pode ser desfeita.`}
         isLoading={deleteMutation.isPending}
       />
     </AppShell>
