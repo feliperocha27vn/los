@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createFileRoute, redirect } from '@tanstack/react-router';
+import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { 
   Plus, 
@@ -190,8 +191,9 @@ function NotesComponent() {
         titleInputRef.current?.select();
       }, 50);
       
+      toast.success('Nota criada com sucesso!');
     } catch (err) {
-      alert('Erro ao criar nota no servidor.');
+      toast.error('Erro ao criar nota no servidor.');
     }
   };
 
@@ -219,8 +221,9 @@ function NotesComponent() {
       setSelectedId(undefined);
       setEditorNoteId(null);
       setIsDeleteModalOpen(false);
+      toast.success('Nota excluída com sucesso!');
     } catch (err) {
-      alert('Erro ao deletar nota.');
+      toast.error('Erro ao deletar nota.');
     }
   };
 

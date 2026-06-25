@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createFileRoute, redirect } from '@tanstack/react-router';
+import { toast } from 'sonner';
 import { useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { 
   Lock, 
@@ -175,6 +176,7 @@ function CofreComponent() {
   const triggerCopy = (field: string, text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedField(field);
+    toast.success('Copiado para a área de transferência');
     setTimeout(() => setCopiedField(null), 2000);
   };
 
@@ -243,8 +245,10 @@ function CofreComponent() {
       queryClient.invalidateQueries({ queryKey: getCofreEntriesQueryKey() });
       setIsCreating(false);
       setIsEditing(false);
+      toast.success('Entrada salva com sucesso!');
     } catch (err: any) {
       setFormError(err.data?.message || 'Erro ao salvar dados no cofre.');
+      toast.error('Erro ao salvar dados no cofre.');
     } finally {
       setFormSubmitting(false);
     }
@@ -266,8 +270,9 @@ function CofreComponent() {
       queryClient.invalidateQueries({ queryKey: getCofreEntriesQueryKey() });
       setSelectedId(undefined);
       setIsDeleteModalOpen(false);
+      toast.success('Entrada excluída com sucesso!');
     } catch (err: any) {
-      alert(err.data?.message || 'Erro ao deletar entrada.');
+      toast.error(err.data?.message || 'Erro ao deletar entrada.');
     }
   };
 
