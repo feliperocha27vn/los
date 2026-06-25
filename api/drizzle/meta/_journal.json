@@ -22,6 +22,13 @@
       "when": 1782246456867,
       "tag": "0002_narrow_ulik",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1782425826396,
+      "tag": "0003_brave_gideon",
+      "breakpoints": true
     }
   ]
 }
