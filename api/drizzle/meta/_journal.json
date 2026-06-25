@@ -29,6 +29,13 @@
       "when": 1782425826396,
       "tag": "0003_brave_gideon",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1782428197675,
+      "tag": "0004_woozy_blue_blade",
+      "breakpoints": true
     }
   ]
 }
