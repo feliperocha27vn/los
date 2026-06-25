@@ -7,6 +7,9 @@ import type { UsersRepository } from '@repositories/users-repository'
 import type { CofreEntriesRepository } from '@repositories/cofre-entries-repository'
 import type { NotesRepository } from '@repositories/notes-repository'
 import type { TasksRepository } from '@repositories/tasks-repository'
+import type { StudyCoursesRepository } from '@repositories/study-courses-repository'
+import type { StudyModulesRepository } from '@repositories/study-modules-repository'
+import type { StudyPagesRepository } from '@repositories/study-pages-repository'
 import ScalarApiReference from '@scalar/fastify-api-reference'
 import fastify from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
@@ -21,7 +24,10 @@ export function createApp(
   usersRepository: UsersRepository,
   cofreEntriesRepository?: CofreEntriesRepository,
   notesRepository?: NotesRepository,
-  tasksRepository?: TasksRepository
+  tasksRepository?: TasksRepository,
+  studyCoursesRepository?: StudyCoursesRepository,
+  studyModulesRepository?: StudyModulesRepository,
+  studyPagesRepository?: StudyPagesRepository
 ) {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -83,7 +89,15 @@ export function createApp(
     return { status: 'ok', timestamp: new Date().toISOString() }
   })
 
-  app.register(controllers({ usersRepository, cofreEntriesRepository, notesRepository, tasksRepository }))
+  app.register(controllers({
+    usersRepository,
+    cofreEntriesRepository,
+    notesRepository,
+    tasksRepository,
+    studyCoursesRepository,
+    studyModulesRepository,
+    studyPagesRepository,
+  }))
 
   return app
 }

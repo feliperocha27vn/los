@@ -6,8 +6,19 @@ import { usersRepository } from '@repositories/adapters/drizzle/drizzle-users-re
 import { cofreEntriesRepository } from '@repositories/adapters/drizzle/drizzle-cofre-entries-repository'
 import { notesRepository } from '@repositories/adapters/drizzle/drizzle-notes-repository'
 import { tasksRepository } from '@repositories/adapters/drizzle/drizzle-tasks-repository'
+import { studyCoursesRepository } from '@repositories/adapters/drizzle/drizzle-study-courses-repository'
+import { studyModulesRepository } from '@repositories/adapters/drizzle/drizzle-study-modules-repository'
+import { studyPagesRepository } from '@repositories/adapters/drizzle/drizzle-study-pages-repository'
 
-const app = createApp(usersRepository, cofreEntriesRepository, notesRepository, tasksRepository)
+const app = createApp(
+  usersRepository,
+  cofreEntriesRepository,
+  notesRepository,
+  tasksRepository,
+  studyCoursesRepository,
+  studyModulesRepository,
+  studyPagesRepository
+)
 
 app
   .listen({
