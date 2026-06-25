@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as CofreRouteImport } from './routes/cofre'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OrganizacaoNotasRouteImport } from './routes/organizacao.notas'
 
 const CofreRoute = CofreRouteImport.update({
   id: '/cofre',
@@ -22,31 +23,40 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrganizacaoNotasRoute = OrganizacaoNotasRouteImport.update({
+  id: '/organizacao/notas',
+  path: '/organizacao/notas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cofre': typeof CofreRoute
+  '/organizacao/notas': typeof OrganizacaoNotasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cofre': typeof CofreRoute
+  '/organizacao/notas': typeof OrganizacaoNotasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cofre': typeof CofreRoute
+  '/organizacao/notas': typeof OrganizacaoNotasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cofre'
+  fullPaths: '/' | '/cofre' | '/organizacao/notas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cofre'
-  id: '__root__' | '/' | '/cofre'
+  to: '/' | '/cofre' | '/organizacao/notas'
+  id: '__root__' | '/' | '/cofre' | '/organizacao/notas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CofreRoute: typeof CofreRoute
+  OrganizacaoNotasRoute: typeof OrganizacaoNotasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/organizacao/notas': {
+      id: '/organizacao/notas'
+      path: '/organizacao/notas'
+      fullPath: '/organizacao/notas'
+      preLoaderRoute: typeof OrganizacaoNotasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CofreRoute: CofreRoute,
+  OrganizacaoNotasRoute: OrganizacaoNotasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

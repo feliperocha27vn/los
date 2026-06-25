@@ -11,7 +11,7 @@ export type PostCofreUnlock200 = {
     /**
      * @type string
     */
-    cofreToken: string;
+    message: string;
 };
 
 /**

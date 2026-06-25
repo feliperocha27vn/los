@@ -1,10 +1,15 @@
 export { deleteCofreEntriesId } from "./deleteCofreEntriesId.ts";
+export { deleteNotesId } from "./deleteNotesId.ts";
 export { getAuthMe } from "./getAuthMe.ts";
 export { getCofreEntries } from "./getCofreEntries.ts";
 export { getCofreEntriesId } from "./getCofreEntriesId.ts";
+export { getNotes } from "./getNotes.ts";
+export { getNotesId } from "./getNotesId.ts";
 export { postAuthLogin } from "./postAuthLogin.ts";
 export { postAuthLogout } from "./postAuthLogout.ts";
 export { postCofreEntries } from "./postCofreEntries.ts";
 export { postCofreLock } from "./postCofreLock.ts";
 export { postCofreUnlock } from "./postCofreUnlock.ts";
+export { postNotes } from "./postNotes.ts";
 export { putCofreEntriesId } from "./putCofreEntriesId.ts";
+export { putNotesId } from "./putNotesId.ts";
