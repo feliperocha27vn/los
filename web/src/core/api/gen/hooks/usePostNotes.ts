@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { PostNotesMutationRequest, PostNotesMutationResponse } from "../types/PostNotes.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type { PostNotesMutationRequest, PostNotesMutationResponse } from "../types/PostNotes.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { postNotes } from "../clients/postNotes.ts";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 
 export const postNotesMutationKey = () => [{ url: '/notes' }] as const
 

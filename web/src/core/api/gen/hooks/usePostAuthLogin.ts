@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { PostAuthLoginMutationRequest, PostAuthLoginMutationResponse, PostAuthLogin401 } from "../types/PostAuthLogin.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type { PostAuthLoginMutationRequest, PostAuthLoginMutationResponse, PostAuthLogin401 } from "../types/PostAuthLogin.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { postAuthLogin } from "../clients/postAuthLogin.ts";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 
 export const postAuthLoginMutationKey = () => [{ url: '/auth/login' }] as const
 

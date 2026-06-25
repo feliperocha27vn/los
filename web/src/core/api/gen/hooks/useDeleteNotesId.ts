@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { DeleteNotesIdMutationResponse, DeleteNotesIdPathParams, DeleteNotesId404 } from "../types/DeleteNotesId.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type { DeleteNotesIdMutationResponse, DeleteNotesIdPathParams, DeleteNotesId404 } from "../types/DeleteNotesId.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { deleteNotesId } from "../clients/deleteNotesId.ts";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 
 export const deleteNotesIdMutationKey = () => [{ url: '/notes/:id' }] as const
 

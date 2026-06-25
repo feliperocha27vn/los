@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { PostAuthLogoutMutationResponse } from "../types/PostAuthLogout.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getPostAuthLogoutUrl() {
   const res = { method: 'POST', url: `/auth/logout` as const }

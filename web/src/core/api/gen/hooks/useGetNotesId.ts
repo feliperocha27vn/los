@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { GetNotesIdQueryResponse, GetNotesIdPathParams, GetNotesId404 } from "../types/GetNotesId.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from "@tanstack/react-query";
-import type { GetNotesIdQueryResponse, GetNotesIdPathParams, GetNotesId404 } from "../types/GetNotesId.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
 import { getNotesId } from "../clients/getNotesId.ts";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 
 export const getNotesIdQueryKey = (id: GetNotesIdPathParams["id"] | undefined) => [{ url: '/notes/:id', params: {id:id} }] as const
 

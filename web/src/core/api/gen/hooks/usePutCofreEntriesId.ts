@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { PutCofreEntriesIdMutationRequest, PutCofreEntriesIdMutationResponse, PutCofreEntriesIdPathParams, PutCofreEntriesId404 } from "../types/PutCofreEntriesId.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type { PutCofreEntriesIdMutationRequest, PutCofreEntriesIdMutationResponse, PutCofreEntriesIdPathParams, PutCofreEntriesId404 } from "../types/PutCofreEntriesId.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { putCofreEntriesId } from "../clients/putCofreEntriesId.ts";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 
 export const putCofreEntriesIdMutationKey = () => [{ url: '/cofre/entries/:id' }] as const
 

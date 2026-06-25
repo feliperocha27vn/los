@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { GetAuthMeQueryResponse, GetAuthMe404 } from "../types/GetAuthMe.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { QueryKey, QueryClient, UseSuspenseQueryOptions, UseSuspenseQueryResult } from "@tanstack/react-query";
-import type { GetAuthMeQueryResponse, GetAuthMe404 } from "../types/GetAuthMe.ts";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { getAuthMe } from "../clients/getAuthMe.ts";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 
 export const getAuthMeSuspenseQueryKey = () => [{ url: '/auth/me' }] as const
 

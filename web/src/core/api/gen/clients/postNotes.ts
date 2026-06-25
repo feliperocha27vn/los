@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { PostNotesMutationRequest, PostNotesMutationResponse } from "../types/PostNotes.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getPostNotesUrl() {
   const res = { method: 'POST', url: `/notes` as const }

@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { GetCofreEntriesQueryResponse, GetCofreEntriesQueryParams } from "../types/GetCofreEntries.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { QueryKey, QueryClient, UseSuspenseQueryOptions, UseSuspenseQueryResult } from "@tanstack/react-query";
-import type { GetCofreEntriesQueryResponse, GetCofreEntriesQueryParams } from "../types/GetCofreEntries.ts";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { getCofreEntries } from "../clients/getCofreEntries.ts";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 
 export const getCofreEntriesSuspenseQueryKey = (params?: GetCofreEntriesQueryParams) => [{ url: '/cofre/entries' }, ...(params ? [params] : [])] as const
 

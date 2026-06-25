@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { PostCofreLockMutationResponse } from "../types/PostCofreLock.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type { PostCofreLockMutationResponse } from "../types/PostCofreLock.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { postCofreLock } from "../clients/postCofreLock.ts";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 
 export const postCofreLockMutationKey = () => [{ url: '/cofre/lock' }] as const
 

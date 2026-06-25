@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { PostCofreEntriesMutationRequest, PostCofreEntriesMutationResponse } from "../types/PostCofreEntries.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type { PostCofreEntriesMutationRequest, PostCofreEntriesMutationResponse } from "../types/PostCofreEntries.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { postCofreEntries } from "../clients/postCofreEntries.ts";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 
 export const postCofreEntriesMutationKey = () => [{ url: '/cofre/entries' }] as const
 

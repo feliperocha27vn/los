@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { PutNotesIdMutationRequest, PutNotesIdMutationResponse, PutNotesIdPathParams, PutNotesId404 } from "../types/PutNotesId.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type { PutNotesIdMutationRequest, PutNotesIdMutationResponse, PutNotesIdPathParams, PutNotesId404 } from "../types/PutNotesId.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { putNotesId } from "../clients/putNotesId.ts";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 
 export const putNotesIdMutationKey = () => [{ url: '/notes/:id' }] as const
 

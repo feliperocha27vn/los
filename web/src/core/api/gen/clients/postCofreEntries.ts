@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { PostCofreEntriesMutationRequest, PostCofreEntriesMutationResponse } from "../types/PostCofreEntries.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getPostCofreEntriesUrl() {
   const res = { method: 'POST', url: `/cofre/entries` as const }

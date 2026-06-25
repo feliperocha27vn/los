@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { GetNotesQueryResponse, GetNotesQueryParams } from "../types/GetNotes.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { QueryKey, QueryClient, UseSuspenseQueryOptions, UseSuspenseQueryResult } from "@tanstack/react-query";
-import type { GetNotesQueryResponse, GetNotesQueryParams } from "../types/GetNotes.ts";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { getNotes } from "../clients/getNotes.ts";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 
 export const getNotesSuspenseQueryKey = (params?: GetNotesQueryParams) => [{ url: '/notes' }, ...(params ? [params] : [])] as const
 

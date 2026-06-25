@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { PostAuthLogoutMutationResponse } from "../types/PostAuthLogout.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type { PostAuthLogoutMutationResponse } from "../types/PostAuthLogout.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { postAuthLogout } from "../clients/postAuthLogout.ts";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 
 export const postAuthLogoutMutationKey = () => [{ url: '/auth/logout' }] as const
 

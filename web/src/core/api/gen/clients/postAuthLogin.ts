@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { PostAuthLoginMutationRequest, PostAuthLoginMutationResponse, PostAuthLogin401 } from "../types/PostAuthLogin.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getPostAuthLoginUrl() {
   const res = { method: 'POST', url: `/auth/login` as const }

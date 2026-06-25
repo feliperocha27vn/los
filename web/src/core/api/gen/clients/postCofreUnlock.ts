@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { PostCofreUnlockMutationRequest, PostCofreUnlockMutationResponse, PostCofreUnlock401, PostCofreUnlock423 } from "../types/PostCofreUnlock.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getPostCofreUnlockUrl() {
   const res = { method: 'POST', url: `/cofre/unlock` as const }

@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { DeleteCofreEntriesIdMutationResponse, DeleteCofreEntriesIdPathParams, DeleteCofreEntriesId404 } from "../types/DeleteCofreEntriesId.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getDeleteCofreEntriesIdUrl(id: DeleteCofreEntriesIdPathParams["id"]) {
   const res = { method: 'DELETE', url: `/cofre/entries/${id}` as const }

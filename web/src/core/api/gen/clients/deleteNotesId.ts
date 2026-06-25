@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { DeleteNotesIdMutationResponse, DeleteNotesIdPathParams, DeleteNotesId404 } from "../types/DeleteNotesId.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getDeleteNotesIdUrl(id: DeleteNotesIdPathParams["id"]) {
   const res = { method: 'DELETE', url: `/notes/${id}` as const }

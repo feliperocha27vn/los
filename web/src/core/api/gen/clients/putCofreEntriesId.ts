@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { PutCofreEntriesIdMutationRequest, PutCofreEntriesIdMutationResponse, PutCofreEntriesIdPathParams, PutCofreEntriesId404 } from "../types/PutCofreEntriesId.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getPutCofreEntriesIdUrl(id: PutCofreEntriesIdPathParams["id"]) {
   const res = { method: 'PUT', url: `/cofre/entries/${id}` as const }

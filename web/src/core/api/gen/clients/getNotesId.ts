@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { GetNotesIdQueryResponse, GetNotesIdPathParams, GetNotesId404 } from "../types/GetNotesId.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getGetNotesIdUrl(id: GetNotesIdPathParams["id"]) {
   const res = { method: 'GET', url: `/notes/${id}` as const }

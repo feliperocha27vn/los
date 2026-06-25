@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { PutNotesIdMutationRequest, PutNotesIdMutationResponse, PutNotesIdPathParams, PutNotesId404 } from "../types/PutNotesId.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getPutNotesIdUrl(id: PutNotesIdPathParams["id"]) {
   const res = { method: 'PUT', url: `/notes/${id}` as const }

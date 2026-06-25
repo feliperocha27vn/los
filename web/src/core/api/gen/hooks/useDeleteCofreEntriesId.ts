@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { DeleteCofreEntriesIdMutationResponse, DeleteCofreEntriesIdPathParams, DeleteCofreEntriesId404 } from "../types/DeleteCofreEntriesId.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { UseMutationOptions, UseMutationResult, QueryClient } from "@tanstack/react-query";
-import type { DeleteCofreEntriesIdMutationResponse, DeleteCofreEntriesIdPathParams, DeleteCofreEntriesId404 } from "../types/DeleteCofreEntriesId.ts";
-import { mutationOptions, useMutation } from "@tanstack/react-query";
 import { deleteCofreEntriesId } from "../clients/deleteCofreEntriesId.ts";
+import { mutationOptions, useMutation } from "@tanstack/react-query";
 
 export const deleteCofreEntriesIdMutationKey = () => [{ url: '/cofre/entries/:id' }] as const
 

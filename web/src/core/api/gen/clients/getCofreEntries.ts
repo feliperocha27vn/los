@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { GetCofreEntriesQueryResponse, GetCofreEntriesQueryParams } from "../types/GetCofreEntries.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getGetCofreEntriesUrl() {
   const res = { method: 'GET', url: `/cofre/entries` as const }

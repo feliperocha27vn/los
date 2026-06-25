@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { GetNotesQueryResponse, GetNotesQueryParams } from "../types/GetNotes.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from "@tanstack/react-query";
-import type { GetNotesQueryResponse, GetNotesQueryParams } from "../types/GetNotes.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
 import { getNotes } from "../clients/getNotes.ts";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 
 export const getNotesQueryKey = (params?: GetNotesQueryParams) => [{ url: '/notes' }, ...(params ? [params] : [])] as const
 

@@ -3,11 +3,11 @@
 * Do not edit manually.
 */
 
+import type { GetAuthMeQueryResponse, GetAuthMe404 } from "../types/GetAuthMe.ts";
 import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from "@tanstack/react-query";
-import type { GetAuthMeQueryResponse, GetAuthMe404 } from "../types/GetAuthMe.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
 import { getAuthMe } from "../clients/getAuthMe.ts";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 
 export const getAuthMeQueryKey = () => [{ url: '/auth/me' }] as const
 

@@ -4,8 +4,8 @@
 */
 
 import fetch from "@core/api/client";
-import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 import type { GetAuthMeQueryResponse, GetAuthMe404 } from "../types/GetAuthMe.ts";
+import type { Client, RequestConfig, ResponseErrorConfig } from "@core/api/client";
 
 function getGetAuthMeUrl() {
   const res = { method: 'GET', url: `/auth/me` as const }
