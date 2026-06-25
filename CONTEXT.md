@@ -84,6 +84,10 @@ _Avoid_: Planilha de hábitos, Tabela de rotinas, Habit Tracker
 Cada linha na tabela do Rastreador de Hábitos, correspondendo a um dia específico, onde são assinalados os hábitos cumpridos e registradas as notas de qualidade e energia do dia.
 _Avoid_: Linha de hábito, Entrada de tracker
 
+**Tarefa**:
+Um item individual de trabalho dentro do quadro Kanban do sub-módulo Tarefas de Organização, classificado em uma das três colunas fixas (A Fazer, Em Progresso, Concluído) e identificado por Título, Descrição opcional, coluna e posição dentro da coluna.
+_Avoid_: Card, Item, To-do
+
 
 
 
