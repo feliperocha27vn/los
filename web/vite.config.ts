@@ -29,6 +29,18 @@ export default defineConfig({
         target: 'http://localhost:3333',
         changeOrigin: true,
       },
+      '/courses': {
+        target: 'http://localhost:3333',
+        changeOrigin: true,
+      },
+      '/modules': {
+        target: 'http://localhost:3333',
+        changeOrigin: true,
+      },
+      '/pages': {
+        target: 'http://localhost:3333',
+        changeOrigin: true,
+      },
     },
   },
   resolve: {
