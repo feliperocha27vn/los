@@ -1,8 +1,4 @@
-import type {
-  TaskColumn,
-  TaskRecord,
-  TasksRepository,
-} from '@repositories/tasks-repository'
+import type { TaskColumn, TaskRecord, TasksRepository } from '@repositories/tasks-repository'
 
 interface FetchTasksInput {
   userId: string
@@ -17,11 +13,7 @@ interface FetchTasksOutput {
 export class FetchTasksUseCase {
   constructor(private readonly tasksRepository: TasksRepository) {}
 
-  async execute({
-    userId,
-    column,
-    search,
-  }: FetchTasksInput): Promise<FetchTasksOutput> {
+  async execute({ userId, column, search }: FetchTasksInput): Promise<FetchTasksOutput> {
     const records = await this.tasksRepository.findManyByUserId(userId, {
       column,
       search,

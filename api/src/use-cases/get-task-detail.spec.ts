@@ -27,8 +27,8 @@ describe('get task detail use case', () => {
 
   it('should throw when not found', async () => {
     const useCase = new GetTaskDetailUseCase(repository)
-    await expect(() =>
-      useCase.execute({ taskId: 'none', userId: 'user-1' })
-    ).rejects.toThrow(ResourceNotFoundError)
+    await expect(() => useCase.execute({ taskId: 'none', userId: 'user-1' })).rejects.toThrow(
+      ResourceNotFoundError,
+    )
   })
 })

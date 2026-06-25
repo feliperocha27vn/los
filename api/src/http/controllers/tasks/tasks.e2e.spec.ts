@@ -40,9 +40,7 @@ beforeAll(async () => {
     .post('/auth/login')
     .send({ email: 'other@lifeos.com', password: '12345678' })
   const otherCookies = otherLogin.headers['set-cookie'] as string[]
-  otherAuthCookie = otherCookies
-    .find((c: string) => c.startsWith('token='))!
-    .split(';')[0]
+  otherAuthCookie = otherCookies.find((c: string) => c.startsWith('token='))!.split(';')[0]
 })
 
 afterAll(async () => {
@@ -73,30 +71,22 @@ describe('POST /tasks', () => {
   })
 
   it('should return 401 without auth', async () => {
-    const response = await supertest(app.server)
-      .post('/tasks')
-      .send({ title: 'X' })
+    const response = await supertest(app.server).post('/tasks').send({ title: 'X' })
     expect(response.status).toBe(401)
   })
 })
 
 describe('GET /tasks', () => {
   it('should list tasks of the user only', async () => {
-    const res = await supertest(app.server)
-      .get('/tasks')
-      .set('Cookie', authCookie)
+    const res = await supertest(app.server).get('/tasks').set('Cookie', authCookie)
     expect(res.status).toBe(200)
     expect(Array.isArray(res.body.tasks)).toBe(true)
   })
 
   it('should filter by column', async () => {
-    const res = await supertest(app.server)
-      .get('/tasks?column=done')
-      .set('Cookie', authCookie)
+    const res = await supertest(app.server).get('/tasks?column=done').set('Cookie', authCookie)
     expect(res.status).toBe(200)
-    expect(
-      res.body.tasks.every((t: { column: string }) => t.column === 'done')
-    ).toBe(true)
+    expect(res.body.tasks.every((t: { column: string }) => t.column === 'done')).toBe(true)
   })
 
   it('should search by title', async () => {
@@ -129,9 +119,7 @@ describe('GET /tasks/:id', () => {
   })
 
   it('should return 404 for nonexistent', async () => {
-    const res = await supertest(app.server)
-      .get('/tasks/nonexistent')
-      .set('Cookie', authCookie)
+    const res = await supertest(app.server).get('/tasks/nonexistent').set('Cookie', authCookie)
     expect(res.status).toBe(404)
   })
 
@@ -186,9 +174,7 @@ describe('PATCH /tasks/:id/move', () => {
       .post('/tasks')
       .set('Cookie', authCookie)
       .send({ title: 'A' })
-    const existing = await supertest(app.server)
-      .get('/tasks?column=done')
-      .set('Cookie', authCookie)
+    const existing = await supertest(app.server).get('/tasks?column=done').set('Cookie', authCookie)
     const occupiedPosition = existing.body.tasks[0].position
 
     const res = await supertest(app.server)

@@ -1,9 +1,5 @@
 import { ResourceNotFoundError } from '@errors/resource-not-found-error'
-import type {
-  TaskRecord,
-  TasksRepository,
-  UpdateTaskInput,
-} from '@repositories/tasks-repository'
+import type { TaskRecord, TasksRepository, UpdateTaskInput } from '@repositories/tasks-repository'
 
 interface UpdateTaskPayload {
   taskId: string
@@ -19,11 +15,7 @@ interface UpdateTaskOutput {
 export class UpdateTaskUseCase {
   constructor(private readonly tasksRepository: TasksRepository) {}
 
-  async execute({
-    taskId,
-    userId,
-    ...data
-  }: UpdateTaskPayload): Promise<UpdateTaskOutput> {
+  async execute({ taskId, userId, ...data }: UpdateTaskPayload): Promise<UpdateTaskOutput> {
     const input: UpdateTaskInput = {}
     if (data.title !== undefined) input.title = data.title
     if (data.description !== undefined) input.description = data.description

@@ -44,7 +44,7 @@ describe('update task use case', () => {
   it('should throw when not found', async () => {
     const useCase = new UpdateTaskUseCase(repository)
     await expect(() =>
-      useCase.execute({ taskId: 'none', userId: 'user-1', title: 'X' })
+      useCase.execute({ taskId: 'none', userId: 'user-1', title: 'X' }),
     ).rejects.toThrow(ResourceNotFoundError)
   })
 })

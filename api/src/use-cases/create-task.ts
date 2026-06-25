@@ -1,10 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { TaskLimitExceededError } from '@errors/task-limit-exceeded-error'
-import type {
-  TaskColumn,
-  TaskRecord,
-  TasksRepository,
-} from '@repositories/tasks-repository'
+import type { TaskColumn, TaskRecord, TasksRepository } from '@repositories/tasks-repository'
 
 const TASK_LIMIT_PER_USER = 500
 const POSITION_STEP = 1.0

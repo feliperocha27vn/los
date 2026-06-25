@@ -26,7 +26,7 @@ export interface TasksRepository {
   findById(id: string, userId: string): Promise<TaskRecord | null>
   findManyByUserId(
     userId: string,
-    filters?: { column?: TaskColumn; search?: string }
+    filters?: { column?: TaskColumn; search?: string },
   ): Promise<TaskRecord[]>
   countByUserId(userId: string): Promise<number>
   create(input: CreateTaskInput): Promise<TaskRecord>

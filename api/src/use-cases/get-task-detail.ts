@@ -13,10 +13,7 @@ interface GetTaskDetailOutput {
 export class GetTaskDetailUseCase {
   constructor(private readonly tasksRepository: TasksRepository) {}
 
-  async execute({
-    taskId,
-    userId,
-  }: GetTaskDetailInput): Promise<GetTaskDetailOutput> {
+  async execute({ taskId, userId }: GetTaskDetailInput): Promise<GetTaskDetailOutput> {
     const task = await this.tasksRepository.findById(taskId, userId)
     if (!task) throw new ResourceNotFoundError()
     return { task }

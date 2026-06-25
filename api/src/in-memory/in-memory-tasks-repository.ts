@@ -16,7 +16,7 @@ export class InMemoryTasksRepository implements TasksRepository {
 
   async findManyByUserId(
     userId: string,
-    filters?: { column?: TaskColumn; search?: string }
+    filters?: { column?: TaskColumn; search?: string },
   ): Promise<TaskRecord[]> {
     let result = this.tasks.filter((t) => t.userId === userId)
 
@@ -29,7 +29,7 @@ export class InMemoryTasksRepository implements TasksRepository {
       result = result.filter(
         (t) =>
           t.title.toLowerCase().includes(term) ||
-          (t.description?.toLowerCase().includes(term) ?? false)
+          (t.description?.toLowerCase().includes(term) ?? false),
       )
     }
 
@@ -55,11 +55,7 @@ export class InMemoryTasksRepository implements TasksRepository {
     return task
   }
 
-  async update(
-    id: string,
-    userId: string,
-    input: UpdateTaskInput
-  ): Promise<TaskRecord> {
+  async update(id: string, userId: string, input: UpdateTaskInput): Promise<TaskRecord> {
     const task = this.tasks.find((t) => t.id === id && t.userId === userId)
     if (!task) throw new Error('Task not found')
     if (input.title !== undefined) task.title = input.title
@@ -68,11 +64,7 @@ export class InMemoryTasksRepository implements TasksRepository {
     return task
   }
 
-  async move(
-    id: string,
-    userId: string,
-    input: MoveTaskInput
-  ): Promise<TaskRecord> {
+  async move(id: string, userId: string, input: MoveTaskInput): Promise<TaskRecord> {
     const task = this.tasks.find((t) => t.id === id && t.userId === userId)
     if (!task) throw new Error('Task not found')
 
@@ -81,7 +73,7 @@ export class InMemoryTasksRepository implements TasksRepository {
         t.userId === userId &&
         t.column === input.column &&
         t.id !== id &&
-        t.position === input.position
+        t.position === input.position,
     )
     if (collides) throw new Error('Position conflict')
 
@@ -92,9 +84,7 @@ export class InMemoryTasksRepository implements TasksRepository {
   }
 
   async delete(id: string, userId: string): Promise<void> {
-    const index = this.tasks.findIndex(
-      (t) => t.id === id && t.userId === userId
-    )
+    const index = this.tasks.findIndex((t) => t.id === id && t.userId === userId)
     if (index === -1) throw new Error('Task not found')
     this.tasks.splice(index, 1)
   }

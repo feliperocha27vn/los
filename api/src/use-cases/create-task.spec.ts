@@ -58,8 +58,8 @@ describe('create task use case', () => {
     }
 
     const useCase = new CreateTaskUseCase(repository)
-    await expect(() =>
-      useCase.execute({ userId: 'user-1', title: 'overflow' })
-    ).rejects.toThrow(TaskLimitExceededError)
+    await expect(() => useCase.execute({ userId: 'user-1', title: 'overflow' })).rejects.toThrow(
+      TaskLimitExceededError,
+    )
   })
 })
