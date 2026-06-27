@@ -1,4 +1,4 @@
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
+import type { FastifyInstance } from 'fastify'
 import { getStudyModulesRoute } from './get-study-modules'
 import { postStudyModuleRoute } from './post-study-module'
 import { getStudyModuleDetailRoute } from './get-study-module-detail'
@@ -8,16 +8,17 @@ import { deleteStudyModuleRoute } from './delete-study-module'
 import type { StudyCoursesRepository } from '@repositories/study-courses-repository'
 import type { StudyModulesRepository } from '@repositories/study-modules-repository'
 
-export function makeStudyModulesController(
+export function registerStudyModulesRoutes(
+  app: FastifyInstance,
   studyModulesRepository: StudyModulesRepository,
   studyCoursesRepository: StudyCoursesRepository
-): FastifyPluginAsyncZod {
-  return async (app) => {
-    await app.register(getStudyModulesRoute(studyModulesRepository))
-    await app.register(postStudyModuleRoute(studyModulesRepository, studyCoursesRepository))
-    await app.register(getStudyModuleDetailRoute(studyModulesRepository))
-    await app.register(putStudyModuleRoute(studyModulesRepository))
-    await app.register(patchStudyModuleReorderRoute(studyModulesRepository))
-    await app.register(deleteStudyModuleRoute(studyModulesRepository))
-  }
+): void {
+  void app.register(getStudyModulesRoute(studyModulesRepository))
+  void app.register(
+    postStudyModuleRoute(studyModulesRepository, studyCoursesRepository)
+  )
+  void app.register(getStudyModuleDetailRoute(studyModulesRepository))
+  void app.register(putStudyModuleRoute(studyModulesRepository))
+  void app.register(patchStudyModuleReorderRoute(studyModulesRepository))
+  void app.register(deleteStudyModuleRoute(studyModulesRepository))
 }

@@ -1,4 +1,4 @@
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
+import type { FastifyInstance } from 'fastify'
 import { getStudyPagesRoute } from './get-study-pages'
 import { postStudyPageRoute } from './post-study-page'
 import { getStudyPageDetailRoute } from './get-study-page-detail'
@@ -9,25 +9,24 @@ import type { StudyCoursesRepository } from '@repositories/study-courses-reposit
 import type { StudyModulesRepository } from '@repositories/study-modules-repository'
 import type { StudyPagesRepository } from '@repositories/study-pages-repository'
 
-export function makeStudyPagesController(
+export function registerStudyPagesRoutes(
+  app: FastifyInstance,
   studyPagesRepository: StudyPagesRepository,
   studyModulesRepository: StudyModulesRepository,
   studyCoursesRepository: StudyCoursesRepository
-): FastifyPluginAsyncZod {
-  return async (app) => {
-    await app.register(getStudyPagesRoute(studyPagesRepository))
-    await app.register(
-      postStudyPageRoute(studyPagesRepository, studyModulesRepository)
+): void {
+  void app.register(getStudyPagesRoute(studyPagesRepository))
+  void app.register(
+    postStudyPageRoute(studyPagesRepository, studyModulesRepository)
+  )
+  void app.register(
+    getStudyPageDetailRoute(
+      studyPagesRepository,
+      studyModulesRepository,
+      studyCoursesRepository
     )
-    await app.register(
-      getStudyPageDetailRoute(
-        studyPagesRepository,
-        studyModulesRepository,
-        studyCoursesRepository
-      )
-    )
-    await app.register(putStudyPageRoute(studyPagesRepository))
-    await app.register(patchStudyPageReorderRoute(studyPagesRepository))
-    await app.register(deleteStudyPageRoute(studyPagesRepository))
-  }
+  )
+  void app.register(putStudyPageRoute(studyPagesRepository))
+  void app.register(patchStudyPageReorderRoute(studyPagesRepository))
+  void app.register(deleteStudyPageRoute(studyPagesRepository))
 }
