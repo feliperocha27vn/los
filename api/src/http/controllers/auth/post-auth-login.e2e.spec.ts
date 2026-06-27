@@ -1,32 +1,20 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import supertest from 'supertest'
-import { InMemoryUsersRepository } from '@in-memory/in-memory-users-repository'
-import { hash } from '@node-rs/bcrypt'
-import { createApp } from '../../../app'
+import { setupAuthE2E } from './e2e-helpers'
 import type { FastifyInstance } from 'fastify'
 
 let app: FastifyInstance
-let usersRepository: InMemoryUsersRepository
 
 beforeAll(async () => {
-  usersRepository = new InMemoryUsersRepository()
-
-  await usersRepository.create({
-    id: 'user-1',
-    name: 'Sofia Davis',
-    email: 'sofia@lifeos.com',
-    passwordHash: await hash('12345678'),
-  })
-
-  app = createApp(usersRepository)
-  await app.ready()
+  const ctx = await setupAuthE2E()
+  app = ctx.app
 })
 
 afterAll(async () => {
   await app.close()
 })
 
-describe('POST /auth/login (e2e)', () => {
+describe('POST /auth/login', () => {
   it('should login with valid credentials and set httpOnly cookie', async () => {
     const response = await supertest(app.server)
       .post('/auth/login')
@@ -64,34 +52,5 @@ describe('POST /auth/login (e2e)', () => {
 
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Credenciais inválidas')
-  })
-})
-
-describe('GET /auth/me (e2e)', () => {
-  it('should return user profile when authenticated', async () => {
-    const loginResponse = await supertest(app.server)
-      .post('/auth/login')
-      .send({ email: 'sofia@lifeos.com', password: '12345678' })
-
-    const cookies = loginResponse.headers['set-cookie'] as string[]
-    const tokenCookie = cookies.find((c: string) => c.startsWith('token='))!
-
-    const response = await supertest(app.server)
-      .get('/auth/me')
-      .set('Cookie', tokenCookie.split(';')[0])
-
-    expect(response.status).toBe(200)
-    expect(response.body.user).toEqual({
-      id: 'user-1',
-      name: 'Sofia Davis',
-      email: 'sofia@lifeos.com',
-    })
-  })
-
-  it('should return 401 without token', async () => {
-    const response = await supertest(app.server).get('/auth/me')
-
-    expect(response.status).toBe(401)
-    expect(response.body.message).toBe('Não autorizado')
   })
 })

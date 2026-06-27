@@ -1,8 +1,8 @@
 import type { FastifyPluginAsync } from 'fastify'
 import type { UsersRepository } from '@repositories/users-repository'
-import { makeAuthController } from './auth/auth-controller'
+import { registerAuthRoutes } from './auth/index.routes'
 import { InMemoryCofreEntriesRepository } from '@in-memory/in-memory-cofre-entries-repository'
-import { makeCofreController } from './cofre/cofre-controller'
+import { registerCofreRoutes } from './cofre/index.routes'
 import { registerNotesRoutes } from './notes/index.routes'
 import { registerTasksRoutes } from './tasks/index.routes'
 import { registerStudyCoursesRoutes } from './study-courses/index.routes'
@@ -56,8 +56,8 @@ export function controllers(deps: ControllersDeps): FastifyPluginAsync {
     deps.trackerRecordsRepository ?? new InMemoryTrackerRecordsRepository()
 
   return async (app) => {
-    await app.register(makeAuthController(deps.usersRepository))
-    await app.register(makeCofreController(deps.usersRepository, cofreEntriesRepo))
+    registerAuthRoutes(app, deps.usersRepository)
+    registerCofreRoutes(app, deps.usersRepository, cofreEntriesRepo)
     registerNotesRoutes(app, notesRepo)
     registerTasksRoutes(app, tasksRepo)
     registerStudyCoursesRoutes(app, studyCoursesRepo)
