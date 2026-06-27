@@ -10,6 +10,8 @@ import type { TasksRepository } from '@repositories/tasks-repository'
 import type { StudyCoursesRepository } from '@repositories/study-courses-repository'
 import type { StudyModulesRepository } from '@repositories/study-modules-repository'
 import type { StudyPagesRepository } from '@repositories/study-pages-repository'
+import type { TrackerHabitsRepository } from '@repositories/tracker-habits-repository'
+import type { TrackerRecordsRepository } from '@repositories/tracker-records-repository'
 import ScalarApiReference from '@scalar/fastify-api-reference'
 import fastify from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
@@ -27,7 +29,9 @@ export function createApp(
   tasksRepository?: TasksRepository,
   studyCoursesRepository?: StudyCoursesRepository,
   studyModulesRepository?: StudyModulesRepository,
-  studyPagesRepository?: StudyPagesRepository
+  studyPagesRepository?: StudyPagesRepository,
+  trackerHabitsRepository?: TrackerHabitsRepository,
+  trackerRecordsRepository?: TrackerRecordsRepository
 ) {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -97,6 +101,8 @@ export function createApp(
     studyCoursesRepository,
     studyModulesRepository,
     studyPagesRepository,
+    trackerHabitsRepository,
+    trackerRecordsRepository,
   }))
 
   return app

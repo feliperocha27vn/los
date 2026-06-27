@@ -9,6 +9,8 @@ import { tasksRepository } from '@repositories/adapters/drizzle/drizzle-tasks-re
 import { studyCoursesRepository } from '@repositories/adapters/drizzle/drizzle-study-courses-repository'
 import { studyModulesRepository } from '@repositories/adapters/drizzle/drizzle-study-modules-repository'
 import { studyPagesRepository } from '@repositories/adapters/drizzle/drizzle-study-pages-repository'
+import { trackerHabitsRepository } from '@repositories/adapters/drizzle/drizzle-tracker-habits-repository'
+import { trackerRecordsRepository } from '@repositories/adapters/drizzle/drizzle-tracker-records-repository'
 
 const app = createApp(
   usersRepository,
@@ -17,7 +19,9 @@ const app = createApp(
   tasksRepository,
   studyCoursesRepository,
   studyModulesRepository,
-  studyPagesRepository
+  studyPagesRepository,
+  trackerHabitsRepository,
+  trackerRecordsRepository
 )
 
 app
