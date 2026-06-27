@@ -398,13 +398,13 @@ function CofreComponent() {
         {/* COLUNA 1 (Categorias): Apenas visível no Desktop lg (Pencil desktop cofre) */}
         <aside className="hidden lg:flex flex-col w-[220px] border-r border-[#27272a] bg-[#18181b]/50 p-4 space-y-6 shrink-0 h-full">
           <div className="space-y-1">
-            <h4 className="text-xs font-bold text-[#a1a1aa] uppercase tracking-wider font-mono px-3">
+            <h4 className="text-xs md:text-sm font-bold text-[#a1a1aa] uppercase tracking-wider font-mono px-3">
               Categorias
             </h4>
             <nav className="space-y-1">
               <button
                 onClick={() => { setActiveCategory('all'); setSelectedId(undefined); }}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-mono font-bold transition-smooth text-left cursor-pointer ${
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs md:text-sm font-mono font-bold transition-smooth text-left cursor-pointer ${
                   activeCategory === 'all' ? 'bg-[#27272a] text-[#fafafa]' : 'text-[#a1a1aa] hover:text-[#fafafa]'
                 }`}
               >
@@ -412,7 +412,7 @@ function CofreComponent() {
               </button>
               <button
                 onClick={() => { setActiveCategory('credential'); setSelectedId(undefined); }}
-                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-mono font-bold transition-smooth text-left cursor-pointer ${
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs md:text-sm font-mono font-bold transition-smooth text-left cursor-pointer ${
                   activeCategory === 'credential' ? 'bg-[#27272a] text-[#fafafa]' : 'text-[#a1a1aa] hover:text-[#fafafa]'
                 }`}
               >
@@ -421,7 +421,7 @@ function CofreComponent() {
               </button>
               <button
                 onClick={() => { setActiveCategory('secure_note'); setSelectedId(undefined); }}
-                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-mono font-bold transition-smooth text-left cursor-pointer ${
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs md:text-sm font-mono font-bold transition-smooth text-left cursor-pointer ${
                   activeCategory === 'secure_note' ? 'bg-[#27272a] text-[#fafafa]' : 'text-[#a1a1aa] hover:text-[#fafafa]'
                 }`}
               >
@@ -430,7 +430,7 @@ function CofreComponent() {
               </button>
               <button
                 onClick={() => { setActiveCategory('api_key'); setSelectedId(undefined); }}
-                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-mono font-bold transition-smooth text-left cursor-pointer ${
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs md:text-sm font-mono font-bold transition-smooth text-left cursor-pointer ${
                   activeCategory === 'api_key' ? 'bg-[#27272a] text-[#fafafa]' : 'text-[#a1a1aa] hover:text-[#fafafa]'
                 }`}
               >
@@ -443,7 +443,7 @@ function CofreComponent() {
           <div className="pt-4 border-t border-[#27272a] mt-auto">
             <Button
               onClick={handleLock}
-              className="w-full h-9 font-bold bg-[#f43f5e] hover:bg-[#f43f5e]/90 text-white rounded-md transition-smooth font-mono text-xs cursor-pointer"
+              className="w-full h-9 font-bold bg-[#f43f5e] hover:bg-[#f43f5e]/90 text-white rounded-md transition-smooth font-mono text-xs md:text-sm cursor-pointer"
             >
               Bloquear Cofre
             </Button>
@@ -560,10 +560,10 @@ function CofreComponent() {
                     {item.category === 'api_key' && <Code className="h-4 w-4 text-amber-400" />}
                   </div>
                   <div className="min-w-0 leading-none">
-                    <span className="block text-xs font-bold font-mono text-[#fafafa] truncate">
+                    <span className="block text-xs md:text-sm font-bold font-mono text-[#fafafa] truncate">
                       {item.title}
                     </span>
-                    <span className="block text-[10px] font-mono font-medium text-[#a1a1aa] mt-1.5 truncate">
+                    <span className="block text-[11px] md:text-xs font-mono font-medium text-[#a1a1aa] mt-1.5 truncate">
                       {item.category === 'credential' ? item.username : item.category === 'secure_note' ? 'Nota Segura' : item.provider || 'Chave de API'}
                     </span>
                   </div>
@@ -613,24 +613,24 @@ function CofreComponent() {
               <div className="space-y-4 max-w-[480px]">
                 {/* Título */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#a1a1aa] font-mono">Título</label>
+                  <label className="text-xs md:text-sm font-bold text-[#a1a1aa] font-mono">Título</label>
                   <Input
                     required
                     placeholder="Ex: GitHub Sofia"
                     value={formTitle}
                     onChange={(e) => setFormTitle(e.target.value)}
-                    className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs font-mono font-semibold"
+                    className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs md:text-sm font-mono font-semibold"
                   />
                 </div>
 
                 {/* Categoria (Apenas no Create) */}
                 {isCreating && (
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#a1a1aa] font-mono">Categoria</label>
+                    <label className="text-xs md:text-sm font-bold text-[#a1a1aa] font-mono">Categoria</label>
                     <select
                       value={formCategory}
                       onChange={(e) => setFormCategory(e.target.value as any)}
-                      className="w-full h-10 px-3 rounded-md border border-[#27272a] bg-[#18181b]/80 text-[#fafafa] text-xs font-mono font-semibold focus:outline-none focus:border-primary cursor-pointer"
+                      className="w-full h-10 px-3 rounded-md border border-[#27272a] bg-[#18181b]/80 text-[#fafafa] text-xs md:text-sm font-mono font-semibold focus:outline-none focus:border-primary cursor-pointer"
                     >
                       <option value="credential">Credencial</option>
                       <option value="secure_note">Nota Segura</option>
@@ -643,31 +643,31 @@ function CofreComponent() {
                 {formCategory === 'credential' && (
                   <>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-[#a1a1aa] font-mono">Usuário / E-mail</label>
+                      <label className="text-xs md:text-sm font-bold text-[#a1a1aa] font-mono">Usuário / E-mail</label>
                       <Input
                         placeholder="Ex: sofia@lifeos.com"
                         value={formUsername}
                         onChange={(e) => setFormUsername(e.target.value)}
-                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs font-mono font-semibold"
+                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs md:text-sm font-mono font-semibold"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-[#a1a1aa] font-mono">Senha</label>
+                      <label className="text-xs md:text-sm font-bold text-[#a1a1aa] font-mono">Senha</label>
                       <Input
                         type="password"
                         placeholder="Senha secreta"
                         value={formPassword}
                         onChange={(e) => setFormPassword(e.target.value)}
-                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs font-mono font-semibold"
+                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs md:text-sm font-mono font-semibold"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-[#a1a1aa] font-mono">URL do Site</label>
+                      <label className="text-xs md:text-sm font-bold text-[#a1a1aa] font-mono">URL do Site</label>
                       <Input
                         placeholder="Ex: https://github.com"
                         value={formUrl}
                         onChange={(e) => setFormUrl(e.target.value)}
-                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs font-mono font-semibold"
+                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs md:text-sm font-mono font-semibold"
                       />
                     </div>
                   </>
@@ -676,13 +676,13 @@ function CofreComponent() {
                 {/* ==================== SECURE NOTE FIELDS ==================== */}
                 {formCategory === 'secure_note' && (
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#a1a1aa] font-mono">Conteúdo Privado</label>
+                    <label className="text-xs md:text-sm font-bold text-[#a1a1aa] font-mono">Conteúdo Privado</label>
                     <textarea
                       placeholder="Coloque suas anotações privadas e seguras aqui..."
                       value={formContent}
                       onChange={(e) => setFormContent(e.target.value)}
                       rows={6}
-                      className="w-full p-3 rounded-md border border-[#27272a] bg-[#18181b]/50 text-[#fafafa] text-xs font-mono font-semibold focus:outline-none focus:border-primary leading-relaxed"
+                      className="w-full p-3 rounded-md border border-[#27272a] bg-[#18181b]/50 text-[#fafafa] text-xs md:text-sm font-mono font-semibold focus:outline-none focus:border-primary leading-relaxed"
                     />
                   </div>
                 )}
@@ -691,22 +691,22 @@ function CofreComponent() {
                 {formCategory === 'api_key' && (
                   <>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-[#a1a1aa] font-mono">Provedor</label>
+                      <label className="text-xs md:text-sm font-bold text-[#a1a1aa] font-mono">Provedor</label>
                       <Input
                         placeholder="Ex: OpenAI"
                         value={formProvider}
                         onChange={(e) => setFormProvider(e.target.value)}
-                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs font-mono font-semibold"
+                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs md:text-sm font-mono font-semibold"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-[#a1a1aa] font-mono">Token / Secret Key</label>
+                      <label className="text-xs md:text-sm font-bold text-[#a1a1aa] font-mono">Token / Secret Key</label>
                       <Input
                         type="password"
                         placeholder="sk-proj-..."
                         value={formToken}
                         onChange={(e) => setFormToken(e.target.value)}
-                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs font-mono font-semibold"
+                        className="h-10 border-[#27272a] bg-[#18181b]/50 text-xs md:text-sm font-mono font-semibold"
                       />
                     </div>
                   </>
@@ -719,14 +719,14 @@ function CofreComponent() {
                 <Button
                   type="submit"
                   disabled={formSubmitting}
-                  className="h-10 font-bold bg-primary hover:bg-primary/95 text-white px-5 rounded-md font-mono text-xs cursor-pointer"
+                  className="h-10 font-bold bg-primary hover:bg-primary/95 text-white px-5 rounded-md font-mono text-xs md:text-sm cursor-pointer"
                 >
                   {formSubmitting ? 'Salvando...' : 'Salvar Entrada'}
                 </Button>
                 <Button
                   type="button"
                   onClick={() => { setIsCreating(false); setIsEditing(false); }}
-                  className="h-10 font-bold border border-[#27272a] bg-transparent text-[#a1a1aa] hover:text-[#fafafa] px-5 rounded-md font-mono text-xs cursor-pointer"
+                  className="h-10 font-bold border border-[#27272a] bg-transparent text-[#a1a1aa] hover:text-[#fafafa] px-5 rounded-md font-mono text-xs md:text-sm cursor-pointer"
                 >
                   Cancelar
                 </Button>
@@ -802,9 +802,9 @@ function CofreComponent() {
                     {/* Usuário */}
                     {detailData.entry.username && (
                       <div className="space-y-1.5">
-                        <span className="text-[10px] font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">Usuário</span>
+                        <span className="text-xs font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">Usuário</span>
                         <div className="flex items-center justify-between p-3.5 bg-[#18181b]/50 border border-[#27272a] rounded-lg">
-                          <span className="text-xs font-semibold font-mono text-[#fafafa] select-text">
+                          <span className="text-xs md:text-sm font-semibold font-mono text-[#fafafa] select-text">
                             {detailData.entry.username}
                           </span>
                           <button
@@ -821,9 +821,9 @@ function CofreComponent() {
                     {/* Senha */}
                     {detailData.entry.password && (
                       <div className="space-y-1.5">
-                        <span className="text-[10px] font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">Senha</span>
+                        <span className="text-xs font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">Senha</span>
                         <div className="flex items-center justify-between p-3.5 bg-[#18181b]/50 border border-[#27272a] rounded-lg">
-                          <span className="text-xs font-semibold font-mono text-[#fafafa] select-text">
+                          <span className="text-xs md:text-sm font-semibold font-mono text-[#fafafa] select-text">
                             {showSensitive ? detailData.entry.password : '••••••••••••••••'}
                           </span>
                           <div className="flex items-center gap-2 shrink-0">
@@ -849,9 +849,9 @@ function CofreComponent() {
                     {/* URL */}
                     {detailData.entry.url && (
                       <div className="space-y-1.5">
-                        <span className="text-[10px] font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">URL do Site</span>
+                        <span className="text-xs font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">URL do Site</span>
                         <div className="flex items-center justify-between p-3.5 bg-[#18181b]/50 border border-[#27272a] rounded-lg">
-                          <span className="text-xs font-semibold font-mono text-[#fafafa] select-text truncate">
+                          <span className="text-xs md:text-sm font-semibold font-mono text-[#fafafa] select-text truncate">
                             {detailData.entry.url}
                           </span>
                           <div className="flex items-center gap-2 shrink-0">
@@ -901,7 +901,7 @@ function CofreComponent() {
                         )}
                       </button>
                     </div>
-                    <div className="p-4 bg-[#18181b]/50 border border-[#27272a] rounded-lg text-xs font-mono font-medium text-[#fafafa] leading-relaxed select-text whitespace-pre-wrap">
+                    <div className="p-4 bg-[#18181b]/50 border border-[#27272a] rounded-lg text-xs md:text-sm font-mono font-medium text-[#fafafa] leading-relaxed select-text whitespace-pre-wrap">
                       {detailData.entry.content}
                     </div>
                   </div>
@@ -913,9 +913,9 @@ function CofreComponent() {
                     {/* Provedor */}
                     {detailData.entry.provider && (
                       <div className="space-y-1.5">
-                        <span className="text-[10px] font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">Provedor</span>
+                        <span className="text-xs font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">Provedor</span>
                         <div className="flex items-center justify-between p-3.5 bg-[#18181b]/50 border border-[#27272a] rounded-lg">
-                          <span className="text-xs font-semibold font-mono text-[#fafafa] select-text">
+                          <span className="text-xs md:text-sm font-semibold font-mono text-[#fafafa] select-text">
                             {detailData.entry.provider}
                           </span>
                           <button
@@ -932,9 +932,9 @@ function CofreComponent() {
                     {/* Token */}
                     {detailData.entry.token && (
                       <div className="space-y-1.5">
-                        <span className="text-[10px] font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">Token / Secret Key</span>
+                        <span className="text-xs font-bold text-[#a1a1aa] uppercase font-mono tracking-wider">Token / Secret Key</span>
                         <div className="flex items-center justify-between p-3.5 bg-[#18181b]/50 border border-[#27272a] rounded-lg">
-                          <span className="text-xs font-semibold font-mono text-[#fafafa] select-text truncate">
+                          <span className="text-xs md:text-sm font-semibold font-mono text-[#fafafa] select-text truncate">
                             {showSensitive ? detailData.entry.token : '••••••••••••••••••••••••••••••••'}
                           </span>
                           <div className="flex items-center gap-2 shrink-0">

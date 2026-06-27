@@ -108,14 +108,14 @@ function LoginComponent() {
             
             {/* Card 1: Saldo Atual */}
             <div className="p-5 rounded-xl border border-border bg-card/65 flex flex-col justify-between">
-              <span className="text-xs font-bold text-muted-foreground uppercase font-mono tracking-wider">
+              <span className="text-xs md:text-sm font-bold text-muted-foreground uppercase font-mono tracking-wider">
                 Saldo Atual
               </span>
               <div className="mt-3">
                 <span className="text-2xl md:text-3xl font-extrabold font-mono text-foreground">
                   R$ 12.450,80
                 </span>
-                <span className="block text-xs font-bold text-emerald-400 font-mono mt-1.5">
+                <span className="block text-xs md:text-sm font-bold text-emerald-400 font-mono mt-1.5">
                   +4.2% em relação a ontem
                 </span>
               </div>
@@ -123,14 +123,14 @@ function LoginComponent() {
 
             {/* Card 2: Balanço do Mês */}
             <div className="p-5 rounded-xl border border-border bg-card/65 flex flex-col justify-between">
-              <span className="text-xs font-bold text-muted-foreground uppercase font-mono tracking-wider">
+              <span className="text-xs md:text-sm font-bold text-muted-foreground uppercase font-mono tracking-wider">
                 Balanço do Mês
               </span>
               <div className="mt-3">
                 <span className="text-2xl md:text-3xl font-extrabold font-mono text-emerald-400">
                   +R$ 4.700,00
                 </span>
-                <span className="block text-xs font-semibold text-muted-foreground font-mono mt-1.5">
+                <span className="block text-xs md:text-sm font-semibold text-muted-foreground font-mono mt-1.5">
                   Entradas: R$ 8.900 | Saídas: R$ 4.200
                 </span>
               </div>
@@ -138,7 +138,7 @@ function LoginComponent() {
 
             {/* Card 3: Últimas Transações */}
             <div className="col-span-1 sm:col-span-2 lg:col-span-1 p-5 rounded-xl border border-border bg-card/65 flex flex-col justify-between">
-              <span className="text-xs font-bold text-muted-foreground uppercase font-mono tracking-wider">
+              <span className="text-xs md:text-sm font-bold text-muted-foreground uppercase font-mono tracking-wider">
                 Últimas Transações
               </span>
               <div className="mt-3.5 space-y-2.5 font-mono">
@@ -216,13 +216,13 @@ function LoginComponent() {
                   <div className="flex items-start gap-4">
                     <div className="flex flex-col items-center shrink-0 min-w-[55px] font-mono text-xs font-semibold bg-muted/65 border border-border/50 px-2 py-1.5 rounded-md text-muted-foreground">
                       <span className="font-bold text-foreground">10:00</span>
-                      <span className="text-[10px] mt-0.5 font-medium">60 min</span>
+                      <span className="text-[11px] md:text-xs mt-0.5 font-medium">60 min</span>
                     </div>
                     <div className="min-w-0">
                       <span className="block text-sm font-bold text-foreground truncate">
                         Reunião de Alinhamento
                       </span>
-                      <span className="block text-xs text-muted-foreground font-mono font-medium mt-1 leading-relaxed">
+                      <span className="block text-xs md:text-sm text-muted-foreground font-mono font-medium mt-1 leading-relaxed">
                         Sincronização semanal do time de design
                       </span>
                     </div>
@@ -237,13 +237,13 @@ function LoginComponent() {
                   <div className="flex items-start gap-4">
                     <div className="flex flex-col items-center shrink-0 min-w-[55px] font-mono text-xs font-semibold bg-muted/65 border border-border/50 px-2 py-1.5 rounded-md text-muted-foreground">
                       <span className="font-bold text-foreground">14:30</span>
-                      <span className="text-[10px] mt-0.5 font-medium">90 min</span>
+                      <span className="text-[11px] md:text-xs mt-0.5 font-medium">90 min</span>
                     </div>
                     <div className="min-w-0">
                       <span className="block text-sm font-bold text-foreground truncate">
                         Consulta Médica
                       </span>
-                      <span className="block text-xs text-muted-foreground font-mono font-medium mt-1 leading-relaxed">
+                      <span className="block text-xs md:text-sm text-muted-foreground font-mono font-medium mt-1 leading-relaxed">
                         Exames de rotina cardiológica
                       </span>
                     </div>
@@ -377,7 +377,7 @@ function LoginComponent() {
           </form>
 
           {/* Termos de Serviço */}
-          <p className="text-center text-[10px] leading-normal text-muted-foreground px-4 font-mono font-medium">
+          <p className="text-center text-[11px] md:text-xs leading-normal text-muted-foreground px-4 font-mono font-medium">
             Ao clicar em continuar, você concorda com nossos{' '}
             <a href="#" className="underline hover:text-foreground">Termos de Serviço</a>{' '}
             e{' '}

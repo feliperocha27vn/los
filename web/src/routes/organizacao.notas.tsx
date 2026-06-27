@@ -1026,19 +1026,19 @@ function NotesComponent() {
                             : 'bg-transparent border-transparent hover:bg-[#18181b]/30'
                         }`}
                       >
-                        <span className={`text-[13px] text-[#fafafa] truncate ${isActive ? 'font-medium' : 'font-normal'}`}>
+                        <span className={`text-sm md:text-base text-[#fafafa] truncate ${isActive ? 'font-medium' : 'font-normal'}`}>
                           {item.title || 'Sem título'}
                         </span>
                         {item.snippet && (
-                          <p className="text-[11px] text-[#a1a1aa] line-clamp-2 leading-relaxed break-all m-0">
+                          <p className="text-xs md:text-sm text-[#a1a1aa] line-clamp-2 leading-relaxed break-all m-0">
                             {item.snippet}
                           </p>
                         )}
                         <div className="flex items-center justify-between mt-1 shrink-0">
-                          <span className="text-[10px] text-[#a1a1aa]/75">
+                          <span className="text-[11px] md:text-xs text-[#a1a1aa]/75">
                             {new Date(item.updatedAt).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
                           </span>
-                          <span className="bg-[#27272a] text-[#a1a1aa] text-[9px] px-1.5 py-0.5 rounded-md font-medium shrink-0">
+                          <span className="bg-[#27272a] text-[#a1a1aa] text-[10px] md:text-[11px] px-1.5 py-0.5 rounded-md font-medium shrink-0">
                             Nota
                           </span>
                         </div>
@@ -1088,7 +1088,7 @@ function NotesComponent() {
                         onChange={(e) => handleTitleChange(e.target.value)}
                         onBlur={handleBlur}
                         placeholder="Título da nota"
-                        className="bg-transparent border-0 outline-none text-lg font-semibold text-[#fafafa] placeholder-[#a1a1aa]/30 w-full p-0 focus:ring-0 focus:border-0 truncate"
+                        className="bg-transparent border-0 outline-none text-xl md:text-2xl font-bold text-[#fafafa] placeholder-[#a1a1aa]/30 w-full p-0 focus:ring-0 focus:border-0 truncate"
                       />
                     </div>
 
@@ -1122,11 +1122,11 @@ function NotesComponent() {
                       onChange={(e) => handleContentChange(e.target.value)}
                       onBlur={handleBlur}
                       placeholder="Comece a escrever sua nota aqui..."
-                      className="w-full flex-1 bg-transparent border-0 outline-none resize-none text-[13px] text-[#fafafa] placeholder-[#a1a1aa]/30 leading-relaxed p-0 focus:ring-0 overflow-y-auto"
+                      className="w-full flex-1 bg-transparent border-0 outline-none resize-none text-sm md:text-base text-[#fafafa] placeholder-[#a1a1aa]/30 leading-relaxed p-0 focus:ring-0 overflow-y-auto"
                     />
 
                     {/* Status Bar do auto-save */}
-                    <div className="mt-4 shrink-0 flex items-center justify-between text-[11px] text-[#a1a1aa]/75 italic select-none">
+                    <div className="mt-4 shrink-0 flex items-center justify-between text-[11px] md:text-xs text-[#a1a1aa]/75 italic select-none">
                       <div>
                         {saveStatus === 'saved' && (
                           <span>Salvo automaticamente em tempo real</span>
@@ -1299,20 +1299,20 @@ function NotesComponent() {
                             )}
                           >
                             {/* Title */}
-                            <h4 className="text-xs font-bold font-mono text-[#fafafa] leading-snug break-words pr-6 select-text">
+                            <h4 className="text-xs md:text-sm font-bold font-mono text-[#fafafa] leading-snug break-words pr-6 select-text">
                               {task.title}
                             </h4>
 
                             {/* Description snippet */}
                             {task.description && (
-                              <p className="text-[10px] font-mono font-medium text-[#a1a1aa] mt-1.5 leading-normal line-clamp-3 select-text whitespace-pre-wrap">
+                              <p className="text-[11px] md:text-xs font-mono font-medium text-[#a1a1aa] mt-1.5 leading-normal line-clamp-3 select-text whitespace-pre-wrap">
                                 {task.description}
                               </p>
                             )}
 
                             {/* Footer / Meta & Quick Actions */}
                             <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#27272a]/40 shrink-0">
-                              <span className="text-[9px] font-mono text-[#a1a1aa]/60 font-semibold">
+                              <span className="text-[10px] md:text-[11px] font-mono text-[#a1a1aa]/60 font-semibold">
                                 {new Date(task.createdAt).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}
                               </span>
 
@@ -1383,16 +1383,16 @@ function NotesComponent() {
                 {/* Header da Árvore */}
                 <div className="flex items-center justify-between pb-3 border-b border-[#27272a]/60 shrink-0">
                   <div className="space-y-0.5">
-                    <h3 className="text-xs font-bold font-mono text-[#fafafa] uppercase tracking-wider">
+                    <h3 className="text-xs md:text-sm font-bold font-mono text-[#fafafa] uppercase tracking-wider">
                       Meus Estudos
                     </h3>
-                    <p className="text-[10px] text-[#a1a1aa] font-medium font-mono leading-none">
+                    <p className="text-[11px] md:text-xs text-[#a1a1aa] font-medium font-mono leading-none">
                       Cursos e páginas
                     </p>
                   </div>
                   <button
                     onClick={handleOpenCreateCourse}
-                    className="p-1 rounded hover:bg-[#27272a] text-primary hover:text-primary-foreground transition-smooth cursor-pointer flex items-center gap-1 text-[11px] font-mono font-bold"
+                    className="p-1 rounded hover:bg-[#27272a] text-primary hover:text-primary-foreground transition-smooth cursor-pointer flex items-center gap-1 text-xs font-mono font-bold"
                     title="Novo Curso"
                   >
                     <Plus className="h-4 w-4" />
@@ -1407,7 +1407,7 @@ function NotesComponent() {
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       <BookOpen className="h-4 w-4 text-[#6366f1] shrink-0" />
-                      <span className="text-xs font-bold font-mono truncate">
+                      <span className="text-xs md:text-sm font-bold font-mono truncate">
                         {selectedCourse?.name || 'Selecionar Curso'}
                       </span>
                     </div>
@@ -1441,7 +1441,7 @@ function NotesComponent() {
                                 className="flex items-center gap-2 min-w-0 flex-1 py-0.5"
                               >
                                 <BookOpen className="h-3.5 w-3.5 text-[#6366f1] shrink-0" />
-                                <span className="text-xs font-mono truncate">{c.name}</span>
+                                <span className="text-xs md:text-sm font-mono truncate">{c.name}</span>
                               </div>
                               
                               {/* Ações do Curso dentro do Dropdown */}
@@ -1478,7 +1478,7 @@ function NotesComponent() {
                           handleOpenCreateCourse();
                           setIsCourseDropdownOpen(false);
                         }}
-                        className="w-full flex items-center gap-2 px-2.5 py-1.5 text-left text-xs font-bold font-mono text-[#6366f1] hover:bg-[#6366f1]/10 rounded-md transition-smooth"
+                        className="w-full flex items-center gap-2 px-2.5 py-1.5 text-left text-xs md:text-sm font-bold font-mono text-[#6366f1] hover:bg-[#6366f1]/10 rounded-md transition-smooth"
                       >
                         <Plus className="h-3.5 w-3.5" />
                         Criar Novo Curso
@@ -1491,12 +1491,12 @@ function NotesComponent() {
                 <div className="flex-1 overflow-y-auto mt-3 pr-1 flex flex-col min-h-0">
                   {!selectedCourseId ? (
                     <div className="flex-1 flex flex-col items-center justify-center text-center p-6 border border-dashed border-[#27272a]/65 rounded-lg">
-                      <p className="text-[10px] font-mono text-[#a1a1aa] font-semibold leading-normal">
+                      <p className="text-[11px] md:text-xs font-mono text-[#a1a1aa] font-semibold leading-normal">
                         Crie ou selecione um curso para ver seus módulos e páginas.
                       </p>
                       <Button
                         onClick={handleOpenCreateCourse}
-                        className="h-7 mt-3 font-mono text-[10px] font-bold bg-[#6366f1] text-white px-3"
+                        className="h-7 mt-3 font-mono text-[11px] md:text-xs font-bold bg-[#6366f1] text-white px-3"
                       >
                         Criar Curso
                       </Button>
@@ -1505,12 +1505,12 @@ function NotesComponent() {
                     <>
                       {/* Section Header: MÓDULOS */}
                       <div className="flex items-center justify-between pb-1.5 border-b border-[#27272a]/30 shrink-0">
-                        <span className="text-[10px] font-bold font-mono text-[#a1a1aa] uppercase tracking-wider">
+                        <span className="text-xs font-bold font-mono text-[#a1a1aa] uppercase tracking-wider">
                           MÓDULOS
                         </span>
                         <button
                           onClick={() => handleOpenCreateModule(selectedCourseId)}
-                          className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer flex items-center gap-1 text-[10px] font-mono font-bold"
+                          className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer flex items-center gap-1 text-xs font-mono font-bold"
                           title="Adicionar Módulo"
                         >
                           <Plus className="h-3.5 w-3.5" />
@@ -1520,12 +1520,12 @@ function NotesComponent() {
                       <div className="flex-1 overflow-y-auto mt-2 space-y-2 pr-0.5">
                         {courseModules.length === 0 ? (
                           <div className="flex flex-col items-center justify-center text-center py-8 px-4 border border-dashed border-[#27272a]/40 rounded-lg">
-                            <p className="text-[10px] font-mono text-[#a1a1aa]/70 leading-normal">
+                            <p className="text-[11px] md:text-xs font-mono text-[#a1a1aa]/70 leading-normal">
                               Nenhum módulo cadastrado neste curso
                             </p>
                             <Button
                               onClick={() => handleOpenCreateModule(selectedCourseId)}
-                              className="h-6 mt-2 font-mono text-[9px] font-bold bg-[#6366f1]/90 hover:bg-[#6366f1] text-white px-2.5"
+                              className="h-6 mt-2 font-mono text-[10px] md:text-[11px] font-bold bg-[#6366f1]/90 hover:bg-[#6366f1] text-white px-2.5"
                             >
                               Criar Módulo
                             </Button>
@@ -1556,7 +1556,7 @@ function NotesComponent() {
                                       <ChevronRight className="h-3.5 w-3.5 text-[#a1a1aa] shrink-0" />
                                     )}
                                     <Folder className={cn("h-3.5 w-3.5 shrink-0", isModExpanded ? "text-[#6366f1]" : "text-amber-400/80")} />
-                                    <span className="text-[11px] font-mono font-semibold text-[#fafafa] truncate">
+                                    <span className="text-xs md:text-sm font-mono font-semibold text-[#fafafa] truncate">
                                       {module.name}
                                     </span>
                                   </div>
@@ -1609,7 +1609,7 @@ function NotesComponent() {
                                 {isModExpanded && (
                                   <div className="pl-4 border-l border-[#27272a]/40 ml-3.5 space-y-1 py-0.5">
                                     {modulePages.length === 0 ? (
-                                      <p className="text-[9px] text-[#a1a1aa]/50 italic font-mono pl-3 py-1">
+                                      <p className="text-[10px] md:text-xs text-[#a1a1aa]/50 italic font-mono pl-3 py-1">
                                         Sem páginas
                                       </p>
                                     ) : (
@@ -1631,7 +1631,7 @@ function NotesComponent() {
                                               className="flex items-center gap-1.5 cursor-pointer min-w-0 flex-1 pr-2 py-0.5"
                                             >
                                               <FileText className={cn("h-3 w-3 shrink-0", isActive ? "text-[#6366f1]" : "text-emerald-400/80")} />
-                                              <span className="text-[10px] font-mono truncate leading-none">
+                                              <span className="text-xs md:text-sm font-mono truncate leading-none">
                                                 {page.title}
                                               </span>
                                             </div>
@@ -1690,7 +1690,7 @@ function NotesComponent() {
                   
                   {/* Breadcrumbs & Status Bar */}
                   <div className="px-6 pt-5 shrink-0 flex items-center justify-between select-none">
-                    <div className="flex items-center gap-1 text-[10px] font-mono text-[#a1a1aa] font-bold min-w-0 flex-1 mr-4">
+                    <div className="flex items-center gap-1 text-xs md:text-sm font-mono text-[#a1a1aa] font-bold min-w-0 flex-1 mr-4">
                       {/* Botão de Voltar para Mobile */}
                       <button
                         onClick={() => setSelectedPageId(undefined)}
@@ -1709,7 +1709,7 @@ function NotesComponent() {
                     </div>
 
                     {/* Status Bar */}
-                    <div className="text-[10px] font-mono italic text-[#a1a1aa]/65 font-bold shrink-0 pr-2">
+                    <div className="text-[11px] md:text-xs font-mono italic text-[#a1a1aa]/65 font-bold shrink-0 pr-2">
                       {studySaveStatus === 'saved' && <span>Salvo automaticamente</span>}
                       {studySaveStatus === 'typing' && <span className="text-amber-400 animate-pulse">Digitando...</span>}
                       {studySaveStatus === 'saving' && (
@@ -1733,7 +1733,7 @@ function NotesComponent() {
                       onChange={(e) => handleStudyTitleChange(e.target.value)}
                       onBlur={handleStudyBlur}
                       placeholder="Sem título"
-                      className="flex-1 bg-transparent border-0 outline-none text-xl font-bold font-mono text-[#fafafa] placeholder-[#a1a1aa]/20 p-0 focus:ring-0 focus:border-0"
+                      className="flex-1 bg-transparent border-0 outline-none text-xl md:text-2xl font-bold font-mono text-[#fafafa] placeholder-[#a1a1aa]/20 p-0 focus:ring-0 focus:border-0"
                     />
                     <button
                       onClick={() => handleDeleteStudyClick('page', selectedPageId, pageDetailData?.page?.title || '')}
@@ -1754,13 +1754,13 @@ function NotesComponent() {
                       onChange={(e) => handleStudyContentChange(e.target.value)}
                       onBlur={handleStudyBlur}
                       placeholder="Escreva suas anotações e conteúdos usando Markdown..."
-                      className="w-full flex-1 bg-transparent border-0 outline-none resize-none text-[13px] text-[#fafafa] placeholder-[#a1a1aa]/20 leading-relaxed p-0 focus:ring-0 overflow-y-auto font-mono"
+                      className="w-full flex-1 bg-transparent border-0 outline-none resize-none text-sm md:text-base text-[#fafafa] placeholder-[#a1a1aa]/20 leading-relaxed p-0 focus:ring-0 overflow-y-auto font-mono"
                     />
                     <div className="flex items-center justify-between shrink-0 pt-2 select-none">
-                      <span className="text-[9px] font-mono text-[#a1a1aa]/45">
+                      <span className="text-[11px] md:text-xs font-mono text-[#a1a1aa]/45">
                         Salvo automaticamente na pasta de Estudos
                       </span>
-                      <span className="text-[9px] font-mono text-[#a1a1aa]/40">
+                      <span className="text-[11px] md:text-xs font-mono text-[#a1a1aa]/40">
                         Markdown suportado
                       </span>
                     </div>
