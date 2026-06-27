@@ -58,11 +58,27 @@ src/
 ## Regras
 
 ### Controllers
-- Sempre `FastifyPluginAsyncZod` com `export const`
+- **1 rota por arquivo**: cada endpoint HTTP vive em seu próprio arquivo dentro de `src/http/controllers/<recurso>/`
+- O arquivo de **composição** (`<recurso>-controller.ts`) importa cada handler e registra via `app.get/post/put/...`
+- Nomes de arquivo: `get-<recurso>.ts`, `post-<recurso>.ts`, `put-<recurso>.ts`, `patch-<recurso>-<action>.ts`, `delete-<recurso>.ts`
 - Schemas Zod **inline** no bloco `schema:`, nunca extraídos
 - Desestruturar `request.body`, `request.params`, `request.query`
 - `schema.tags` e `schema.summary` sempre presentes
 - Erros: `instanceof` + `reply.status().send({ message })`
+
+### Estrutura de controllers
+
+```
+src/http/controllers/<recurso>/
+  <recurso>-controller.ts         # apenas composição (registra rotas)
+  get-<recurso>.ts                # GET list
+  get-<recurso>-<id>.ts           # GET detail
+  post-<recurso>.ts               # POST create
+  put-<recurso>-<id>.ts           # PUT update
+  patch-<recurso>-<id>-<action>.ts  # PATCH actions
+  delete-<recurso>-<id>.ts        # DELETE
+  <recurso>.e2e.spec.ts           # testes e2e
+```
 
 ### Segurança
 - Token JWT via cookie `httpOnly`, `SameSite=Lax`, `Secure` em produção
