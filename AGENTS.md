@@ -67,3 +67,4 @@ Arquivo: `C:\Users\felip\Documents\eu_memo\www\los\design`
 - Proxy: `/auth/*` e `/cofre/*` → `http://localhost:3333`
 - **Regra de Design:** Sempre criar ou modificar os designs no Pencil primeiro antes de programar o frontend ou criar componentes.
 - **Regra de Commit/Escopo:** O agente frontend só pode realizar commits e alterações dentro da pasta `web/`. É estritamente proibido mexer na pasta `api/` (que é responsabilidade do opencode).
+- **Permissão de Commit:** Não faça commits ou push de forma automática. Sempre peça permissão explícita ao usuário antes de realizar qualquer commit/push.

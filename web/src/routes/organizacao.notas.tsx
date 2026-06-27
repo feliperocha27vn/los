@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as LucideIcons from 'lucide-react';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
@@ -59,7 +60,19 @@ import {
   useDeletePagesId,
   usePatchPagesIdReorder,
   getPagesQueryKey,
-  getPagesIdQueryKey
+  getPagesIdQueryKey,
+  useGetTrackerHabits,
+  usePostTrackerHabits,
+  usePutTrackerHabitsId,
+  useDeleteTrackerHabitsId,
+  usePatchTrackerHabitsIdReorder,
+  useGetTrackerToday,
+  useGetTrackerDays,
+  usePutTrackerRecords,
+  useDeleteTrackerRecordsId,
+  getTrackerHabitsQueryKey,
+  getTrackerTodayQueryKey,
+  getTrackerDaysQueryKey
 } from '@core/api/gen/hooks';
 
 export const Route = createFileRoute('/organizacao/notas')({
@@ -76,6 +89,26 @@ export const Route = createFileRoute('/organizacao/notas')({
 
 type SaveStatus = 'saved' | 'typing' | 'saving' | 'error';
 type OrganizaçãoTab = 'notas' | 'tarefas' | 'estudos' | 'habitos';
+
+const COMMON_HABIT_ICONS = [
+  { name: 'Activity', label: 'Exercício' },
+  { name: 'BookOpen', label: 'Leitura' },
+  { name: 'Flame', label: 'Foco/Energia' },
+  { name: 'Heart', label: 'Saúde' },
+  { name: 'Smile', label: 'Bem-estar' },
+  { name: 'Coffee', label: 'Alimentação' },
+  { name: 'Brain', label: 'Meditação/Estudo' },
+  { name: 'Droplet', label: 'Água' },
+  { name: 'Moon', label: 'Sono' },
+  { name: 'DollarSign', label: 'Finanças' },
+  { name: 'CheckSquare', label: 'Rotina' },
+  { name: 'Sun', label: 'Manhã' },
+];
+
+const HabitIconHelper = ({ name, className }: { name: string; className?: string }) => {
+  const IconComp = (LucideIcons as any)[name] || LucideIcons.HelpCircle;
+  return <IconComp className={className} />;
+};
 
 function NotesComponent() {
   const queryClient = useQueryClient();
@@ -414,6 +447,91 @@ function NotesComponent() {
   const deletePageMutation = useDeletePagesId();
   const reorderPageMutation = usePatchPagesIdReorder();
 
+  // =========================================================================
+  // ESTADOS E HOOKS DO RASTREADOR DE HÁBITOS
+  // =========================================================================
+  const [isHabitManagerOpen, setIsHabitManagerOpen] = React.useState(false);
+  const [isDayDetailModalOpen, setIsDayDetailModalOpen] = React.useState(false);
+  const [selectedDayDate, setSelectedDayDate] = React.useState('');
+  const [dayDetailEnergy, setDayDetailEnergy] = React.useState<'low' | 'medium' | 'high' | null>(null);
+  const [dayDetailQuality, setDayDetailQuality] = React.useState<'weak' | 'ok' | 'strong' | null>(null);
+  
+  const [isCreateHabitOpen, setIsCreateHabitOpen] = React.useState(false);
+  const [editingHabit, setEditingHabit] = React.useState<any | null>(null);
+  const [habitName, setHabitName] = React.useState('');
+  const [habitIcon, setHabitIcon] = React.useState('Activity');
+
+  const [selectedMobileDate, setSelectedMobileDate] = React.useState(() => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  });
+
+  const trackerDateRange = React.useMemo(() => {
+    const toDate = new Date();
+    const fromDate = new Date();
+    fromDate.setDate(toDate.getDate() - 6); // 7 dias
+    
+    const format = (d: Date) => {
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    };
+    
+    return {
+      from: format(fromDate),
+      to: format(toDate)
+    };
+  }, []);
+
+  const generatedDates = React.useMemo(() => {
+    const list = [];
+    const today = new Date();
+    for (let i = 0; i < 7; i++) {
+      const d = new Date();
+      d.setDate(today.getDate() - i);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      list.push(`${yyyy}-${mm}-${dd}`);
+    }
+    return list;
+  }, []);
+
+  const { data: habitsData, refetch: refetchHabits } = useGetTrackerHabits(undefined, {
+    query: {
+      enabled: activeTab === 'habitos',
+      retry: false,
+      staleTime: 0
+    }
+  });
+
+  const { data: todayData, refetch: refetchToday } = useGetTrackerToday({
+    query: {
+      enabled: activeTab === 'habitos',
+      retry: false,
+      staleTime: 0
+    }
+  });
+
+  const { data: daysData, refetch: refetchDays } = useGetTrackerDays(trackerDateRange, {
+    query: {
+      enabled: activeTab === 'habitos',
+      retry: false,
+      staleTime: 0
+    }
+  });
+
+  const createHabitMutation = usePostTrackerHabits();
+  const updateHabitMutation = usePutTrackerHabitsId();
+  const deleteHabitMutation = useDeleteTrackerHabitsId();
+  const reorderHabitMutation = usePatchTrackerHabitsIdReorder();
+  const upsertRecordMutation = usePutTrackerRecords();
+  const deleteRecordMutation = useDeleteTrackerRecordsId();
+
   // Estado Local do Editor de Estudos para Auto-Save
   const [studyEditorPageId, setStudyEditorPageId] = React.useState<string | null>(null);
   const [studyEditorTitle, setStudyEditorTitle] = React.useState('');
@@ -747,6 +865,181 @@ function NotesComponent() {
       toast.success('Ordem atualizada!');
     } catch {
       toast.error('Erro ao reordenar item');
+    }
+  };
+
+  // =========================================================================
+  // MÉTODOS E EVENTOS DO RASTREADOR DE HÁBITOS
+  // =========================================================================
+  const invalidateTrackerQueries = () => {
+    queryClient.invalidateQueries({ queryKey: getTrackerHabitsQueryKey() });
+    queryClient.invalidateQueries({ queryKey: getTrackerTodayQueryKey() });
+    queryClient.invalidateQueries({ queryKey: getTrackerDaysQueryKey(trackerDateRange) });
+    refetchHabits();
+    refetchToday();
+    refetchDays();
+  };
+
+  const handleOpenCreateHabit = () => {
+    setEditingHabit(null);
+    setHabitName('');
+    setHabitIcon('Activity');
+    setIsCreateHabitOpen(true);
+  };
+
+  const handleOpenEditHabit = (habit: any) => {
+    setEditingHabit(habit);
+    setHabitName(habit.name);
+    setHabitIcon(habit.icon || 'Activity');
+    setIsCreateHabitOpen(true);
+  };
+
+  const handleSaveHabit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!habitName.trim()) {
+      toast.error('O nome do hábito é obrigatório.');
+      return;
+    }
+    try {
+      if (editingHabit) {
+        await updateHabitMutation.mutateAsync({
+          id: editingHabit.id,
+          data: {
+            name: habitName.trim(),
+            icon: habitIcon,
+          }
+        });
+        toast.success('Hábito atualizado com sucesso!');
+      } else {
+        await createHabitMutation.mutateAsync({
+          data: {
+            name: habitName.trim(),
+            icon: habitIcon,
+          }
+        });
+        toast.success('Hábito criado com sucesso!');
+      }
+      setHabitName('');
+      setEditingHabit(null);
+      setIsCreateHabitOpen(false);
+      invalidateTrackerQueries();
+    } catch (err: any) {
+      toast.error(err.data?.message || 'Erro ao salvar hábito.');
+    }
+  };
+
+  const handleDeleteHabit = async (id: string) => {
+    try {
+      await deleteHabitMutation.mutateAsync({ id });
+      toast.success('Hábito arquivado com sucesso!');
+      invalidateTrackerQueries();
+    } catch (err: any) {
+      toast.error('Erro ao arquivar hábito.');
+    }
+  };
+
+  const handleReorderHabit = async (habitId: string, direction: 'up' | 'down') => {
+    const list = [...(habitsData?.habits || [])].sort((a: any, b: any) => a.position - b.position);
+    const index = list.findIndex((h: any) => h.id === habitId);
+    if (index === -1) return;
+    
+    if (direction === 'up' && index > 0) {
+      const prev = list[index - 1];
+      const target = list[index];
+      const newPos = index === 1 ? prev.position / 2 : (list[index - 2].position + prev.position) / 2;
+      try {
+        await reorderHabitMutation.mutateAsync({ id: target.id, data: { position: newPos } });
+        invalidateTrackerQueries();
+        toast.success('Ordem atualizada!');
+      } catch (err: any) {
+        toast.error('Erro ao reordenar hábito.');
+      }
+    } else if (direction === 'down' && index < list.length - 1) {
+      const next = list[index + 1];
+      const target = list[index];
+      const newPos = index === list.length - 2 ? next.position + 1.0 : (next.position + list[index + 2].position) / 2;
+      try {
+        await reorderHabitMutation.mutateAsync({ id: target.id, data: { position: newPos } });
+        invalidateTrackerQueries();
+        toast.success('Ordem atualizada!');
+      } catch (err: any) {
+        toast.error('Erro ao reordenar hábito.');
+      }
+    }
+  };
+
+  const handleToggleHabitRecord = async (habitId: string, date: string, completed: boolean, recordId?: string | null) => {
+    try {
+      if (completed && recordId) {
+        await deleteRecordMutation.mutateAsync({ id: recordId });
+        invalidateTrackerQueries();
+        toast.success('Registro removido.');
+      } else {
+        await upsertRecordMutation.mutateAsync({
+          data: {
+            habitId,
+            date,
+            completed: true,
+          }
+        });
+        invalidateTrackerQueries();
+        toast.success('Registro adicionado!');
+      }
+    } catch (err: any) {
+      toast.error(err.data?.message || 'Erro ao registrar hábito.');
+    }
+  };
+
+  const handleOpenDayDetail = (date: string, dayRecord?: any) => {
+    setSelectedDayDate(date);
+    if (dayRecord) {
+      setDayDetailEnergy(dayRecord.energy || null);
+      setDayDetailQuality(dayRecord.quality || null);
+    } else {
+      setDayDetailEnergy(null);
+      setDayDetailQuality(null);
+    }
+    setIsDayDetailModalOpen(true);
+  };
+
+  const handleSaveDayDetail = async () => {
+    if (!selectedDayDate) return;
+    const habits = habitsData?.habits || [];
+    if (habits.length === 0) {
+      toast.error('Cadastre pelo menos um hábito para salvar detalhes do dia.');
+      return;
+    }
+    
+    const targetHabitId = habits[0].id;
+    let currentCompleted = false;
+    const dayRecord = daysData?.days?.find((d: any) => d.date === selectedDayDate);
+    if (dayRecord) {
+      const habitRec = dayRecord.habits?.find((h: any) => h.habitId === targetHabitId);
+      if (habitRec) {
+        currentCompleted = habitRec.completed;
+      }
+    } else if (selectedDayDate === todayData?.date) {
+      const habitRec = todayData?.habits?.find((h: any) => h.habitId === targetHabitId);
+      if (habitRec) {
+        currentCompleted = habitRec.completed;
+      }
+    }
+    
+    try {
+      await upsertRecordMutation.mutateAsync({
+        data: {
+          habitId: targetHabitId,
+          date: selectedDayDate,
+          completed: currentCompleted,
+          energy: dayDetailEnergy || undefined,
+          quality: dayDetailQuality || undefined,
+        }
+      });
+      toast.success('Detalhes do dia salvos!');
+      setIsDayDetailModalOpen(false);
+      invalidateTrackerQueries();
+    } catch (err: any) {
+      toast.error(err.data?.message || 'Erro ao salvar detalhes.');
     }
   };
 
@@ -1322,39 +1615,39 @@ function NotesComponent() {
                                 {colName !== 'todo' && (
                                   <button
                                     onClick={() => moveTaskDirectly(task, 'left')}
-                                    className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer"
+                                    className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer"
                                     title="Mover para coluna anterior"
                                   >
-                                    <ArrowLeft className="h-3 w-3" />
+                                    <ArrowLeft className="h-3.5 w-3.5" />
                                   </button>
                                 )}
                                 
                                 {/* Editar */}
                                 <button
                                   onClick={() => handleOpenEditTask(task)}
-                                  className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] transition-smooth cursor-pointer"
+                                  className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] transition-smooth cursor-pointer"
                                   title="Editar tarefa"
                                 >
-                                  <Edit className="h-3 w-3" />
+                                  <Edit className="h-3.5 w-3.5" />
                                 </button>
 
                                 {/* Deletar */}
                                 <button
                                   onClick={() => handleDeleteTaskClick(task)}
-                                  className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400 transition-smooth cursor-pointer"
+                                  className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400 transition-smooth cursor-pointer"
                                   title="Excluir tarefa"
                                 >
-                                  <Trash2 className="h-3 w-3" />
+                                  <Trash2 className="h-3.5 w-3.5" />
                                 </button>
 
                                 {/* Mover para direita */}
                                 {colName !== 'done' && (
                                   <button
                                     onClick={() => moveTaskDirectly(task, 'right')}
-                                    className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer"
+                                    className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer"
                                     title="Mover para próxima coluna"
                                   >
-                                    <ArrowRight className="h-3 w-3" />
+                                    <ArrowRight className="h-3.5 w-3.5" />
                                   </button>
                                 )}
                               </div>
@@ -1452,10 +1745,10 @@ function NotesComponent() {
                                     handleOpenEditCourse(c);
                                     setIsCourseDropdownOpen(false);
                                   }}
-                                  className="p-0.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa]"
+                                  className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa]"
                                   title="Editar Curso"
                                 >
-                                  <Edit className="h-3 w-3" />
+                                  <Edit className="h-3.5 w-3.5" />
                                 </button>
                                 <button
                                   onClick={(e) => {
@@ -1463,10 +1756,10 @@ function NotesComponent() {
                                     handleDeleteStudyClick('course', c.id, c.name);
                                     setIsCourseDropdownOpen(false);
                                   }}
-                                  className="p-0.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400"
+                                  className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400"
                                   title="Excluir Curso"
                                 >
-                                  <Trash2 className="h-3 w-3" />
+                                  <Trash2 className="h-3.5 w-3.5" />
                                 </button>
                               </div>
                             </div>
@@ -1566,41 +1859,41 @@ function NotesComponent() {
                                     {modIdx > 0 && (
                                       <button
                                         onClick={() => handleReorderStudyItem('module', module.id, 'up')}
-                                        className="p-0.5 rounded hover:bg-[#27272a] text-[#a1a1aa]"
+                                        className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa]"
                                         title="Mover para cima"
                                       >
-                                        <ArrowUp className="h-2.5 w-2.5" />
+                                        <ArrowUp className="h-3.5 w-3.5" />
                                       </button>
                                     )}
                                     {modIdx < modArr.length - 1 && (
                                       <button
                                         onClick={() => handleReorderStudyItem('module', module.id, 'down')}
-                                        className="p-0.5 rounded hover:bg-[#27272a] text-[#a1a1aa]"
+                                        className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa]"
                                         title="Mover para baixo"
                                       >
-                                        <ArrowDown className="h-2.5 w-2.5" />
+                                        <ArrowDown className="h-3.5 w-3.5" />
                                       </button>
                                     )}
                                     <button
                                       onClick={() => handleOpenCreatePage(module.id)}
-                                      className="p-0.5 rounded hover:bg-[#27272a] text-primary"
+                                      className="p-1 rounded hover:bg-[#27272a] text-primary"
                                       title="Adicionar Página"
                                     >
-                                      <Plus className="h-2.5 w-2.5" />
+                                      <Plus className="h-3.5 w-3.5" />
                                     </button>
                                     <button
                                       onClick={() => handleOpenEditModule(module)}
-                                      className="p-0.5 rounded hover:bg-[#27272a] text-[#a1a1aa]"
+                                      className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa]"
                                       title="Editar Módulo"
                                     >
-                                      <Edit className="h-2.5 w-2.5" />
+                                      <Edit className="h-3.5 w-3.5" />
                                     </button>
                                     <button
                                       onClick={() => handleDeleteStudyClick('module', module.id, module.name)}
-                                      className="p-0.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400"
+                                      className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400"
                                       title="Excluir Módulo"
                                     >
-                                      <Trash2 className="h-2.5 w-2.5" />
+                                      <Trash2 className="h-3.5 w-3.5" />
                                     </button>
                                   </div>
                                 </div>
@@ -1641,27 +1934,27 @@ function NotesComponent() {
                                               {pageIdx > 0 && (
                                                 <button
                                                   onClick={() => handleReorderStudyItem('page', page.id, 'up')}
-                                                  className="p-0.5 rounded hover:bg-[#27272a]"
+                                                  className="p-1 rounded hover:bg-[#27272a]"
                                                   title="Mover para cima"
                                                 >
-                                                  <ArrowUp className="h-2.5 w-2.5" />
+                                                  <ArrowUp className="h-3.5 w-3.5" />
                                                 </button>
                                               )}
                                               {pageIdx < pageArr.length - 1 && (
                                                 <button
                                                   onClick={() => handleReorderStudyItem('page', page.id, 'down')}
-                                                  className="p-0.5 rounded hover:bg-[#27272a]"
+                                                  className="p-1 rounded hover:bg-[#27272a]"
                                                   title="Mover para baixo"
                                                 >
-                                                  <ArrowDown className="h-2.5 w-2.5" />
+                                                  <ArrowDown className="h-3.5 w-3.5" />
                                                 </button>
                                               )}
                                               <button
                                                 onClick={() => handleDeleteStudyClick('page', page.id, page.title)}
-                                                className="p-0.5 rounded hover:bg-[#27272a] hover:text-rose-400"
+                                                className="p-1 rounded hover:bg-[#27272a] hover:text-rose-400"
                                                 title="Excluir Página"
                                               >
-                                                <Trash2 className="h-2.5 w-2.5" />
+                                                <Trash2 className="h-3.5 w-3.5" />
                                               </button>
                                             </div>
                                           </div>
@@ -1700,11 +1993,11 @@ function NotesComponent() {
                         Voltar
                       </button>
                       <span className="truncate max-w-[50px] md:max-w-[100px]">Estudos</span>
-                      <ChevronRight className="h-2.5 w-2.5 text-[#a1a1aa]/60 shrink-0" />
+                      <ChevronRight className="h-3.5 w-3.5 text-[#a1a1aa]/60 shrink-0" />
                       <span className="truncate max-w-[80px] md:max-w-[120px]">{pageDetailData?.breadcrumbs?.course?.name || selectedCourse?.name}</span>
-                      <ChevronRight className="h-2.5 w-2.5 text-[#a1a1aa]/60 shrink-0" />
+                      <ChevronRight className="h-3.5 w-3.5 text-[#a1a1aa]/60 shrink-0" />
                       <span className="truncate max-w-[80px] md:max-w-[120px]">{pageDetailData?.breadcrumbs?.module?.name}</span>
-                      <ChevronRight className="h-2.5 w-2.5 text-[#a1a1aa]/60 shrink-0" />
+                      <ChevronRight className="h-3.5 w-3.5 text-[#a1a1aa]/60 shrink-0" />
                       <span className="text-[#fafafa] truncate max-w-[80px] md:max-w-[120px]">{pageDetailData?.breadcrumbs?.page?.name || studyEditorTitle}</span>
                     </div>
 
@@ -1786,21 +2079,350 @@ function NotesComponent() {
           </div>
         ) : (
           // =========================================================================
-          // PÁGINA DE EM BREVE PREMIUM (Para a aba Hábitos)
+          // ABA RASTREADOR DE HÁBITOS (Rastreador de Hábitos MVP)
           // =========================================================================
-          <div className="flex-1 flex flex-col bg-[#18181b] border border-[#27272a] rounded-lg h-full overflow-hidden items-center justify-center text-center p-8 animate-fade-in">
-            <div className="flex h-12 w-12 rounded-xl bg-[#09090b] border border-[#27272a] items-center justify-center mb-4 shadow-inner">
-              {activeTab === 'habitos' && <CalendarDays className="h-5.5 w-5.5 text-emerald-400" />}
+          <div className="flex-1 flex flex-col bg-[#18181b]/35 border border-[#27272a] rounded-xl h-full overflow-hidden animate-fade-in font-mono">
+            {/* Header do Sub-módulo */}
+            <div className="p-5 border-b border-[#27272a]/60 bg-[#18181b]/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shrink-0 select-none">
+              <div>
+                <h3 className="text-[13px] font-bold text-[#fafafa] uppercase tracking-wider">
+                  Rastreador de Hábitos
+                </h3>
+                <p className="text-[11px] text-[#a1a1aa] mt-1">
+                  Monitore suas rotinas e registre sua performance diária
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => setIsHabitManagerOpen(true)}
+                  className="h-8.5 text-xs font-bold bg-transparent border border-[#27272a] hover:bg-[#27272a] text-[#fafafa] font-mono px-3 cursor-pointer"
+                >
+                  <LucideIcons.Settings className="h-3.5 w-3.5 mr-1.5" />
+                  Gerenciar Hábitos
+                </Button>
+                <Button
+                  onClick={handleOpenCreateHabit}
+                  className="h-8.5 text-xs font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white font-mono px-3 cursor-pointer"
+                >
+                  <LucideIcons.Plus className="h-3.5 w-3.5 mr-1.5" />
+                  Novo Hábito
+                </Button>
+              </div>
             </div>
-            <h3 className="text-[13px] font-medium text-[#fafafa] uppercase tracking-wider font-mono">
-              {activeTab === 'habitos' && 'Módulo de Hábitos'}
-            </h3>
-            <span className="inline-block text-[10px] font-medium uppercase px-2.5 py-0.5 rounded-full mt-2 border text-emerald-400 bg-emerald-400/10 border-emerald-400/25 font-mono">
-              Em Breve
-            </span>
-            <p className="text-[11px] text-[#a1a1aa] max-w-[280px] mt-3 leading-relaxed font-normal font-mono">
-              Acompanhe suas rotinas saudáveis com streaks diários, gráficos de progresso e lembretes inteligentes.
-            </p>
+
+            {/* Conteúdo Principal */}
+            {habitsData?.habits && habitsData.habits.length === 0 ? (
+              <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-transparent animate-fade-in select-none">
+                <div className="flex h-14 w-14 rounded-2xl bg-[#09090b] border border-[#27272a] items-center justify-center text-[#a1a1aa] mb-4 shadow-xl">
+                  <CalendarDays className="h-7 w-7 text-emerald-400" />
+                </div>
+                <h4 className="text-sm font-bold text-[#fafafa] uppercase tracking-wider">
+                  Nenhum Hábito Cadastrado
+                </h4>
+                <p className="text-xs text-[#a1a1aa] max-w-[280px] mt-2 leading-relaxed">
+                  Comece cadastrando hábitos saudáveis (ex: Beber Água, Exercício, Leitura) para acompanhar seu progresso diário.
+                </p>
+                <Button
+                  onClick={handleOpenCreateHabit}
+                  className="h-9 mt-4 text-xs font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white px-4 cursor-pointer"
+                >
+                  Cadastrar Meu Primeiro Hábito
+                </Button>
+              </div>
+            ) : (
+              <div className="flex-1 flex flex-col overflow-hidden">
+                {/* 1. VISUALIZAÇÃO DESKTOP / TABLET (Tabela de Hábitos) */}
+                <div className="hidden md:flex flex-col flex-1 overflow-hidden">
+                  <div className="flex-1 overflow-auto animate-fade-in">
+                    <table className="w-full border-collapse text-[11px] font-mono text-left">
+                      <thead>
+                        <tr className="border-b border-[#27272a] bg-[#18181b]/50 select-none text-[#fafafa] font-bold">
+                            <th className="p-3.5 border-r border-[#27272a]/60">Dia</th>
+                            {habitsData?.habits?.map((h: any) => (
+                              <th key={h.id} className="p-3.5 border-r border-[#27272a]/60 min-w-[100px] max-w-[140px] truncate text-center">
+                                <div className="flex flex-col items-center gap-1.5">
+                                  <HabitIconHelper name={h.icon} className="h-4 w-4 text-emerald-400" />
+                                  <span className="truncate w-full">{h.name}</span>
+                                </div>
+                              </th>
+                            ))}
+                            <th className="p-3.5 border-r border-[#27272a]/60 text-center min-w-[90px]">Energia</th>
+                            <th className="p-3.5 border-r border-[#27272a]/60 text-center min-w-[80px]">Pontos</th>
+                            <th className="p-3.5 border-r border-[#27272a]/60 text-center min-w-[95px]">Qualidade</th>
+                            <th className="p-3.5 text-center min-w-[60px]">Ações</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {generatedDates.map((dateStr) => {
+                            const dayRecord = daysData?.days?.find((d: any) => d.date === dateStr);
+                            
+                            // Formatação legível do dia
+                            const parsedDate = new Date(dateStr + 'T12:00:00');
+                            const rawWeekday = parsedDate.toLocaleDateString('pt-BR', { weekday: 'long' });
+                            const weekday = rawWeekday.charAt(0).toUpperCase() + rawWeekday.slice(1);
+                            const dayAndMonth = parsedDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+                            const isToday = dateStr === todayData?.date;
+
+                          // Calcula pontuação
+                          const totalHabits = habitsData?.habits?.length || 0;
+                          let completedCount = 0;
+                          
+                          return (
+                            <tr
+                              key={dateStr}
+                              className={cn(
+                                "border-b border-[#27272a]/60 transition-colors",
+                                isToday ? "bg-[#6366f1]/5 hover:bg-[#6366f1]/10" : "hover:bg-[#18181b]/15"
+                              )}
+                            >
+                              {/* Data */}
+                              <td className="p-3 border-r border-[#27272a]/60 font-bold whitespace-nowrap">
+                                <span className={cn("text-xs font-mono", isToday && "text-[#6366f1] font-extrabold")}>
+                                  {isToday ? 'Hoje' : `${weekday}, ${dayAndMonth}`}
+                                </span>
+                              </td>
+
+                              {/* Checkboxes de Hábitos */}
+                              {habitsData?.habits?.map((h: any) => {
+                                const matchedHabit = dayRecord?.habits?.find((hr: any) => hr.habitId === h.id) || 
+                                                     (isToday ? todayData?.habits?.find((hr: any) => hr.habitId === h.id) : null);
+                                const isCompleted = matchedHabit?.completed || false;
+                                const recordId = matchedHabit?.recordId || null;
+                                if (isCompleted) completedCount++;
+
+                                return (
+                                  <td key={h.id} className="p-3 border-r border-[#27272a]/60 text-center">
+                                    <div className="flex justify-center">
+                                      <button
+                                        onClick={() => handleToggleHabitRecord(h.id, dateStr, isCompleted, recordId)}
+                                        className={cn(
+                                          "h-5 w-5 rounded-md border flex items-center justify-center transition-smooth cursor-pointer",
+                                          isCompleted 
+                                            ? "bg-emerald-500 border-emerald-600 text-[#09090b]" 
+                                            : "border-[#27272a] hover:border-emerald-500/50 bg-[#09090b]/40 text-transparent"
+                                        )}
+                                      >
+                                        <LucideIcons.Check className="h-3.5 w-3.5 stroke-[3px]" />
+                                      </button>
+                                    </div>
+                                  </td>
+                                );
+                              })}
+
+                              {/* Energia */}
+                              <td className="p-3 border-r border-[#27272a]/60 text-center select-none">
+                                {dayRecord?.energy ? (
+                                  <span className={cn(
+                                    "px-2 py-0.5 rounded-full text-[10px] font-bold font-mono border uppercase",
+                                    dayRecord.energy === 'low' && "text-[#38bdf8] bg-[#38bdf8]/10 border-[#38bdf8]/20",
+                                    dayRecord.energy === 'medium' && "text-amber-400 bg-amber-400/10 border-amber-400/20",
+                                    dayRecord.energy === 'high' && "text-emerald-400 bg-emerald-400/10 border-emerald-400/20"
+                                  )}>
+                                    {dayRecord.energy === 'low' ? 'Baixa' : dayRecord.energy === 'medium' ? 'Média' : 'Alta'}
+                                  </span>
+                                ) : (
+                                  <span className="text-[#a1a1aa]/30">-</span>
+                                )}
+                              </td>
+
+                              {/* Pontuação */}
+                              <td className="p-3 border-r border-[#27272a]/60 text-center select-none font-bold">
+                                <span className={cn(
+                                  completedCount === totalHabits && totalHabits > 0 ? "text-emerald-400" : "text-[#fafafa]/80"
+                                )}>
+                                  {completedCount}/{totalHabits}
+                                </span>
+                              </td>
+
+                              {/* Qualidade */}
+                              <td className="p-3 border-r border-[#27272a]/60 text-center select-none">
+                                {dayRecord?.quality ? (
+                                  <span className={cn(
+                                    "px-2 py-0.5 rounded-full text-[10px] font-bold font-mono border uppercase",
+                                    dayRecord.quality === 'weak' && "text-rose-400 bg-rose-400/10 border-rose-400/25",
+                                    dayRecord.quality === 'ok' && "text-amber-400 bg-amber-400/10 border-amber-400/25",
+                                    dayRecord.quality === 'strong' && "text-emerald-400 bg-emerald-400/10 border-emerald-400/25"
+                                  )}>
+                                    {dayRecord.quality === 'weak' ? 'Ruim' : dayRecord.quality === 'ok' ? 'Ok' : 'Ótima'}
+                                  </span>
+                                ) : (
+                                  <span className="text-[#a1a1aa]/30">-</span>
+                                )}
+                              </td>
+
+                              {/* Ações (Editar detalhes do dia) */}
+                              <td className="p-3 text-center">
+                                <div className="flex justify-center gap-1.5">
+                                  <button
+                                    onClick={() => handleOpenDayDetail(dateStr, dayRecord)}
+                                    className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] transition-smooth cursor-pointer"
+                                    title="Editar observações e detalhes do dia"
+                                  >
+                                    <LucideIcons.Edit className="h-3.5 w-3.5" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* 2. VISUALIZAÇÃO MOBILE (Card de Dia + Checklist) */}
+                <div className="flex md:hidden flex-col flex-1 px-4 pt-4 pb-28 overflow-y-auto space-y-4">
+                  {/* Selector de Data Mobile */}
+                  <div className="flex items-center justify-between bg-[#09090b] border border-[#27272a] rounded-lg p-2.5 select-none">
+                    <button
+                      onClick={() => {
+                        const cur = new Date(selectedMobileDate + 'T12:00:00');
+                        cur.setDate(cur.getDate() - 1);
+                        const format = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                        setSelectedMobileDate(format(cur));
+                      }}
+                      className="p-1 rounded hover:bg-[#27272a] text-[#fafafa] cursor-pointer"
+                    >
+                      <LucideIcons.ChevronLeft className="h-4.5 w-4.5" />
+                    </button>
+                    <div className="text-center font-mono">
+                      <span className="text-xs font-bold text-[#fafafa] block">
+                        {selectedMobileDate === todayData?.date ? 'Hoje' : (() => {
+                          const parsed = new Date(selectedMobileDate + 'T12:00:00');
+                          const rawW = parsed.toLocaleDateString('pt-BR', { weekday: 'long' });
+                          const w = rawW.charAt(0).toUpperCase() + rawW.slice(1);
+                          const dm = parsed.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+                          return `${w}, ${dm}`;
+                        })()}
+                      </span>
+                      <span className="block text-[9px] text-[#a1a1aa] font-semibold">{selectedMobileDate}</span>
+                    </div>
+                    <button
+                      disabled={selectedMobileDate === todayData?.date}
+                      onClick={() => {
+                        const cur = new Date(selectedMobileDate + 'T12:00:00');
+                        cur.setDate(cur.getDate() + 1);
+                        const format = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                        setSelectedMobileDate(format(cur));
+                      }}
+                      className="p-1 rounded hover:bg-[#27272a] text-[#fafafa] disabled:opacity-30 cursor-pointer"
+                    >
+                      <LucideIcons.ChevronRight className="h-4.5 w-4.5" />
+                    </button>
+                  </div>
+
+                  {/* Detalhes do Registro para o Dia Selecionado */}
+                  {(() => {
+                    const dayRecord = daysData?.days?.find((d: any) => d.date === selectedMobileDate) || 
+                                       (selectedMobileDate === todayData?.date ? todayData : null);
+
+                    const totalHabits = habitsData?.habits?.length || 0;
+                    let completedCount = 0;
+                    habitsData?.habits?.forEach((h: any) => {
+                      const matched = dayRecord?.habits?.find((hr: any) => hr.habitId === h.id);
+                      if (matched?.completed) completedCount++;
+                    });
+
+                    const progressPercent = totalHabits > 0 ? Math.round((completedCount / totalHabits) * 100) : 0;
+
+                    return (
+                      <div className="space-y-4">
+                        {/* Summary Card */}
+                        <div className="bg-[#18181b] border border-[#27272a] rounded-xl p-5 shadow-lg space-y-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
+                                <LucideIcons.Trophy className="h-4.5 w-4.5" />
+                              </div>
+                              <div>
+                                <span className="text-xs font-bold text-[#fafafa] block">Pontuação do Dia</span>
+                                <span className="text-[10px] text-[#a1a1aa] font-semibold">{completedCount} de {totalHabits} hábitos</span>
+                              </div>
+                            </div>
+                            <span className="text-lg font-black text-emerald-400 font-mono">{progressPercent}%</span>
+                          </div>
+
+                          {/* Progress bar */}
+                          <div className="w-full bg-[#09090b] rounded-full h-2 overflow-hidden border border-[#27272a]/40">
+                            <div 
+                              className="bg-emerald-500 h-full rounded-full transition-all duration-300"
+                              style={{ width: `${progressPercent}%` }}
+                            />
+                          </div>
+
+                          {/* Badges de Qualidade e Energia */}
+                          <div className="grid grid-cols-2 gap-2 text-[10px]">
+                            <button
+                              onClick={() => handleOpenDayDetail(selectedMobileDate, dayRecord)}
+                              className="bg-[#09090b]/50 border border-[#27272a] rounded-lg p-2 text-left hover:bg-[#27272a]/30 transition-smooth cursor-pointer"
+                            >
+                              <span className="text-[9px] text-[#a1a1aa] block font-semibold">ENERGIA</span>
+                              <span className="text-[#fafafa] font-bold">
+                                {dayRecord?.energy === 'low' && 'Baixa'}
+                                {dayRecord?.energy === 'medium' && 'Média'}
+                                {dayRecord?.energy === 'high' && 'Alta'}
+                                {!dayRecord?.energy && 'Definir...'}
+                              </span>
+                            </button>
+                            <button
+                              onClick={() => handleOpenDayDetail(selectedMobileDate, dayRecord)}
+                              className="bg-[#09090b]/50 border border-[#27272a] rounded-lg p-2 text-left hover:bg-[#27272a]/30 transition-smooth cursor-pointer"
+                            >
+                              <span className="text-[9px] text-[#a1a1aa] block font-semibold">QUALIDADE</span>
+                              <span className="text-[#fafafa] font-bold">
+                                {dayRecord?.quality === 'weak' && 'Ruim'}
+                                {dayRecord?.quality === 'ok' && 'Ok'}
+                                {dayRecord?.quality === 'strong' && 'Ótima'}
+                                {!dayRecord?.quality && 'Definir...'}
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Habits Checklist */}
+                        <div className="space-y-2">
+                          <span className="text-[10px] font-bold text-[#a1a1aa] uppercase tracking-wider block">Lista de Hábitos</span>
+                          <div className="space-y-1.5">
+                            {habitsData?.habits?.map((h: any) => {
+                              const matchedHabit = dayRecord?.habits?.find((hr: any) => hr.habitId === h.id);
+                              const isCompleted = matchedHabit?.completed || false;
+                              const recordId = matchedHabit?.recordId || null;
+
+                              return (
+                                <div
+                                  key={h.id}
+                                  onClick={() => handleToggleHabitRecord(h.id, selectedMobileDate, isCompleted, recordId)}
+                                  className={cn(
+                                    "flex items-center justify-between p-3.5 border rounded-lg transition-smooth cursor-pointer select-none",
+                                    isCompleted 
+                                      ? "bg-emerald-500/10 border-emerald-500/30 text-[#fafafa] font-bold" 
+                                      : "bg-[#18181b]/30 border-[#27272a] text-[#a1a1aa] hover:border-[#27272a]"
+                                  )}
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <HabitIconHelper name={h.icon} className={cn("h-4.5 w-4.5", isCompleted ? "text-emerald-400" : "text-[#a1a1aa]")} />
+                                    <span className="text-xs">{h.name}</span>
+                                  </div>
+                                  <div className={cn(
+                                    "h-5.5 w-5.5 rounded-full border-2 flex items-center justify-center transition-smooth",
+                                    isCompleted 
+                                      ? "bg-emerald-500 border-emerald-600 text-[#09090b]" 
+                                      : "border-[#27272a]"
+                                  )}>
+                                    <LucideIcons.Check className={cn("h-3 w-3 stroke-[3px]", isCompleted ? "block" : "hidden")} />
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                      </div>
+                    );
+                  })()}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -2074,6 +2696,290 @@ function NotesComponent() {
           deletePageMutation.isPending
         }
       />
+
+      {/* Modal - Gerenciar Hábitos */}
+      {isHabitManagerOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-[2px] animate-fade-in select-none">
+          <div className="w-full max-w-[480px] bg-[#18181b] border border-[#27272a] rounded-xl shadow-2xl overflow-hidden flex flex-col font-mono text-sm max-h-[85vh]">
+            {/* Header */}
+            <div className="p-5 pb-4 border-b border-[#27272a]/60 flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-[#fafafa] uppercase tracking-wider">
+                  Gerenciar Meus Hábitos
+                </h3>
+                <p className="text-[11px] text-[#a1a1aa] mt-0.5">
+                  Cadastre, edite e reordene seus hábitos diários (máximo 20)
+                </p>
+              </div>
+              <button
+                onClick={() => setIsHabitManagerOpen(false)}
+                className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] cursor-pointer"
+              >
+                <LucideIcons.X className="h-4.5 w-4.5" />
+              </button>
+            </div>
+            
+            {/* Body */}
+            <div className="p-5 overflow-y-auto space-y-4 flex-1">
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-[10px] font-bold text-[#a1a1aa] uppercase">
+                  Total: {habitsData?.habits?.length || 0}/20
+                </span>
+                <Button
+                  onClick={handleOpenCreateHabit}
+                  disabled={(habitsData?.habits?.length || 0) >= 20}
+                  className="h-8 text-[11px] font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white font-mono px-3.5 cursor-pointer disabled:opacity-45"
+                >
+                  <LucideIcons.Plus className="h-3.5 w-3.5 mr-1" />
+                  Criar Hábito
+                </Button>
+              </div>
+
+              {/* Lista de Hábitos */}
+              <div className="space-y-1.5">
+                {!habitsData?.habits || habitsData.habits.length === 0 ? (
+                  <p className="text-center py-8 text-xs text-[#a1a1aa]/45 italic">
+                    Nenhum hábito cadastrado ainda.
+                  </p>
+                ) : (
+                  [...(habitsData.habits)].sort((a: any, b: any) => a.position - b.position).map((habit: any, idx: number, arr: any[]) => (
+                    <div
+                      key={habit.id}
+                      className="flex items-center justify-between p-3 bg-[#09090b]/50 border border-[#27272a]/60 rounded-lg group/hab"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="p-1.5 rounded-md bg-[#27272a]/40 text-emerald-400 shrink-0">
+                          <HabitIconHelper name={habit.icon} className="h-4 w-4" />
+                        </div>
+                        <span className="text-xs font-bold text-[#fafafa] truncate">{habit.name}</span>
+                      </div>
+
+                      {/* Ações */}
+                      <div className="flex items-center gap-0.5 shrink-0">
+                        {/* Mover para cima */}
+                        {idx > 0 && (
+                          <button
+                            onClick={() => handleReorderHabit(habit.id, 'up')}
+                            className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] cursor-pointer"
+                            title="Mover para Cima"
+                          >
+                            <LucideIcons.ArrowUp className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                        {/* Mover para baixo */}
+                        {idx < arr.length - 1 && (
+                          <button
+                            onClick={() => handleReorderHabit(habit.id, 'down')}
+                            className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] cursor-pointer"
+                            title="Mover para Baixo"
+                          >
+                            <LucideIcons.ArrowDown className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                        {/* Editar */}
+                        <button
+                          onClick={() => handleOpenEditHabit(habit)}
+                          className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary cursor-pointer"
+                          title="Editar Hábito"
+                        >
+                          <LucideIcons.Edit className="h-3.5 w-3.5" />
+                        </button>
+                        {/* Arquivar */}
+                        <button
+                          onClick={() => handleDeleteHabit(habit.id)}
+                          className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400 cursor-pointer"
+                          title="Arquivar Hábito"
+                        >
+                          <LucideIcons.Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 border-t border-[#27272a] bg-[#09090b]">
+              <Button
+                type="button"
+                onClick={() => setIsHabitManagerOpen(false)}
+                className="w-full h-9 font-bold border border-[#27272a] bg-transparent text-[#fafafa] hover:bg-[#27272a] rounded-md transition-smooth font-mono text-xs cursor-pointer"
+              >
+                Fechar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sub-modal - Criar/Editar Hábito */}
+      {isCreateHabitOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-[1px] animate-fade-in select-none">
+          <div className="w-full max-w-[360px] bg-[#18181b] border border-[#27272a] rounded-xl shadow-2xl overflow-hidden flex flex-col font-mono text-sm">
+            <form onSubmit={handleSaveHabit}>
+              <div className="p-4 border-b border-[#27272a]/60">
+                <h3 className="text-xs font-bold text-[#fafafa] uppercase tracking-wider">
+                  {editingHabit ? 'Editar Hábito' : 'Novo Hábito'}
+                </h3>
+              </div>
+
+              <div className="p-4 space-y-4">
+                {/* Nome */}
+                <div className="space-y-1.5">
+                  <label htmlFor="habit-name" className="text-[10px] font-bold text-[#a1a1aa] uppercase">
+                    Nome do Hábito
+                  </label>
+                  <Input
+                    id="habit-name"
+                    placeholder="Ex: Beber 2L de Água"
+                    value={habitName}
+                    onChange={(e) => setHabitName(e.target.value)}
+                    maxLength={50}
+                    required
+                    autoFocus
+                  />
+                </div>
+
+                {/* Ícones */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-[#a1a1aa] uppercase block">
+                    Selecione um Ícone
+                  </label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {COMMON_HABIT_ICONS.map((opt) => {
+                      const OptIcon = (LucideIcons as any)[opt.name];
+                      const isSelected = habitIcon === opt.name;
+                      return (
+                        <button
+                          type="button"
+                          key={opt.name}
+                          onClick={() => setHabitIcon(opt.name)}
+                          title={opt.label}
+                          className={cn(
+                            "p-2.5 rounded-lg border flex flex-col items-center justify-center gap-1 transition-smooth cursor-pointer",
+                            isSelected 
+                              ? "bg-[#6366f1]/25 border-[#6366f1] text-[#fafafa]" 
+                              : "bg-[#09090b]/40 border-[#27272a] text-[#a1a1aa] hover:border-[#27272a] hover:text-[#fafafa]"
+                          )}
+                        >
+                          <OptIcon className="h-5 w-5" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3.5 p-4 border-t border-[#27272a] bg-[#09090b]">
+                <Button
+                  type="button"
+                  onClick={() => setIsCreateHabitOpen(false)}
+                  variant="outline"
+                  className="flex-1 h-9 font-bold border border-[#27272a] bg-transparent text-[#fafafa] hover:bg-[#27272a] rounded-md transition-smooth font-mono text-xs cursor-pointer"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 h-9 font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white rounded-md transition-smooth font-mono text-xs cursor-pointer"
+                >
+                  Salvar
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal - Detalhes do Dia (Energia, Qualidade, Nota) */}
+      {isDayDetailModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-[2px] animate-fade-in select-none">
+          <div className="w-full max-w-[400px] bg-[#18181b] border border-[#27272a] rounded-xl shadow-2xl overflow-hidden flex flex-col font-mono text-sm">
+            <div className="p-5 border-b border-[#27272a]/60">
+              <h3 className="text-xs font-bold text-[#fafafa] uppercase tracking-wider">
+                Detalhes do Dia
+              </h3>
+              <p className="text-[10px] text-[#a1a1aa] mt-0.5 font-semibold">
+                Data: {selectedDayDate}
+              </p>
+            </div>
+
+            <div className="p-5 space-y-4">
+              {/* Nível de Energia */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-[#a1a1aa] uppercase block">
+                  Nível de Energia
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {(['low', 'medium', 'high'] as const).map((lvl) => (
+                    <button
+                      key={lvl}
+                      type="button"
+                      onClick={() => setDayDetailEnergy(lvl)}
+                      className={cn(
+                        "py-2 px-3.5 rounded-lg border text-xs font-bold uppercase transition-smooth cursor-pointer",
+                        dayDetailEnergy === lvl
+                          ? lvl === 'low' ? "bg-[#38bdf8]/20 border-[#38bdf8] text-[#38bdf8]"
+                            : lvl === 'medium' ? "bg-amber-500/20 border-amber-400 text-amber-300"
+                            : "bg-emerald-500/20 border-emerald-400 text-emerald-300"
+                          : "bg-[#09090b]/40 border-[#27272a] text-[#a1a1aa] hover:border-[#27272a]"
+                      )}
+                    >
+                      {lvl === 'low' ? 'Baixa' : lvl === 'medium' ? 'Média' : 'Alta'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Qualidade do Dia */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold text-[#a1a1aa] uppercase block">
+                  Qualidade do Dia
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {(['weak', 'ok', 'strong'] as const).map((q) => (
+                    <button
+                      key={q}
+                      type="button"
+                      onClick={() => setDayDetailQuality(q)}
+                      className={cn(
+                        "py-2 px-3.5 rounded-lg border text-xs font-bold uppercase transition-smooth cursor-pointer",
+                        dayDetailQuality === q
+                          ? q === 'weak' ? "bg-rose-500/20 border-rose-400 text-rose-300"
+                            : q === 'ok' ? "bg-amber-500/20 border-amber-400 text-amber-300"
+                            : "bg-emerald-500/20 border-emerald-400 text-emerald-300"
+                          : "bg-[#09090b]/40 border-[#27272a] text-[#a1a1aa] hover:border-[#27272a]"
+                      )}
+                    >
+                      {q === 'weak' ? 'Ruim' : q === 'ok' ? 'Ok' : 'Ótima'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            <div className="flex items-center gap-3.5 p-4 border-t border-[#27272a] bg-[#09090b]">
+              <Button
+                type="button"
+                onClick={() => setIsDayDetailModalOpen(false)}
+                variant="outline"
+                className="flex-1 h-9 font-bold border border-[#27272a] bg-transparent text-[#fafafa] hover:bg-[#27272a] rounded-md transition-smooth font-mono text-xs cursor-pointer"
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="button"
+                onClick={handleSaveDayDetail}
+                className="flex-1 h-9 font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white rounded-md transition-smooth font-mono text-xs cursor-pointer"
+              >
+                Salvar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </AppShell>
   );
 }

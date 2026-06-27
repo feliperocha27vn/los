@@ -280,6 +280,34 @@ function CofreComponent() {
   // O backend retorna erro 401 ou 403 se o cofre_token estiver ausente/expirado
   const isCofreLocked = !isCofreUnlocked || isError;
 
+  React.useEffect(() => {
+    if (!isCofreLocked) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      if (
+        activeEl &&
+        (activeEl.tagName === 'INPUT' ||
+          activeEl.tagName === 'TEXTAREA' ||
+          activeEl.tagName === 'SELECT' ||
+          activeEl.getAttribute('contenteditable') === 'true')
+      ) {
+        return;
+      }
+
+      if (e.key >= '0' && e.key <= '9') {
+        handlePinUpdate(e.key);
+      } else if (e.key === 'Backspace') {
+        handleBackspace();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isCofreLocked, pin, isUnlocking]);
+
   // Estado de Carregamento Inicial
   if (isLoading && !entriesData && !isCofreLocked) {
     return (
