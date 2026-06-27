@@ -37,9 +37,11 @@ Esses helpers são importados pelas rotas — não pelo controller.
 
 Cada pasta de controller tem um arquivo `index.routes.ts` que exporta uma função `register<Recurso>Routes(app, ...repos)` que:
 
-1. Faz `void app.register(getXxxRoute(repo))` para cada rota
-2. Pode também `void app.register(hookPlugin)` para hooks de escopo
+1. Faz `app.register(getXxxRoute(repo))` para cada rota
+2. Pode também `app.register(hookPlugin)` para hooks de escopo
 3. Não retorna nada (`void`)
+
+`app.register()` retorna `FastifyInstance` para chaining, então prefira o formato encadeado:
 
 ```ts
 // exemplo: src/http/controllers/tasks/index.routes.ts
@@ -53,9 +55,10 @@ export function registerTasksRoutes(
   app: FastifyInstance,
   tasksRepository: TasksRepository
 ): void {
-  void app.register(getTasksRoute(tasksRepository))
-  void app.register(getTaskDetailRoute(tasksRepository))
-  // ... outras rotas
+  app
+    .register(getTasksRoute(tasksRepository))
+    .register(getTaskDetailRoute(tasksRepository))
+    // ... outras rotas
 }
 ```
 

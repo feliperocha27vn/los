@@ -11,10 +11,11 @@ export function registerStudyCoursesRoutes(
   app: FastifyInstance,
   studyCoursesRepository: StudyCoursesRepository
 ): void {
-  void app.register(getStudyCoursesRoute(studyCoursesRepository))
-  void app.register(postStudyCourseRoute(studyCoursesRepository))
-  void app.register(getStudyCourseDetailRoute(studyCoursesRepository))
-  void app.register(putStudyCourseRoute(studyCoursesRepository))
-  void app.register(patchStudyCourseReorderRoute(studyCoursesRepository))
-  void app.register(deleteStudyCourseRoute(studyCoursesRepository))
+  app
+    .register(getStudyCoursesRoute(studyCoursesRepository))
+    .register(postStudyCourseRoute(studyCoursesRepository))
+    .register(getStudyCourseDetailRoute(studyCoursesRepository))
+    .register(putStudyCourseRoute(studyCoursesRepository))
+    .register(patchStudyCourseReorderRoute(studyCoursesRepository))
+    .register(deleteStudyCourseRoute(studyCoursesRepository))
 }

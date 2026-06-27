@@ -9,10 +9,7 @@ export function registerTrackerViewsRoutes(
   trackerRecordsRepository: TrackerRecordsRepository,
   trackerHabitsRepository: TrackerHabitsRepository
 ): void {
-  void app.register(
-    getTrackerTodayRoute(trackerHabitsRepository, trackerRecordsRepository)
-  )
-  void app.register(
-    getTrackerDaysRoute(trackerHabitsRepository, trackerRecordsRepository)
-  )
+  app
+    .register(getTrackerTodayRoute(trackerHabitsRepository, trackerRecordsRepository))
+    .register(getTrackerDaysRoute(trackerHabitsRepository, trackerRecordsRepository))
 }

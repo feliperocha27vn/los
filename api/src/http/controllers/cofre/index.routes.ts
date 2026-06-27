@@ -8,5 +8,5 @@ export function registerCofreRoutes(
   usersRepository: UsersRepository,
   cofreEntriesRepository: CofreEntriesRepository
 ): void {
-  void app.register(cofreRoutes({ usersRepository, cofreEntriesRepository }))
+  app.register(cofreRoutes({ usersRepository, cofreEntriesRepository }))
 }

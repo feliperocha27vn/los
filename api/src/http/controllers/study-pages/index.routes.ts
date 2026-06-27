@@ -15,18 +15,17 @@ export function registerStudyPagesRoutes(
   studyModulesRepository: StudyModulesRepository,
   studyCoursesRepository: StudyCoursesRepository
 ): void {
-  void app.register(getStudyPagesRoute(studyPagesRepository))
-  void app.register(
-    postStudyPageRoute(studyPagesRepository, studyModulesRepository)
-  )
-  void app.register(
-    getStudyPageDetailRoute(
-      studyPagesRepository,
-      studyModulesRepository,
-      studyCoursesRepository
+  app
+    .register(getStudyPagesRoute(studyPagesRepository))
+    .register(postStudyPageRoute(studyPagesRepository, studyModulesRepository))
+    .register(
+      getStudyPageDetailRoute(
+        studyPagesRepository,
+        studyModulesRepository,
+        studyCoursesRepository
+      )
     )
-  )
-  void app.register(putStudyPageRoute(studyPagesRepository))
-  void app.register(patchStudyPageReorderRoute(studyPagesRepository))
-  void app.register(deleteStudyPageRoute(studyPagesRepository))
+    .register(putStudyPageRoute(studyPagesRepository))
+    .register(patchStudyPageReorderRoute(studyPagesRepository))
+    .register(deleteStudyPageRoute(studyPagesRepository))
 }

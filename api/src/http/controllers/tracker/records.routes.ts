@@ -9,8 +9,7 @@ export function registerTrackerRecordsRoutes(
   trackerRecordsRepository: TrackerRecordsRepository,
   trackerHabitsRepository: TrackerHabitsRepository
 ): void {
-  void app.register(
-    putTrackerRecordRoute(trackerRecordsRepository, trackerHabitsRepository)
-  )
-  void app.register(deleteTrackerRecordRoute(trackerRecordsRepository))
+  app
+    .register(putTrackerRecordRoute(trackerRecordsRepository, trackerHabitsRepository))
+    .register(deleteTrackerRecordRoute(trackerRecordsRepository))
 }

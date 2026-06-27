@@ -11,10 +11,11 @@ export function registerTasksRoutes(
   app: FastifyInstance,
   tasksRepository: TasksRepository
 ): void {
-  void app.register(getTasksRoute(tasksRepository))
-  void app.register(getTaskDetailRoute(tasksRepository))
-  void app.register(postTaskRoute(tasksRepository))
-  void app.register(putTaskRoute(tasksRepository))
-  void app.register(patchTaskMoveRoute(tasksRepository))
-  void app.register(deleteTaskRoute(tasksRepository))
+  app
+    .register(getTasksRoute(tasksRepository))
+    .register(getTaskDetailRoute(tasksRepository))
+    .register(postTaskRoute(tasksRepository))
+    .register(putTaskRoute(tasksRepository))
+    .register(patchTaskMoveRoute(tasksRepository))
+    .register(deleteTaskRoute(tasksRepository))
 }

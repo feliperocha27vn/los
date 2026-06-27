@@ -8,7 +8,8 @@ export function registerAuthRoutes(
   app: FastifyInstance,
   usersRepository: UsersRepository
 ): void {
-  void app.register(postAuthLoginRoute(usersRepository))
-  void app.register(getAuthMeRoute(usersRepository))
-  void app.register(postAuthLogoutRoute)
+  app
+    .register(postAuthLoginRoute(usersRepository))
+    .register(getAuthMeRoute(usersRepository))
+    .register(postAuthLogoutRoute)
 }

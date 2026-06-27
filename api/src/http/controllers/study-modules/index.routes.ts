@@ -13,12 +13,11 @@ export function registerStudyModulesRoutes(
   studyModulesRepository: StudyModulesRepository,
   studyCoursesRepository: StudyCoursesRepository
 ): void {
-  void app.register(getStudyModulesRoute(studyModulesRepository))
-  void app.register(
-    postStudyModuleRoute(studyModulesRepository, studyCoursesRepository)
-  )
-  void app.register(getStudyModuleDetailRoute(studyModulesRepository))
-  void app.register(putStudyModuleRoute(studyModulesRepository))
-  void app.register(patchStudyModuleReorderRoute(studyModulesRepository))
-  void app.register(deleteStudyModuleRoute(studyModulesRepository))
+  app
+    .register(getStudyModulesRoute(studyModulesRepository))
+    .register(postStudyModuleRoute(studyModulesRepository, studyCoursesRepository))
+    .register(getStudyModuleDetailRoute(studyModulesRepository))
+    .register(putStudyModuleRoute(studyModulesRepository))
+    .register(patchStudyModuleReorderRoute(studyModulesRepository))
+    .register(deleteStudyModuleRoute(studyModulesRepository))
 }

@@ -10,9 +10,10 @@ export function registerNotesRoutes(
   app: FastifyInstance,
   notesRepository: NotesRepository
 ): void {
-  void app.register(getNotesRoute(notesRepository))
-  void app.register(getNoteDetailRoute(notesRepository))
-  void app.register(postNoteRoute(notesRepository))
-  void app.register(putNoteRoute(notesRepository))
-  void app.register(deleteNoteRoute(notesRepository))
+  app
+    .register(getNotesRoute(notesRepository))
+    .register(getNoteDetailRoute(notesRepository))
+    .register(postNoteRoute(notesRepository))
+    .register(putNoteRoute(notesRepository))
+    .register(deleteNoteRoute(notesRepository))
 }

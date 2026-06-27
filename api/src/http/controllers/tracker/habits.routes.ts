@@ -12,11 +12,12 @@ export function registerTrackerHabitsRoutes(
   app: FastifyInstance,
   trackerHabitsRepository: TrackerHabitsRepository
 ): void {
-  void app.register(getTrackerHabitsRoute(trackerHabitsRepository))
-  void app.register(postTrackerHabitRoute(trackerHabitsRepository))
-  void app.register(getTrackerHabitDetailRoute(trackerHabitsRepository))
-  void app.register(putTrackerHabitRoute(trackerHabitsRepository))
-  void app.register(patchTrackerHabitReorderRoute(trackerHabitsRepository))
-  void app.register(deleteTrackerHabitRoute(trackerHabitsRepository))
-  void app.register(patchTrackerHabitRestoreRoute(trackerHabitsRepository))
+  app
+    .register(getTrackerHabitsRoute(trackerHabitsRepository))
+    .register(postTrackerHabitRoute(trackerHabitsRepository))
+    .register(getTrackerHabitDetailRoute(trackerHabitsRepository))
+    .register(putTrackerHabitRoute(trackerHabitsRepository))
+    .register(patchTrackerHabitReorderRoute(trackerHabitsRepository))
+    .register(deleteTrackerHabitRoute(trackerHabitsRepository))
+    .register(patchTrackerHabitRestoreRoute(trackerHabitsRepository))
 }
