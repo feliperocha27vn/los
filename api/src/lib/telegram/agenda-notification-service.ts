@@ -9,40 +9,61 @@ interface NotificationTarget {
   userId: string
   chatId: number
   offsetMinutes: number
-}
-
-interface UpcomingEvent {
-  event: AgendaEventRecord
-  occurrenceStartAt: Date
-  occurrenceEndAt: Date
-  exceptionDateKey: string | null
+  timezone: string
 }
 
 function startOfWindow(now: Date, offsetMinutes: number): Date {
-  return new Date(now.getTime() + (offsetMinutes - 1) * 60_000)
+  return new Date(now.getTime() + (offsetMinutes - 2) * 60_000)
 }
 
 function endOfWindow(now: Date, offsetMinutes: number): Date {
   return new Date(now.getTime() + (offsetMinutes + 1) * 60_000)
 }
 
-function formatBRLLike(date: Date): string {
-  return date.toISOString().replace('T', ' ').slice(0, 16)
+function formatLocal(date: Date, timezone: string): string {
+  try {
+    const fmt = new Intl.DateTimeFormat('pt-BR', {
+      timeZone: timezone,
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+    return fmt.format(date)
+  } catch {
+    return date.toISOString().replace('T', ' ').slice(0, 16)
+  }
 }
 
 function buildMessage(
   event: AgendaEventRecord,
   startAt: Date,
   endAt: Date,
+  timezone: string,
 ): string {
+  const tzLabel = timezone === 'America/Sao_Paulo' ? 'BRT' : timezone
+  const start = formatLocal(startAt, timezone)
+  const end = formatLocal(endAt, timezone)
+  const title = event.title
+  const location = event.location ?? null
+  const description = event.description ?? null
+
   const lines: string[] = []
-  lines.push('⏰ Lembrete de Compromisso')
+  lines.push(`[Lembrete de Compromisso]`)
   lines.push('')
-  lines.push(`📌 ${event.title}`)
-  lines.push(`🕐 ${formatBRLLike(startAt)} — ${formatBRLLike(endAt)} UTC`)
-  if (event.location) lines.push(`📍 ${event.location}`)
-  if (event.description) lines.push('')
-  if (event.description) lines.push(event.description)
+  lines.push(`*${title}*`)
+  lines.push('')
+  lines.push(`Quando: _${start}_`)
+  lines.push(`Ate:    _${end}_`)
+  lines.push(`Fuso:   ${tzLabel}`)
+  if (location) {
+    lines.push(`Local:  ${location}`)
+  }
+  if (description) {
+    lines.push('')
+    lines.push(description)
+  }
   return lines.join('\n')
 }
 
@@ -81,10 +102,12 @@ export class AgendaNotificationService {
         event.userId,
       )
       const offset = prefs?.notificationOffsetMinutes ?? 15
+      const timezone = prefs?.timezone ?? 'America/Sao_Paulo'
       targetsByUser.set(event.userId, {
         userId: event.userId,
         chatId: link.chatId,
         offsetMinutes: offset,
+        timezone,
       })
     }
 
@@ -115,11 +138,17 @@ export class AgendaNotificationService {
         exceptionMap,
       )
       for (const occ of occurrences) {
-        const message = buildMessage(event, occ.startAt, occ.endAt)
+        const message = buildMessage(
+          event,
+          occ.startAt,
+          occ.endAt,
+          target.timezone,
+        )
         try {
           const res = await this.telegramClient.sendMessage(
             target.chatId,
             message,
+            'Markdown',
           )
           if (res.ok) sent++
           else errors++
@@ -132,5 +161,3 @@ export class AgendaNotificationService {
     return { sent, skipped, errors }
   }
 }
-
-export type { UpcomingEvent }

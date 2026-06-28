@@ -26,12 +26,18 @@ export class TelegramClient {
   async sendMessage(
     chatId: number,
     text: string,
+    parseMode?: 'MarkdownV2' | 'HTML' | 'Markdown',
   ): Promise<TelegramSendMessageResponse> {
     const url = `${this.apiBase}/bot${this.token}/sendMessage`
+    const body: { chat_id: number; text: string; parse_mode?: string } = {
+      chat_id: chatId,
+      text,
+    }
+    if (parseMode) body.parse_mode = parseMode
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chat_id: chatId, text }),
+      body: JSON.stringify(body),
     })
     return (await response.json()) as TelegramSendMessageResponse
   }
@@ -42,6 +48,34 @@ export class TelegramClient {
     return (await response.json()) as {
       ok: boolean
       result?: { username: string }
+    }
+  }
+
+  async getUpdates(offset?: number, timeoutSeconds = 30): Promise<{
+    ok: boolean
+    result?: Array<{
+      update_id: number
+      message?: {
+        chat: { id: number }
+        text?: string
+        from?: { id: number; username?: string; first_name?: string }
+      }
+    }>
+  }> {
+    const params = new URLSearchParams({ timeout: String(timeoutSeconds) })
+    if (offset !== undefined) params.set('offset', String(offset))
+    const url = `${this.apiBase}/bot${this.token}/getUpdates?${params.toString()}`
+    const response = await fetch(url)
+    return (await response.json()) as {
+      ok: boolean
+      result?: Array<{
+        update_id: number
+        message?: {
+          chat: { id: number }
+          text?: string
+          from?: { id: number; username?: string; first_name?: string }
+        }
+      }>
     }
   }
 }
