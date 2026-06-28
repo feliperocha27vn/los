@@ -2699,7 +2699,14 @@ function NotesComponent() {
 
       {/* Modal - Gerenciar Hábitos */}
       {isHabitManagerOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-[2px] animate-fade-in select-none">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-[2px] animate-fade-in select-none"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              setIsHabitManagerOpen(false);
+            }
+          }}
+        >
           <div className="w-full max-w-[480px] bg-[#18181b] border border-[#27272a] rounded-xl shadow-2xl overflow-hidden flex flex-col font-mono text-sm max-h-[85vh]">
             {/* Header */}
             <div className="p-5 pb-4 border-b border-[#27272a]/60 flex items-center justify-between">
@@ -2713,7 +2720,8 @@ function NotesComponent() {
               </div>
               <button
                 onClick={() => setIsHabitManagerOpen(false)}
-                className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] cursor-pointer"
+                className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] outline-none"
+                aria-label="Fechar gerenciador de hábitos"
               >
                 <LucideIcons.X className="h-4.5 w-4.5" />
               </button>
@@ -2728,7 +2736,7 @@ function NotesComponent() {
                 <Button
                   onClick={handleOpenCreateHabit}
                   disabled={(habitsData?.habits?.length || 0) >= 20}
-                  className="h-8 text-[11px] font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white font-mono px-3.5 cursor-pointer disabled:opacity-45"
+                  className="h-8 text-[11px] font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white font-mono px-3.5 cursor-pointer disabled:opacity-45 focus-visible:ring-2 focus-visible:ring-[#6366f1] focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                 >
                   <LucideIcons.Plus className="h-3.5 w-3.5 mr-1" />
                   Criar Hábito
@@ -2760,8 +2768,9 @@ function NotesComponent() {
                         {idx > 0 && (
                           <button
                             onClick={() => handleReorderHabit(habit.id, 'up')}
-                            className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] cursor-pointer"
+                            className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] outline-none"
                             title="Mover para Cima"
+                            aria-label="Mover hábito para cima"
                           >
                             <LucideIcons.ArrowUp className="h-3.5 w-3.5" />
                           </button>
@@ -2770,8 +2779,9 @@ function NotesComponent() {
                         {idx < arr.length - 1 && (
                           <button
                             onClick={() => handleReorderHabit(habit.id, 'down')}
-                            className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] cursor-pointer"
+                            className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] outline-none"
                             title="Mover para Baixo"
+                            aria-label="Mover hábito para baixo"
                           >
                             <LucideIcons.ArrowDown className="h-3.5 w-3.5" />
                           </button>
@@ -2779,16 +2789,18 @@ function NotesComponent() {
                         {/* Editar */}
                         <button
                           onClick={() => handleOpenEditHabit(habit)}
-                          className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary cursor-pointer"
+                          className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] outline-none"
                           title="Editar Hábito"
+                          aria-label={`Editar hábito ${habit.name}`}
                         >
                           <LucideIcons.Edit className="h-3.5 w-3.5" />
                         </button>
                         {/* Arquivar */}
                         <button
                           onClick={() => handleDeleteHabit(habit.id)}
-                          className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400 cursor-pointer"
+                          className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#ef4444] outline-none"
                           title="Arquivar Hábito"
+                          aria-label={`Arquivar hábito ${habit.name}`}
                         >
                           <LucideIcons.Trash2 className="h-3.5 w-3.5" />
                         </button>
@@ -2804,7 +2816,7 @@ function NotesComponent() {
               <Button
                 type="button"
                 onClick={() => setIsHabitManagerOpen(false)}
-                className="w-full h-9 font-bold border border-[#27272a] bg-transparent text-[#fafafa] hover:bg-[#27272a] rounded-md transition-smooth font-mono text-xs cursor-pointer"
+                className="w-full h-9 font-bold border border-[#27272a] bg-transparent text-[#fafafa] hover:bg-[#27272a] rounded-md transition-smooth font-mono text-xs cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
               >
                 Fechar
               </Button>
@@ -2815,7 +2827,14 @@ function NotesComponent() {
 
       {/* Sub-modal - Criar/Editar Hábito */}
       {isCreateHabitOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-[1px] animate-fade-in select-none">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-[1px] animate-fade-in select-none"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              setIsCreateHabitOpen(false);
+            }
+          }}
+        >
           <div className="w-full max-w-[360px] bg-[#18181b] border border-[#27272a] rounded-xl shadow-2xl overflow-hidden flex flex-col font-mono text-sm">
             <form onSubmit={handleSaveHabit}>
               <div className="p-4 border-b border-[#27272a]/60">
@@ -2838,6 +2857,7 @@ function NotesComponent() {
                     maxLength={50}
                     required
                     autoFocus
+                    className="focus-visible:ring-2 focus-visible:ring-[#6366f1] outline-none"
                   />
                 </div>
 
@@ -2856,8 +2876,9 @@ function NotesComponent() {
                           key={opt.name}
                           onClick={() => setHabitIcon(opt.name)}
                           title={opt.label}
+                          aria-label={`Ícone ${opt.label}`}
                           className={cn(
-                            "p-2.5 rounded-lg border flex flex-col items-center justify-center gap-1 transition-smooth cursor-pointer",
+                            "p-2.5 rounded-lg border flex flex-col items-center justify-center gap-1 transition-smooth cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] outline-none",
                             isSelected 
                               ? "bg-[#6366f1]/25 border-[#6366f1] text-[#fafafa]" 
                               : "bg-[#09090b]/40 border-[#27272a] text-[#a1a1aa] hover:border-[#27272a] hover:text-[#fafafa]"
@@ -2876,13 +2897,13 @@ function NotesComponent() {
                   type="button"
                   onClick={() => setIsCreateHabitOpen(false)}
                   variant="outline"
-                  className="flex-1 h-9 font-bold border border-[#27272a] bg-transparent text-[#fafafa] hover:bg-[#27272a] rounded-md transition-smooth font-mono text-xs cursor-pointer"
+                  className="flex-1 h-9 font-bold border border-[#27272a] bg-transparent text-[#fafafa] hover:bg-[#27272a] rounded-md transition-smooth font-mono text-xs cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                 >
                   Cancelar
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 h-9 font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white rounded-md transition-smooth font-mono text-xs cursor-pointer"
+                  className="flex-1 h-9 font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white rounded-md transition-smooth font-mono text-xs cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                 >
                   Salvar
                 </Button>
@@ -2894,7 +2915,14 @@ function NotesComponent() {
 
       {/* Modal - Detalhes do Dia (Energia, Qualidade, Nota) */}
       {isDayDetailModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-[2px] animate-fade-in select-none">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-[2px] animate-fade-in select-none"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              setIsDayDetailModalOpen(false);
+            }
+          }}
+        >
           <div className="w-full max-w-[400px] bg-[#18181b] border border-[#27272a] rounded-xl shadow-2xl overflow-hidden flex flex-col font-mono text-sm">
             <div className="p-5 border-b border-[#27272a]/60">
               <h3 className="text-xs font-bold text-[#fafafa] uppercase tracking-wider">
@@ -2918,13 +2946,14 @@ function NotesComponent() {
                       type="button"
                       onClick={() => setDayDetailEnergy(lvl)}
                       className={cn(
-                        "py-2 px-3.5 rounded-lg border text-xs font-bold uppercase transition-smooth cursor-pointer",
+                        "py-2 px-3.5 rounded-lg border text-xs font-bold uppercase transition-smooth cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] outline-none",
                         dayDetailEnergy === lvl
                           ? lvl === 'low' ? "bg-[#38bdf8]/20 border-[#38bdf8] text-[#38bdf8]"
                             : lvl === 'medium' ? "bg-amber-500/20 border-amber-400 text-amber-300"
                             : "bg-emerald-500/20 border-emerald-400 text-emerald-300"
                           : "bg-[#09090b]/40 border-[#27272a] text-[#a1a1aa] hover:border-[#27272a]"
                       )}
+                      aria-label={`Energia ${lvl === 'low' ? 'Baixa' : lvl === 'medium' ? 'Média' : 'Alta'}`}
                     >
                       {lvl === 'low' ? 'Baixa' : lvl === 'medium' ? 'Média' : 'Alta'}
                     </button>
@@ -2944,20 +2973,20 @@ function NotesComponent() {
                       type="button"
                       onClick={() => setDayDetailQuality(q)}
                       className={cn(
-                        "py-2 px-3.5 rounded-lg border text-xs font-bold uppercase transition-smooth cursor-pointer",
+                        "py-2 px-3.5 rounded-lg border text-xs font-bold uppercase transition-smooth cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] outline-none",
                         dayDetailQuality === q
                           ? q === 'weak' ? "bg-rose-500/20 border-rose-400 text-rose-300"
                             : q === 'ok' ? "bg-amber-500/20 border-amber-400 text-amber-300"
                             : "bg-emerald-500/20 border-emerald-400 text-emerald-300"
                           : "bg-[#09090b]/40 border-[#27272a] text-[#a1a1aa] hover:border-[#27272a]"
                       )}
+                      aria-label={`Qualidade ${q === 'weak' ? 'Ruim' : q === 'ok' ? 'Ok' : 'Ótima'}`}
                     >
                       {q === 'weak' ? 'Ruim' : q === 'ok' ? 'Ok' : 'Ótima'}
                     </button>
                   ))}
                 </div>
               </div>
-
             </div>
 
             <div className="flex items-center gap-3.5 p-4 border-t border-[#27272a] bg-[#09090b]">
@@ -2965,14 +2994,14 @@ function NotesComponent() {
                 type="button"
                 onClick={() => setIsDayDetailModalOpen(false)}
                 variant="outline"
-                className="flex-1 h-9 font-bold border border-[#27272a] bg-transparent text-[#fafafa] hover:bg-[#27272a] rounded-md transition-smooth font-mono text-xs cursor-pointer"
+                className="flex-1 h-9 font-bold border border-[#27272a] bg-transparent text-[#fafafa] hover:bg-[#27272a] rounded-md transition-smooth font-mono text-xs cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
               >
                 Cancelar
               </Button>
               <Button
                 type="button"
                 onClick={handleSaveDayDetail}
-                className="flex-1 h-9 font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white rounded-md transition-smooth font-mono text-xs cursor-pointer"
+                className="flex-1 h-9 font-bold bg-[#6366f1] hover:bg-[#6366f1]/90 text-white rounded-md transition-smooth font-mono text-xs cursor-pointer focus-visible:ring-2 focus-visible:ring-[#6366f1] focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
               >
                 Salvar
               </Button>
