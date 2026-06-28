@@ -52,13 +52,6 @@
       "breakpoints": true
     },
     {
-      "idx": 7,
-      "version": "7",
-      "when": 1782676853881,
-      "tag": "backfill_finance_installments",
-      "breakpoints": true
-    },
-    {
       "idx": 8,
       "version": "7",
       "when": 1782678293509,
