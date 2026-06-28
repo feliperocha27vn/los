@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
 import { 
   Plus, 
   ChevronLeft, 
@@ -14,6 +15,16 @@ import { Button } from '@ui/button';
 import { Input } from '@ui/input';
 import { AppShell } from '@layouts/AppShell';
 import { ConfirmModal } from '@ui/ConfirmModal';
+import { 
+  useGetAgendaEvents,
+  usePostAgendaEvents,
+  usePutAgendaEventsId,
+  useDeleteAgendaEventsId,
+  useGetAgendaCalendars,
+  usePostAgendaCalendars,
+  getAgendaEventsQueryKey,
+  getAgendaCalendarsQueryKey
+} from '@core/api/gen/hooks';
 
 export const Route = createFileRoute('/agenda')({
   beforeLoad: ({ context }) => {
@@ -26,87 +37,22 @@ export const Route = createFileRoute('/agenda')({
   component: AgendaComponent,
 });
 
-interface CalendarCategory {
-  id: string;
-  name: string;
-  color: string; // hex
-  checked: boolean;
-}
-
-interface CalendarEvent {
-  id: string;
+interface ExpandedEvent {
+  id: string; // main event ID
+  occurrenceId: string; // unique occurrence ID
   title: string;
   description?: string;
   calendarId: string;
   startAt: Date;
   endAt: Date;
-  recurrence: 'none' | 'daily' | 'weekly' | 'monthly';
+  recurrence: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly';
 }
-
-interface ExpandedEvent extends CalendarEvent {
-  occurrenceId: string;
-  isRecurringOccurrence?: boolean;
-}
-
-const DEFAULT_CALENDARS: CalendarCategory[] = [
-  { id: '1', name: 'Trabalho', color: '#6366f1', checked: true },
-  { id: '2', name: 'Pessoal', color: '#10b981', checked: true },
-  { id: '3', name: 'Saúde', color: '#f43f5e', checked: true }
-];
-
-const DEFAULT_EVENTS: CalendarEvent[] = [
-  { 
-    id: '1', 
-    title: 'Daily Standup', 
-    description: 'Sincronização diária do time de desenvolvimento.', 
-    calendarId: '1', 
-    startAt: new Date(2026, 5, 21, 9, 0), 
-    endAt: new Date(2026, 5, 21, 9, 30), 
-    recurrence: 'daily' 
-  },
-  { 
-    id: '2', 
-    title: 'Reunião de Alinhamento', 
-    description: 'Discussão sobre os próximos módulos do Life OS.', 
-    calendarId: '1', 
-    startAt: new Date(2026, 5, 21, 14, 0), 
-    endAt: new Date(2026, 5, 21, 15, 0), 
-    recurrence: 'none' 
-  },
-  { 
-    id: '3', 
-    title: 'Almoço com Ana', 
-    description: 'Almoço para colocar o papo em dia.', 
-    calendarId: '2', 
-    startAt: new Date(2026, 5, 24, 12, 30), 
-    endAt: new Date(2026, 5, 24, 13, 30), 
-    recurrence: 'none' 
-  },
-  { 
-    id: '4', 
-    title: 'Consulta Médica', 
-    description: 'Consulta de rotina anual.', 
-    calendarId: '3', 
-    startAt: new Date(2026, 5, 26, 16, 0), 
-    endAt: new Date(2026, 5, 26, 17, 0), 
-    recurrence: 'none' 
-  },
-  { 
-    id: '5', 
-    title: 'Academia', 
-    description: 'Treino de musculação diário.', 
-    calendarId: '3', 
-    startAt: new Date(2026, 5, 28, 15, 0), 
-    endAt: new Date(2026, 5, 28, 16, 0), 
-    recurrence: 'none' 
-  }
-];
 
 function AgendaComponent() {
+  const queryClient = useQueryClient();
+
   const [activeView, setActiveView] = React.useState<'mes' | 'semana' | 'dia' | 'agenda'>('mes');
-  const [selectedDate, setSelectedDate] = React.useState<Date>(new Date(2026, 5, 28)); // Focus on June 28, 2026 to match design
-  const [calendars, setCalendars] = React.useState<CalendarCategory[]>(DEFAULT_CALENDARS);
-  const [events, setEvents] = React.useState<CalendarEvent[]>(DEFAULT_EVENTS);
+  const [selectedDate, setSelectedDate] = React.useState<Date>(new Date(2026, 5, 28)); // Default to June 28, 2026
 
   // Form & Modals State
   const [isEventModalOpen, setIsEventModalOpen] = React.useState(false);
@@ -117,11 +63,11 @@ function AgendaComponent() {
   // Event Form State
   const [eventTitle, setEventTitle] = React.useState('');
   const [eventDesc, setEventDesc] = React.useState('');
-  const [eventCalendarId, setEventCalendarId] = React.useState('1');
+  const [eventCalendarId, setEventCalendarId] = React.useState('');
   const [eventDate, setEventDate] = React.useState('2026-06-28');
   const [eventStartHour, setEventStartHour] = React.useState('09:00');
   const [eventEndHour, setEventEndHour] = React.useState('10:00');
-  const [eventRecurrence, setEventRecurrence] = React.useState<'none' | 'daily' | 'weekly' | 'monthly'>('none');
+  const [eventRecurrence, setEventRecurrence] = React.useState<'none' | 'daily' | 'weekly' | 'monthly' | 'yearly'>('none');
   const [editingEventId, setEditingEventId] = React.useState<string | null>(null);
 
   // Calendar Form State
@@ -183,66 +129,84 @@ function AgendaComponent() {
     return days;
   };
 
-  // Helper: Expand recurring events
-  const getExpandedEvents = React.useMemo(() => {
-    const activeCalendarIds = calendars.filter(c => c.checked).map(c => c.id);
-    const startRange = new Date(selectedDate.getFullYear(), selectedDate.getMonth() - 1, 1);
-    const endRange = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 2, 0);
-    
-    const result: ExpandedEvent[] = [];
-    const filteredEvents = events.filter(e => activeCalendarIds.includes(e.calendarId));
+  // Dynamic visible range calculation for the API query
+  const visibleRange = React.useMemo(() => {
+    if (activeView === 'mes') {
+      const days = getDaysInMonth(selectedDate);
+      const from = new Date(days[0]);
+      from.setHours(0, 0, 0, 0);
+      const to = new Date(days[41]);
+      to.setHours(23, 59, 59, 999);
+      return { from, to };
+    } else if (activeView === 'semana') {
+      const days = getDaysInWeek(selectedDate);
+      const from = new Date(days[0]);
+      from.setHours(0, 0, 0, 0);
+      const to = new Date(days[6]);
+      to.setHours(23, 59, 59, 999);
+      return { from, to };
+    } else if (activeView === 'dia') {
+      const from = new Date(selectedDate);
+      from.setHours(0, 0, 0, 0);
+      const to = new Date(selectedDate);
+      to.setHours(23, 59, 59, 999);
+      return { from, to };
+    } else {
+      // Agenda/Schedule view (30 days range)
+      const from = new Date(selectedDate);
+      from.setHours(0, 0, 0, 0);
+      const to = new Date(selectedDate);
+      to.setDate(to.getDate() + 30);
+      to.setHours(23, 59, 59, 999);
+      return { from, to };
+    }
+  }, [activeView, selectedDate]);
 
-    for (const event of filteredEvents) {
-      if (event.recurrence === 'none') {
-        if (event.startAt >= startRange && event.startAt <= endRange) {
-          result.push({ ...event, occurrenceId: event.id });
-        }
-      } else if (event.recurrence === 'daily') {
-        let current = new Date(event.startAt);
-        const rangeStart = startRange > event.startAt ? startRange : event.startAt;
-        current = new Date(rangeStart);
-        current.setHours(event.startAt.getHours(), event.startAt.getMinutes(), 0, 0);
+  // Queries
+  const { data: calendarsData } = useGetAgendaCalendars();
+  const { data: eventsData } = useGetAgendaEvents({
+    from: visibleRange.from.toISOString(),
+    to: visibleRange.to.toISOString()
+  });
 
-        while (current <= endRange) {
-          const duration = event.endAt.getTime() - event.startAt.getTime();
-          const startAt = new Date(current);
-          const endAt = new Date(current.getTime() + duration);
-          result.push({
-            ...event,
-            occurrenceId: `${event.id}-${current.toISOString().split('T')[0]}`,
-            startAt,
-            endAt,
-            isRecurringOccurrence: true
-          });
-          current.setDate(current.getDate() + 1);
-        }
-      } else if (event.recurrence === 'weekly') {
-        let current = new Date(event.startAt);
-        const rangeStart = startRange > event.startAt ? startRange : event.startAt;
-        current = new Date(rangeStart);
-        const targetDay = event.startAt.getDay();
-        while (current.getDay() !== targetDay) {
-          current.setDate(current.getDate() + 1);
-        }
-        current.setHours(event.startAt.getHours(), event.startAt.getMinutes(), 0, 0);
+  // Mutations
+  const createEvent = usePostAgendaEvents();
+  const updateEvent = usePutAgendaEventsId();
+  const deleteEvent = useDeleteAgendaEventsId();
+  const createCalendar = usePostAgendaCalendars();
 
-        while (current <= endRange) {
-          const duration = event.endAt.getTime() - event.startAt.getTime();
-          const startAt = new Date(current);
-          const endAt = new Date(current.getTime() + duration);
-          result.push({
-            ...event,
-            occurrenceId: `${event.id}-${current.toISOString().split('T')[0]}`,
-            startAt,
-            endAt,
-            isRecurringOccurrence: true
-          });
-          current.setDate(current.getDate() + 7);
-        }
+  // Local state for calendar checkboxes
+  const [checkedCalendarIds, setCheckedCalendarIds] = React.useState<string[]>([]);
+
+  // Initialize checked calendars once loaded
+  React.useEffect(() => {
+    if (calendarsData?.calendars) {
+      setCheckedCalendarIds(prev => {
+        if (prev.length > 0) return prev;
+        return calendarsData.calendars.map(c => c.id);
+      });
+      if (!eventCalendarId && calendarsData.calendars.length > 0) {
+        setEventCalendarId(calendarsData.calendars[0].id);
       }
     }
-    return result;
-  }, [events, calendars, selectedDate]);
+  }, [calendarsData]);
+
+  // Map events from backend to ExpandedEvent interface
+  const mappedEvents = React.useMemo(() => {
+    if (!eventsData?.events) return [];
+    return eventsData.events
+      .filter(ev => checkedCalendarIds.includes(ev.calendarId))
+      .map(ev => ({
+        id: ev.eventId,
+        occurrenceId: ev.id,
+        title: ev.title,
+        description: ev.description || '',
+        calendarId: ev.calendarId,
+        startAt: new Date(ev.startAt),
+        endAt: new Date(ev.endAt),
+        recurrence: ev.recurrence as any
+      }));
+  }, [eventsData, checkedCalendarIds]);
 
   // Navigation handlers
   const handlePrev = () => {
@@ -270,16 +234,18 @@ function AgendaComponent() {
   };
 
   const handleToday = () => {
-    setSelectedDate(new Date(2026, 5, 28)); // Reset to June 28, 2026 to match mock data
+    setSelectedDate(new Date(2026, 5, 28)); // Reset to June 28, 2026 to match mock data focus
   };
 
   // Toggle calendar filter
   const toggleCalendar = (id: string) => {
-    setCalendars(prev => prev.map(c => c.id === id ? { ...c, checked: !c.checked } : c));
+    setCheckedCalendarIds(prev => 
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
   };
 
   // Handle Event Submit
-  const handleEventSubmit = (e: React.FormEvent) => {
+  const handleEventSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!eventTitle.trim()) {
       toast.error('O título do compromisso é obrigatório');
@@ -294,39 +260,42 @@ function AgendaComponent() {
       return;
     }
 
-    if (editingEventId) {
-      setEvents(prev => prev.map(ev => ev.id === editingEventId ? {
-        ...ev,
-        title: eventTitle,
-        description: eventDesc,
-        calendarId: eventCalendarId,
-        startAt: startDateTime,
-        endAt: endDateTime,
-        recurrence: eventRecurrence
-      } : ev));
-      toast.success('Compromisso atualizado com sucesso');
-    } else {
-      const newEvent: CalendarEvent = {
-        id: Math.random().toString(),
-        title: eventTitle,
-        description: eventDesc,
-        calendarId: eventCalendarId,
-        startAt: startDateTime,
-        endAt: endDateTime,
-        recurrence: eventRecurrence
-      };
-      setEvents(prev => [...prev, newEvent]);
-      toast.success('Compromisso agendado com sucesso');
-    }
+    const body = {
+      title: eventTitle,
+      description: eventDesc,
+      calendarId: eventCalendarId,
+      startAt: startDateTime.toISOString(),
+      endAt: endDateTime.toISOString(),
+      recurrence: eventRecurrence,
+    };
 
-    setIsEventModalOpen(false);
-    resetEventForm();
+    try {
+      if (editingEventId) {
+        await updateEvent.mutateAsync({
+          id: editingEventId,
+          data: body
+        });
+        toast.success('Compromisso atualizado com sucesso');
+      } else {
+        await createEvent.mutateAsync({
+          data: body
+        });
+        toast.success('Compromisso agendado com sucesso');
+      }
+
+      queryClient.invalidateQueries({ queryKey: getAgendaEventsQueryKey() });
+      setIsEventModalOpen(false);
+      resetEventForm();
+    } catch (err: any) {
+      const errMsg = err?.response?.data?.message || err?.message || 'Erro ao salvar compromisso';
+      toast.error(errMsg);
+    }
   };
 
   const resetEventForm = () => {
     setEventTitle('');
     setEventDesc('');
-    setEventCalendarId(calendars[0]?.id || '1');
+    setEventCalendarId(calendarsData?.calendars[0]?.id || '');
     setEventDate(selectedDate.toISOString().split('T')[0]);
     setEventStartHour('09:00');
     setEventEndHour('10:00');
@@ -339,21 +308,24 @@ function AgendaComponent() {
     setEventDate(date.toISOString().split('T')[0]);
     if (hour) {
       setEventStartHour(hour);
-      const [h, m] = hour.split(':').map(Number);
-      const nextHour = `${String(h + 1).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+      const [h] = hour.split(':').map(Number);
+      const nextHour = `${String(h + 1).padStart(2, '0')}:00`;
       setEventEndHour(nextHour);
     }
     setIsEventModalOpen(true);
   };
 
-  const openEditModal = (event: CalendarEvent) => {
+  const openEditModal = (event: ExpandedEvent) => {
     setEditingEventId(event.id);
     setEventTitle(event.title);
     setEventDesc(event.description || '');
     setEventCalendarId(event.calendarId);
-    setEventDate(event.startAt.toISOString().split('T')[0]);
-    setEventStartHour(event.startAt.toTimeString().substring(0, 5));
-    setEventEndHour(event.endAt.toTimeString().substring(0, 5));
+    
+    const localStart = new Date(event.startAt);
+    const localEnd = new Date(event.endAt);
+    setEventDate(localStart.toISOString().split('T')[0]);
+    setEventStartHour(localStart.toTimeString().substring(0, 5));
+    setEventEndHour(localEnd.toTimeString().substring(0, 5));
     setEventRecurrence(event.recurrence);
     setIsEventModalOpen(true);
   };
@@ -364,34 +336,44 @@ function AgendaComponent() {
     setIsDeleteConfirmOpen(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (selectedEventId) {
-      setEvents(prev => prev.filter(ev => ev.id !== selectedEventId));
-      toast.success('Compromisso cancelado com sucesso');
-      setIsDeleteConfirmOpen(false);
-      setSelectedEventId(null);
+      try {
+        await deleteEvent.mutateAsync({ id: selectedEventId });
+        toast.success('Compromisso cancelado com sucesso');
+        queryClient.invalidateQueries({ queryKey: getAgendaEventsQueryKey() });
+        setIsDeleteConfirmOpen(false);
+        setSelectedEventId(null);
+      } catch (err: any) {
+        const errMsg = err?.response?.data?.message || err?.message || 'Erro ao excluir compromisso';
+        toast.error(errMsg);
+      }
     }
   };
 
   // Handle Calendar Submit
-  const handleCalendarSubmit = (e: React.FormEvent) => {
+  const handleCalendarSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!calName.trim()) {
       toast.error('O nome do calendário é obrigatório');
       return;
     }
 
-    const newCal: CalendarCategory = {
-      id: Math.random().toString(),
-      name: calName,
-      color: calColor,
-      checked: true
-    };
-
-    setCalendars(prev => [...prev, newCal]);
-    toast.success('Calendário criado com sucesso');
-    setCalName('');
-    setIsCalendarModalOpen(false);
+    try {
+      await createCalendar.mutateAsync({
+        data: {
+          name: calName,
+          color: calColor
+        }
+      });
+      toast.success('Calendário criado com sucesso');
+      queryClient.invalidateQueries({ queryKey: getAgendaCalendarsQueryKey() });
+      setCalName('');
+      setIsCalendarModalOpen(false);
+    } catch (err: any) {
+      const errMsg = err?.response?.data?.message || err?.message || 'Erro ao criar calendário';
+      toast.error(errMsg);
+    }
   };
 
   // Formatter helpers
@@ -413,11 +395,11 @@ function AgendaComponent() {
   };
 
   const getCalendarColor = (calId: string) => {
-    return calendars.find(c => c.id === calId)?.color || '#6366f1';
+    return calendarsData?.calendars.find(c => c.id === calId)?.color || '#6366f1';
   };
 
   const getCalendarName = (calId: string) => {
-    return calendars.find(c => c.id === calId)?.name || '';
+    return calendarsData?.calendars.find(c => c.id === calId)?.name || '';
   };
 
   const dayHours = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
@@ -456,31 +438,34 @@ function AgendaComponent() {
                 Meus Calendários
               </span>
               <div className="flex flex-col gap-2">
-                {calendars.map(cal => (
-                  <label 
-                    key={cal.id} 
-                    className="flex items-center gap-3 px-2 py-1.5 rounded hover:bg-card/40 cursor-pointer transition-smooth group"
-                  >
-                    <input 
-                      type="checkbox"
-                      checked={cal.checked}
-                      onChange={() => toggleCalendar(cal.id)}
-                      className="sr-only"
-                    />
-                    <div 
-                      className="h-3.5 w-3.5 rounded border border-border flex items-center justify-center transition-smooth shrink-0"
-                      style={{ 
-                        backgroundColor: cal.checked ? cal.color : 'transparent',
-                        borderColor: cal.color 
-                      }}
+                {(calendarsData?.calendars || []).map(cal => {
+                  const isChecked = checkedCalendarIds.includes(cal.id);
+                  return (
+                    <label 
+                      key={cal.id} 
+                      className="flex items-center gap-3 px-2 py-1.5 rounded hover:bg-card/40 cursor-pointer transition-smooth group"
                     >
-                      {cal.checked && <Check className="h-2.5 w-2.5 text-white stroke-[3]" />}
-                    </div>
-                    <span className="text-sm font-mono text-foreground group-hover:text-white transition-smooth">
-                      {cal.name}
-                    </span>
-                  </label>
-                ))}
+                      <input 
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggleCalendar(cal.id)}
+                        className="sr-only"
+                      />
+                      <div 
+                        className="h-3.5 w-3.5 rounded border border-border flex items-center justify-center transition-smooth shrink-0"
+                        style={{ 
+                          backgroundColor: isChecked ? cal.color : 'transparent',
+                          borderColor: cal.color 
+                        }}
+                      >
+                        {isChecked && <Check className="h-2.5 w-2.5 text-white stroke-[3]" />}
+                      </div>
+                      <span className="text-sm font-mono text-foreground group-hover:text-white transition-smooth">
+                        {cal.name}
+                      </span>
+                    </label>
+                  );
+                })}
               </div>
 
               <Button 
@@ -569,7 +554,7 @@ function AgendaComponent() {
                       const isCurrentMonth = day.getMonth() === selectedDate.getMonth();
                       const isToday = day.getDate() === 28 && day.getMonth() === 5 && day.getFullYear() === 2026;
                       
-                      const dayEvents = getExpandedEvents.filter(ev => 
+                      const dayEvents = mappedEvents.filter(ev => 
                         ev.startAt.getDate() === day.getDate() && 
                         ev.startAt.getMonth() === day.getMonth() &&
                         ev.startAt.getFullYear() === day.getFullYear()
@@ -636,7 +621,7 @@ function AgendaComponent() {
                   
                   <div className="hidden sm:grid grid-cols-7 gap-3 h-full w-full">
                     {getDaysInWeek(selectedDate).map((day, idx) => {
-                      const dayEvents = getExpandedEvents.filter(ev => 
+                      const dayEvents = mappedEvents.filter(ev => 
                         ev.startAt.getDate() === day.getDate() && 
                         ev.startAt.getMonth() === day.getMonth() &&
                         ev.startAt.getFullYear() === day.getFullYear()
@@ -692,7 +677,7 @@ function AgendaComponent() {
 
                   <div className="flex sm:hidden gap-2 h-full w-full">
                     {getDaysInMobileWeek(selectedDate).map((day, idx) => {
-                      const dayEvents = getExpandedEvents.filter(ev => 
+                      const dayEvents = mappedEvents.filter(ev => 
                         ev.startAt.getDate() === day.getDate() && 
                         ev.startAt.getMonth() === day.getMonth() &&
                         ev.startAt.getFullYear() === day.getFullYear()
@@ -747,7 +732,7 @@ function AgendaComponent() {
                     <div className="flex flex-col gap-4">
                       {dayHours.map(hour => {
                         const [h] = hour.split(':').map(Number);
-                        const hourEvents = getExpandedEvents.filter(ev => 
+                        const hourEvents = mappedEvents.filter(ev => 
                           ev.startAt.getDate() === selectedDate.getDate() && 
                           ev.startAt.getMonth() === selectedDate.getMonth() &&
                           ev.startAt.getFullYear() === selectedDate.getFullYear() &&
@@ -811,7 +796,7 @@ function AgendaComponent() {
                     </span>
                     
                     <div className="flex-1 flex flex-col gap-3 overflow-y-auto">
-                      {getExpandedEvents.filter(ev => 
+                      {mappedEvents.filter(ev => 
                         ev.startAt.getDate() === selectedDate.getDate() && 
                         ev.startAt.getMonth() === selectedDate.getMonth() &&
                         ev.startAt.getFullYear() === selectedDate.getFullYear()
@@ -841,14 +826,14 @@ function AgendaComponent() {
                         </div>
                       ))}
 
-                      {getExpandedEvents.filter(ev => 
+                      {mappedEvents.filter(ev => 
                         ev.startAt.getDate() === selectedDate.getDate() && 
                         ev.startAt.getMonth() === selectedDate.getMonth() &&
                         ev.startAt.getFullYear() === selectedDate.getFullYear()
                       ).length === 0 && (
                         <div className="flex flex-col items-center justify-center gap-2 py-8 text-center text-muted-foreground">
                           <CalendarDays className="h-8 w-8 stroke-[1.5]" />
-                          <span className="text-xs font-mono">Nenhum compromisso hoje</span>
+                          <span className="text-sm font-mono">Nenhum compromisso hoje</span>
                         </div>
                       )}
                     </div>
@@ -864,7 +849,7 @@ function AgendaComponent() {
                     {(() => {
                       const groupedEvents: { [key: string]: { date: Date; items: ExpandedEvent[] } } = {};
                       
-                      getExpandedEvents
+                      mappedEvents
                         .sort((a, b) => a.startAt.getTime() - b.startAt.getTime())
                         .forEach(ev => {
                           const dateKey = ev.startAt.toISOString().split('T')[0];
@@ -960,7 +945,7 @@ function AgendaComponent() {
 
               <form onSubmit={handleEventSubmit} className="flex-1 p-6 flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-bold font-mono text-muted-foreground uppercase">
+                  <label className="text-xs font-bold font-mono text-muted-foreground uppercase">
                     Título
                   </label>
                   <Input 
@@ -973,7 +958,7 @@ function AgendaComponent() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-bold font-mono text-muted-foreground uppercase">
+                  <label className="text-xs font-bold font-mono text-muted-foreground uppercase">
                     Descrição
                   </label>
                   <Input 
@@ -987,7 +972,7 @@ function AgendaComponent() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold font-mono text-muted-foreground uppercase">
+                    <label className="text-xs font-bold font-mono text-muted-foreground uppercase">
                       Calendário
                     </label>
                     <select
@@ -995,7 +980,7 @@ function AgendaComponent() {
                       onChange={e => setEventCalendarId(e.target.value)}
                       className="w-full px-3 py-2 border border-border rounded-md font-mono text-xs text-foreground bg-background hover:border-muted-foreground focus:ring-1 focus:ring-indigo-500/40 transition-smooth outline-none"
                     >
-                      {calendars.map(cal => (
+                      {(calendarsData?.calendars || []).map(cal => (
                         <option key={cal.id} value={cal.id}>
                           {cal.name}
                         </option>
@@ -1004,7 +989,7 @@ function AgendaComponent() {
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold font-mono text-muted-foreground uppercase">
+                    <label className="text-xs font-bold font-mono text-muted-foreground uppercase">
                       Recorrência
                     </label>
                     <select
@@ -1015,12 +1000,13 @@ function AgendaComponent() {
                       <option value="none">Não se repete</option>
                       <option value="daily">Diário</option>
                       <option value="weekly">Semanal</option>
+                      <option value="monthly">Mensal</option>
                     </select>
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-bold font-mono text-muted-foreground uppercase">
+                  <label className="text-xs font-bold font-mono text-muted-foreground uppercase">
                     Data
                   </label>
                   <Input 
@@ -1033,7 +1019,7 @@ function AgendaComponent() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold font-mono text-muted-foreground uppercase">
+                    <label className="text-xs font-bold font-mono text-muted-foreground uppercase">
                       Início
                     </label>
                     <Input 
@@ -1045,7 +1031,7 @@ function AgendaComponent() {
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold font-mono text-muted-foreground uppercase">
+                    <label className="text-xs font-bold font-mono text-muted-foreground uppercase">
                       Fim
                     </label>
                     <Input 
@@ -1088,7 +1074,7 @@ function AgendaComponent() {
 
               <form onSubmit={handleCalendarSubmit} className="p-6 flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-bold font-mono text-muted-foreground uppercase">
+                  <label className="text-xs font-bold font-mono text-muted-foreground uppercase">
                     Nome
                   </label>
                   <Input 
@@ -1101,7 +1087,7 @@ function AgendaComponent() {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-bold font-mono text-muted-foreground uppercase">
+                  <label className="text-xs font-bold font-mono text-muted-foreground uppercase">
                     Cor
                   </label>
                   <div className="flex items-center gap-3">
