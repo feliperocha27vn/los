@@ -15,16 +15,19 @@ COPY api/biome.json ./api/
 RUN pnpm install --frozen-lockfile
 WORKDIR /app/api
 RUN pnpm build
-RUN pnpm prune --prod
 
 FROM base AS api
-WORKDIR /app/api
+WORKDIR /app
 RUN apk add --no-cache openssl curl
 ENV NODE_ENV=production
-COPY --from=api-build /app/api/dist ./dist
-COPY --from=api-build /app/api/drizzle ./drizzle
-COPY --from=api-build /app/api/package.json ./package.json
-COPY --from=api-build /app/api/node_modules ./node_modules
+COPY --from=api-build /app/api/dist ./api/dist
+COPY --from=api-build /app/api/drizzle ./api/drizzle
+COPY --from=api-build /app/api/package.json ./api/package.json
+COPY --from=api-build /app/node_modules ./node_modules
+COPY --from=api-build /app/api/node_modules ./api/node_modules
+COPY --from=api-build /app/package.json ./package.json
+COPY --from=api-build /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+WORKDIR /app/api
 EXPOSE 3333
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD curl -fsS http://localhost:3333/health || exit 1
