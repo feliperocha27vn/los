@@ -54,8 +54,30 @@ export function createApp(
   app.setSerializerCompiler(serializerCompiler)
   app.setValidatorCompiler(validatorCompiler)
 
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:4173',
+    'http://127.0.0.1:5173',
+    'https://los-web.pages.dev',
+    'https://api.votipet.tech',
+    'https://votipet.tech',
+    'https://www.votipet.tech',
+  ]
+  if (env.CORS_ORIGIN) {
+    for (const origin of env.CORS_ORIGIN.split(',').map((o) => o.trim()).filter(Boolean)) {
+      if (!allowedOrigins.includes(origin)) allowedOrigins.push(origin)
+    }
+  }
+
   app.register(fastifyCors, {
-    origin: ['http://localhost:5173'],
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true)
+      if (allowedOrigins.includes(origin)) return cb(null, true)
+      if (/\.votipet\.tech$/.test(origin)) return cb(null, true)
+      if (/\.pages\.dev$/.test(origin)) return cb(null, true)
+      if (/\.coolify\.io$/.test(origin)) return cb(null, true)
+      cb(null, false)
+    },
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'OPTIONS'],
     credentials: true,
   })

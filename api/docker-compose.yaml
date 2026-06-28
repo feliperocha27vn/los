@@ -40,6 +40,11 @@ services:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
       TELEGRAM_BOT_USERNAME: ${TELEGRAM_BOT_USERNAME:-}
       TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:-}
+      CORS_ORIGIN: ${CORS_ORIGIN:-}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-feliperocha.dev27@gmail.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-change-me-on-first-login}
+      ADMIN_PIN: ${ADMIN_PIN:-123456}
+      ADMIN_NAME: ${ADMIN_NAME:-Felipe}
     ports:
       - "${API_PORT:-3000}:3333"
     networks:

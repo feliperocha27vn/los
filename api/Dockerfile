@@ -4,7 +4,8 @@ RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 FROM base AS api-build
 WORKDIR /app
 RUN apk add --no-cache openssl
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-workspace.yaml ./
+COPY pnpm-lock.yaml ./
 COPY api/package.json ./api/
 COPY api/tsconfig.json ./api/
 COPY api/tsup.config.ts ./api/

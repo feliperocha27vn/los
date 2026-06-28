@@ -9,6 +9,11 @@ const envSchema = z.object({
   TELEGRAM_BOT_TOKEN: z.string().optional(),
   TELEGRAM_BOT_USERNAME: z.string().optional(),
   TELEGRAM_WEBHOOK_SECRET: z.string().optional(),
+  CORS_ORIGIN: z.string().optional(),
+  ADMIN_EMAIL: z.string().optional(),
+  ADMIN_PASSWORD: z.string().optional(),
+  ADMIN_PIN: z.string().optional(),
+  ADMIN_NAME: z.string().optional(),
 })
 
 export const env = envSchema.parse(process.env)

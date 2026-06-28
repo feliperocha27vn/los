@@ -3,6 +3,7 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { sql } from 'drizzle-orm'
 import { db } from './lib/db.js'
+import { EnsureSeedUseCase } from './use-cases/ensure-seed.js'
 
 const HERE = fileURLToPath(import.meta.url)
 const MIGRATIONS_DIR = resolve(HERE, '..', '..', 'drizzle')
@@ -57,6 +58,15 @@ async function applyFile(filename: string): Promise<void> {
   console.log(`[start] applied ${filename}`)
 }
 
+async function isSchemaInitialized(): Promise<boolean> {
+  try {
+    await db.execute(sql`SELECT 1 FROM users LIMIT 1`)
+    return true
+  } catch {
+    return false
+  }
+}
+
 async function runMigrations() {
   console.log('[start] running migrations...')
   await ensureMigrationsTable()
@@ -65,6 +75,21 @@ async function runMigrations() {
   const files = readdirSync(MIGRATIONS_DIR)
     .filter((f) => f.endsWith('.sql'))
     .sort()
+
+  const schemaExists = await isSchemaInitialized()
+
+  // DB legado: schema existe mas _los_migrations está vazio (migrations
+  // rodaram antes deste start.ts existir). Marca todas como aplicadas.
+  if (schemaExists && applied.size === 0) {
+    console.log('[start] legacy schema detected, marking migrations as applied')
+    for (const file of files) {
+      await db.execute(
+        sql`INSERT INTO _los_migrations (name) VALUES (${file}) ON CONFLICT (name) DO NOTHING`,
+      )
+    }
+    console.log('[start] no new migrations')
+    return
+  }
 
   let count = 0
   for (const file of files) {
@@ -77,10 +102,33 @@ async function runMigrations() {
   else console.log(`[start] ${count} migration(s) applied`)
 }
 
+async function runSeed() {
+  console.log('[start] checking seed...')
+  const useCase = new EnsureSeedUseCase()
+  const result = await useCase.execute({
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+    pin: process.env.ADMIN_PIN,
+    name: process.env.ADMIN_NAME,
+  })
+  if (result.seeded) {
+    console.log('')
+    console.log('========================================')
+    console.log(`[start] USER CREATED: ${result.email}`)
+    console.log(`[start] password: ${process.env.ADMIN_PASSWORD || '12345678'}`)
+    console.log(`[start] cofre pin: ${process.env.ADMIN_PIN || '123456'}`)
+    console.log('========================================')
+    console.log('')
+  } else {
+    console.log(`[start] user already exists (${result.email}), skipped seed`)
+  }
+}
+
 try {
   await runMigrations()
+  await runSeed()
 } catch (e) {
-  console.error('[start] migration failed:', e)
+  console.error('[start] startup failed:', e)
   process.exit(1)
 }
 
