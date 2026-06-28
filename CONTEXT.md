@@ -108,6 +108,46 @@ _Avoid_: Capítulo, Seção, Lição
 Um documento Markdown dentro de um Módulo do sub-módulo Estudo, contendo Título e Conteúdo, que pode ser livremente editado e auto-salvo.
 _Avoid_: Anotação, Folha, Nota de estudo
 
+**Finanças**:
+O módulo do Life OS voltado para o controle pessoal de receitas, despesas e parcelamentos, organizado em duas sub-telas: Transações (visão geral) e Cartão de Crédito (compras no cartão com split de "Minha Parte" e Lançamento no Principal).
+_Avoid_: Controle financeiro, Orçamento, Finanças pessoais
+
+**Transação**:
+Um lançamento individual de receita ou despesa no módulo Finanças, identificado por tipo (receita/despesa), descrição, valor, categoria, data e número de parcelas (1 a N), podendo ter origem principal ou cartão de crédito.
+_Avoid_: Lançamento, Movimentação, Registro financeiro
+
+**Despesa do Cartão**:
+Uma compra registrada especificamente no Cartão de Crédito, contendo descrição, valor total, Minha Parte, categoria e data, com estados "Lançada no Principal" ou "Não Lançada".
+_Avoid_: Compra no cartão, Fatura
+
+**Parcela**:
+Cada uma das N frações de uma Transação parcelada, identificada por número (1..N), valor e data, gerada mensalmente a partir da data da primeira parcela.
+_Avoid_: Prestação, Fração
+
+**Lançamento no Principal**:
+O ato de marcar uma Despesa do Cartão como despesa real na tela de Transações, gerando automaticamente uma Transação tipo "expense" com descrição "Minha parte do cartão" e valor igual à Minha Parte da despesa.
+_Avoid_: Lançamento, Conciliação
+
+**Agenda**:
+O módulo do Life OS voltado para o gerenciamento pessoal de Compromissos, com suporte a múltiplos Calendários, recorrência (subset RRULE) e notificações via Telegram, organizado em duas visões: Mês e Dia.
+_Avoid_: Calendário pessoal, Schedule, Agenda pessoal
+
+**Calendário**:
+Uma categoria visual de Compromissos criada pelo user (ex: "Trabalho", "Pessoal", "Saúde"), identificada por nome e cor, usada para filtrar e organizar Compromissos na Agenda.
+_Avoid_: Agenda, Categoria, Grupo de eventos
+
+**Compromisso**:
+Um evento individual no módulo Agenda, com título, descrição opcional, localização, data/hora de início e fim, status (scheduled/done/cancelled), e opcional recorrência (com Exceções aplicáveis).
+_Avoid_: Evento, Tarefa, Lançamento, Meeting
+
+**Ocorrência**:
+Cada uma das instâncias geradas a partir de um Compromisso recorrente (ex: "toda segunda às 10h" gera 52 ocorrências no ano), visíveis no GET /agenda/events após expansão do backend.
+_Avoid_: Instância, Repetição, Slot
+
+**Exceção de Recorrência**:
+Uma modificação aplicada a uma Ocorrência específica de um Compromisso recorrente, podendo ser do tipo "cancel" (cancela só aquela Ocorrência) ou "reschedule" (a Ocorrência é adiada para novas datas).
+_Avoid_: Edição pontual, Override, Patch de recorrência
+
 
 
 
