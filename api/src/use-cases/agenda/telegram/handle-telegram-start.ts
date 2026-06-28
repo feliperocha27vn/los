@@ -25,7 +25,7 @@ export class HandleTelegramStartUseCase {
         userId: null,
         alreadyLinked: false,
         responseMessage:
-          'Para vincular sua conta, use o link gerado dentro do Life OS.',
+          '👋 Olá! Para vincular sua conta Life OS, abra o app e gere um link de vinculação em Configurações > Agenda > Telegram. Depois clique nesse link aqui e aperte Enviar.',
       }
     }
     const userId = input.tokenPayload.sub
@@ -37,7 +37,8 @@ export class HandleTelegramStartUseCase {
       return {
         userId,
         alreadyLinked: true,
-        responseMessage: 'Sua conta já está vinculada ao Life OS.',
+        responseMessage:
+          '✅ Sua conta já está vinculada ao Life OS. Você receberá lembretes de compromissos aqui.',
       }
     }
 
@@ -49,7 +50,7 @@ export class HandleTelegramStartUseCase {
         userId: null,
         alreadyLinked: true,
         responseMessage:
-          'Este chat já está vinculado a outra conta. Desvincule primeiro.',
+          '⚠️ Este chat já está vinculado a outra conta. Desvincule primeiro nas configurações.',
       }
     }
 
@@ -62,7 +63,7 @@ export class HandleTelegramStartUseCase {
       userId,
       alreadyLinked: false,
       responseMessage:
-        'Conta Life OS vinculada com sucesso! Você receberá lembretes de compromissos aqui.',
+        '✅ Conta Life OS vinculada com sucesso! Você receberá lembretes de compromissos aqui.',
     }
   }
 }

@@ -24,6 +24,7 @@ import { agendaTelegramLinksRepository } from '@repositories/adapters/drizzle/dr
 import { userPreferencesRepository } from '@repositories/adapters/drizzle/drizzle-user-preferences-repository'
 import { TelegramClient } from './lib/telegram/telegram-client'
 import { AgendaNotificationService } from './lib/telegram/agenda-notification-service'
+import { TelegramPollingService } from './lib/telegram/telegram-polling-service'
 
 const telegramClient = new TelegramClient(env.TELEGRAM_BOT_TOKEN ?? '')
 
@@ -102,7 +103,13 @@ app
     console.log(`HTTP server running on port ${env.PORT}`)
     console.log(`Documentation: http://localhost:${env.PORT}/docs`)
     if (telegramClient.isConfigured()) {
+      console.log('Telegram bot polling enabled (receiving updates)')
       console.log('Telegram notifications enabled (polling every 60s)')
+      const pollingService = new TelegramPollingService(
+        telegramClient,
+        agendaTelegramLinksRepository,
+      )
+      pollingService.start()
       setInterval(() => {
         void loadUpcomingEvents().then((events) =>
           notificationService.dispatchUpcomingEvents(events),
