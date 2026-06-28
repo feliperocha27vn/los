@@ -45,6 +45,14 @@ export default defineConfig({
         target: 'http://localhost:3333',
         changeOrigin: true,
       },
+      '/finance': {
+        target: 'http://localhost:3333',
+        changeOrigin: true,
+      },
+      '/agenda': {
+        target: 'http://localhost:3333',
+        changeOrigin: true,
+      },
     },
   },
   resolve: {
