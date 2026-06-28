@@ -7,12 +7,12 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-los}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD é obrigatório}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-los}
       POSTGRES_DB: ${POSTGRES_DB:-los}
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./scripts/postgres-init:/docker-entrypoint-initdb.d:ro
+      - ../scripts/postgres-init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-los} -d ${POSTGRES_DB:-los}"]
       interval: 10s
@@ -24,7 +24,7 @@ services:
 
   api:
     build:
-      context: .
+      context: ..
       dockerfile: api/Dockerfile
     container_name: los-api
     restart: unless-stopped
@@ -34,9 +34,9 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3333
-      DATABASE_URL: postgresql://${POSTGRES_USER:-los}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}@postgres:5432/${POSTGRES_DB:-los}
-      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET required - run openssl rand -hex 32}
-      COFRE_JWT_SECRET: ${COFRE_JWT_SECRET:?COFRE_JWT_SECRET required - run openssl rand -hex 32}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-los}:${POSTGRES_PASSWORD:-los}@postgres:5432/${POSTGRES_DB:-los}
+      JWT_SECRET: ${JWT_SECRET:-change-me-jwt-secret}
+      COFRE_JWT_SECRET: ${COFRE_JWT_SECRET:-change-me-cofre-secret}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
       TELEGRAM_BOT_USERNAME: ${TELEGRAM_BOT_USERNAME:-}
       TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:-}
@@ -51,7 +51,7 @@ services:
 
   web:
     build:
-      context: .
+      context: ..
       dockerfile: web/Dockerfile
       args:
         VITE_API_BASE: /api
@@ -61,7 +61,7 @@ services:
       api:
         condition: service_healthy
     ports:
-      - "${WEB_PORT:-80}:80"
+      - "${WEB_PORT:-8080}:80"
     networks:
       - los-net
     healthcheck:
