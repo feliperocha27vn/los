@@ -6,23 +6,11 @@ services:
     container_name: los-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-los}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-los}
-      POSTGRES_DB: ${POSTGRES_DB:-los}
-      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
-      POSTGRES_HOST_AUTH_METHOD: trust
-    entrypoint:
-      - sh
-      - -c
-      - |
-        # Force trust auth on every start, not just first init.
-        # This handles legacy volumes that have scram-sha-256 in pg_hba.conf
-        # from a previous deploy with a different POSTGRES_PASSWORD.
-        if [ -f /var/lib/postgresql/data/pg_hba.conf ]; then
-          echo "[postgres] patching pg_hba.conf to use trust auth"
-          sed -i 's/scram-sha-256/trust/g; s/md5/trust/g; s/ident/trust/g' /var/lib/postgresql/data/pg_hba.conf
-        fi
-        exec docker-entrypoint.sh postgres
+      - POSTGRES_USER=${POSTGRES_USER:-los}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-los}
+      - POSTGRES_DB=${POSTGRES_DB:-los}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF8 --locale=C
+      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ../scripts/postgres-init:/docker-entrypoint-initdb.d:ro
@@ -45,21 +33,20 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      NODE_ENV: production
-      PORT: 3333
-      DATABASE_URL: postgresql://${POSTGRES_USER:-los}@postgres:5432/${POSTGRES_DB:-los}
-      JWT_SECRET: ${JWT_SECRET:-change-me-jwt-secret}
-      COFRE_JWT_SECRET: ${COFRE_JWT_SECRET:-change-me-cofre-secret}
-      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
-      TELEGRAM_BOT_USERNAME: ${TELEGRAM_BOT_USERNAME:-}
-      TELEGRAM_WEBHOOK_SECRET: ${TELEGRAM_WEBHOOK_SECRET:-}
-      CORS_ORIGIN: ${CORS_ORIGIN:-}
-      ADMIN_EMAIL: ${ADMIN_EMAIL:-feliperocha.dev27@gmail.com}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-change-me-on-first-login}
-      ADMIN_PIN: ${ADMIN_PIN:-123456}
-      ADMIN_NAME: ${ADMIN_NAME:-Felipe}
-    ports:
-      - "${API_PORT:-3000}:3333"
+      - SERVICE_FQDN_API_3333
+      - NODE_ENV=production
+      - PORT=3333
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-los}@postgres:5432/${POSTGRES_DB:-los}
+      - JWT_SECRET=${JWT_SECRET}
+      - COFRE_JWT_SECRET=${COFRE_JWT_SECRET}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_BOT_USERNAME=${TELEGRAM_BOT_USERNAME:-}
+      - TELEGRAM_WEBHOOK_SECRET=${TELEGRAM_WEBHOOK_SECRET:-}
+      - CORS_ORIGIN=${CORS_ORIGIN:-}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-feliperocha.dev27@gmail.com}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-change-me-on-first-login}
+      - ADMIN_PIN=${ADMIN_PIN:-123456}
+      - ADMIN_NAME=${ADMIN_NAME:-Felipe}
     networks:
       - los-net
     healthcheck:
@@ -71,7 +58,6 @@ services:
 
 volumes:
   postgres-data:
-    name: los-postgres-data-v3
 
 networks:
   los-net:
