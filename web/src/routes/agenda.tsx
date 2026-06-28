@@ -424,7 +424,7 @@ function AgendaComponent() {
 
   return (
     <AppShell activeTab="agenda">
-      <div className="flex flex-col gap-6 h-full">
+      <div className="p-4 md:p-6 lg:p-8 flex flex-col gap-6 h-full">
         
         {/* Header da Página */}
         <div className="flex flex-col gap-1">
@@ -452,7 +452,7 @@ function AgendaComponent() {
 
             {/* Listagem de Calendários */}
             <div className="flex flex-col gap-3">
-              <span className="text-[10px] font-bold font-mono text-muted-foreground tracking-wider uppercase">
+              <span className="text-[11px] font-bold font-mono text-muted-foreground tracking-wider uppercase">
                 Meus Calendários
               </span>
               <div className="flex flex-col gap-2">
@@ -476,7 +476,7 @@ function AgendaComponent() {
                     >
                       {cal.checked && <Check className="h-2.5 w-2.5 text-white stroke-[3]" />}
                     </div>
-                    <span className="text-xs font-mono text-foreground group-hover:text-white transition-smooth">
+                    <span className="text-sm font-mono text-foreground group-hover:text-white transition-smooth">
                       {cal.name}
                     </span>
                   </label>
@@ -486,7 +486,7 @@ function AgendaComponent() {
               <Button 
                 onClick={() => setIsCalendarModalOpen(true)}
                 variant="ghost" 
-                className="justify-start px-2 py-1 h-auto text-[11px] font-mono text-muted-foreground hover:text-foreground hover:bg-transparent"
+                className="justify-start px-2 py-1 h-auto text-xs font-mono text-muted-foreground hover:text-foreground hover:bg-transparent"
               >
                 + Novo Calendário
               </Button>
@@ -524,7 +524,7 @@ function AgendaComponent() {
                   </Button>
                 </div>
 
-                <span className="text-sm font-bold font-mono text-foreground shrink-0">
+                <span className="text-base font-bold font-mono text-foreground shrink-0">
                   {activeView === 'mes' && formatMonthYear(selectedDate)}
                   {activeView === 'semana' && `Junho 2026`}
                   {activeView === 'dia' && formatFullDate(selectedDate)}
@@ -538,7 +538,7 @@ function AgendaComponent() {
                   <button
                     key={view}
                     onClick={() => setActiveView(view)}
-                    className={`px-3 py-1.5 rounded-md font-mono text-xs transition-smooth capitalize ${
+                    className={`px-3 py-1.5 rounded-md font-mono text-sm transition-smooth capitalize ${
                       activeView === view 
                         ? 'bg-background text-foreground font-semibold border border-border/60' 
                         : 'text-muted-foreground hover:text-foreground'
@@ -558,7 +558,7 @@ function AgendaComponent() {
                 <div className="h-full flex flex-col border border-border rounded-lg bg-card overflow-hidden">
                   <div className="grid grid-cols-7 border-b border-border bg-card/45 select-none">
                     {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(d => (
-                      <div key={d} className="py-2.5 text-center text-[10px] font-bold font-mono text-muted-foreground uppercase">
+                      <div key={d} className="py-2.5 text-center text-xs font-bold font-mono text-muted-foreground uppercase">
                         {d}
                       </div>
                     ))}
@@ -585,7 +585,7 @@ function AgendaComponent() {
                         >
                           <div className="flex justify-between items-center select-none">
                             <span 
-                              className={`text-[10px] font-mono font-bold h-5 w-5 rounded-full flex items-center justify-center transition-smooth ${
+                              className={`text-xs font-mono font-bold h-5 w-5 rounded-full flex items-center justify-center transition-smooth ${
                                 isToday 
                                   ? 'bg-indigo-600 text-white' 
                                   : isCurrentMonth 
@@ -605,7 +605,7 @@ function AgendaComponent() {
                                   e.stopPropagation();
                                   openEditModal(ev);
                                 }}
-                                className="px-2 py-0.5 rounded text-[9px] font-mono font-semibold text-white truncate transition-smooth hover:scale-[1.02] w-full"
+                                className="px-2 py-0.5 rounded text-[11px] font-mono font-semibold text-white truncate transition-smooth hover:scale-[1.02] w-full"
                                 style={{ backgroundColor: getCalendarColor(ev.calendarId) }}
                                 title={`${ev.startAt.toTimeString().substring(0, 5)} - ${ev.title}`}
                               >
@@ -649,11 +649,11 @@ function AgendaComponent() {
                           className="flex flex-col gap-3 p-3 rounded-lg border border-border bg-card h-full min-w-0"
                         >
                           <div className="flex flex-col items-center select-none border-b border-border/50 pb-2">
-                            <span className="text-[10px] font-bold font-mono text-muted-foreground uppercase">
+                            <span className="text-xs font-bold font-mono text-muted-foreground uppercase">
                               {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][day.getDay()]}
                             </span>
                             <span 
-                              className={`text-xs font-bold font-mono mt-1 h-5.5 w-5.5 rounded-full flex items-center justify-center ${
+                              className={`text-sm font-bold font-mono mt-1 h-5.5 w-5.5 rounded-full flex items-center justify-center ${
                                 isToday ? 'bg-indigo-600 text-white' : 'text-foreground'
                               }`}
                             >
@@ -669,10 +669,10 @@ function AgendaComponent() {
                                 className="flex flex-col gap-1 p-2 rounded-lg cursor-pointer transition-smooth hover:scale-[1.02] w-full"
                                 style={{ backgroundColor: `${getCalendarColor(ev.calendarId)}e5` }}
                               >
-                                <span className="text-[10px] font-bold font-mono text-white leading-tight break-words w-full">
+                                <span className="text-xs font-bold font-mono text-white leading-tight break-words w-full">
                                   {ev.title}
                                 </span>
-                                <span className="text-[8px] font-mono text-white/85">
+                                <span className="text-[10px] font-mono text-white/85">
                                   {ev.startAt.toTimeString().substring(0, 5)}
                                 </span>
                               </div>
@@ -680,7 +680,7 @@ function AgendaComponent() {
 
                             <button 
                               onClick={() => openCreateModal(day)}
-                              className="w-full py-1.5 border border-dashed border-border hover:border-muted-foreground rounded-md text-[10px] font-mono text-muted-foreground hover:text-foreground transition-smooth mt-auto shrink-0"
+                              className="w-full py-1.5 border border-dashed border-border hover:border-muted-foreground rounded-md text-xs font-mono text-muted-foreground hover:text-foreground transition-smooth mt-auto shrink-0"
                             >
                               + Agendar
                             </button>
@@ -705,11 +705,11 @@ function AgendaComponent() {
                           className="flex-1 flex flex-col gap-2 p-2 rounded-lg border border-border bg-card h-full min-w-0"
                         >
                           <div className="flex flex-col items-center select-none border-b border-border/50 pb-1">
-                            <span className="text-[9px] font-bold font-mono text-muted-foreground uppercase">
+                            <span className="text-[10px] font-bold font-mono text-muted-foreground uppercase">
                               {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][day.getDay()]}
                             </span>
                             <span 
-                              className={`text-xs font-bold font-mono mt-0.5 h-5 w-5 rounded-full flex items-center justify-center ${
+                              className={`text-sm font-bold font-mono mt-0.5 h-5 w-5 rounded-full flex items-center justify-center ${
                                 isToday ? 'bg-indigo-600 text-white' : 'text-foreground'
                               }`}
                             >
@@ -725,7 +725,7 @@ function AgendaComponent() {
                                 className="flex flex-col p-1.5 rounded-md cursor-pointer transition-smooth w-full"
                                 style={{ backgroundColor: getCalendarColor(ev.calendarId) }}
                               >
-                                <span className="text-[9px] font-bold font-mono text-white truncate w-full">
+                                <span className="text-xs font-bold font-mono text-white truncate w-full">
                                   {ev.title}
                                 </span>
                               </div>
@@ -756,7 +756,7 @@ function AgendaComponent() {
 
                         return (
                           <div key={hour} className="flex items-start gap-4 min-h-[48px]">
-                            <span className="text-xs font-mono text-muted-foreground w-10 text-right pt-0.5">
+                            <span className="text-sm font-mono text-muted-foreground w-10 text-right pt-0.5">
                               {hour}
                             </span>
                             
@@ -771,11 +771,11 @@ function AgendaComponent() {
                                     <div className="flex items-center gap-3 min-w-0">
                                       <div className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: getCalendarColor(ev.calendarId) }} />
                                       <div className="flex flex-col min-w-0">
-                                        <span className="text-xs font-bold font-mono text-foreground truncate">
+                                        <span className="text-sm font-bold font-mono text-foreground truncate">
                                           {ev.title}
                                         </span>
                                         {ev.description && (
-                                          <span className="text-[10px] font-mono text-muted-foreground truncate">
+                                          <span className="text-xs font-mono text-muted-foreground truncate">
                                             {ev.description}
                                           </span>
                                         )}
@@ -806,7 +806,7 @@ function AgendaComponent() {
                   </div>
 
                   <div className="w-full md:w-[320px] border border-border rounded-lg bg-card p-4 flex flex-col gap-4 shrink-0">
-                    <span className="text-xs font-bold font-mono text-foreground border-b border-border pb-2 uppercase tracking-wide">
+                    <span className="text-sm font-bold font-mono text-foreground border-b border-border pb-2 uppercase tracking-wide">
                       Compromissos do Dia
                     </span>
                     
@@ -823,18 +823,18 @@ function AgendaComponent() {
                         >
                           <div className="flex items-center gap-2">
                             <div className="h-2 w-2 rounded-full" style={{ backgroundColor: getCalendarColor(ev.calendarId) }} />
-                            <span className="text-xs font-bold font-mono text-foreground truncate">
+                            <span className="text-sm font-bold font-mono text-foreground truncate">
                               {ev.title}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground">
+                          <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
                             <Clock className="h-3.5 w-3.5" />
                             <span>
                               {ev.startAt.toTimeString().substring(0, 5)} - {ev.endAt.toTimeString().substring(0, 5)}
                             </span>
                           </div>
                           {ev.description && (
-                            <p className="text-[10px] font-mono text-muted-foreground leading-normal mt-0.5 line-clamp-2">
+                            <p className="text-xs font-mono text-muted-foreground leading-normal mt-0.5 line-clamp-2">
                               {ev.description}
                             </p>
                           )}
@@ -891,7 +891,7 @@ function AgendaComponent() {
                         return (
                           <div key={dateKey} className="flex flex-col md:flex-row gap-4 border-b border-border/40 pb-4">
                             <div className="w-full md:w-[200px] shrink-0 select-none">
-                              <span className="block text-xs font-bold font-mono text-foreground">
+                              <span className="block text-sm font-bold font-mono text-foreground">
                                 {formatFullDate(group.date)}
                               </span>
                             </div>
@@ -904,7 +904,7 @@ function AgendaComponent() {
                                   className="flex items-center justify-between p-3 rounded-lg border border-border bg-background hover:bg-card/30 cursor-pointer transition-smooth group"
                                 >
                                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 min-w-0">
-                                    <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground shrink-0">
+                                    <div className="flex items-center gap-1.5 text-sm font-mono text-muted-foreground shrink-0">
                                       <Clock className="h-3.5 w-3.5 text-muted-foreground/60" />
                                       <span>
                                         {ev.startAt.toTimeString().substring(0, 5)} - {ev.endAt.toTimeString().substring(0, 5)}
@@ -912,7 +912,7 @@ function AgendaComponent() {
                                     </div>
                                     <div className="flex items-center gap-2 min-w-0">
                                       <div className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: getCalendarColor(ev.calendarId) }} />
-                                      <span className="text-xs font-bold font-mono text-foreground truncate">
+                                      <span className="text-sm font-bold font-mono text-foreground truncate">
                                         {ev.title}
                                       </span>
                                     </div>
@@ -920,7 +920,7 @@ function AgendaComponent() {
 
                                   <div className="flex items-center gap-2 shrink-0">
                                     <span 
-                                      className="hidden sm:inline-block px-2 py-0.5 rounded text-[9px] font-mono font-medium text-white/90"
+                                      className="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-mono font-medium text-white/90"
                                       style={{ backgroundColor: getCalendarColor(ev.calendarId) }}
                                     >
                                       {getCalendarName(ev.calendarId)}
