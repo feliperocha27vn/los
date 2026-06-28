@@ -128,7 +128,28 @@ try {
   await runMigrations()
   await runSeed()
 } catch (e) {
-  console.error('[start] startup failed:', e)
+  const err = e as { cause?: { code?: string; message?: string }; message?: string }
+  if (err.cause?.code === '28P01' || err.message?.includes('password authentication')) {
+    console.error('')
+    console.error('==========================================================')
+    console.error('[start] FATAL: PostgreSQL authentication failed')
+    console.error('')
+    console.error('The api service cannot connect to the postgres service.')
+    console.error('This usually means the persistent volume los-postgres-data')
+    console.error('was initialized with a different POSTGRES_PASSWORD than the')
+    console.error('one currently in the api service env vars.')
+    console.error('')
+    console.error('Fix: stop the stack, DELETE the volume, redeploy.')
+    console.error('  docker compose down -v   # deletes los-postgres-data')
+    console.error('')
+    console.error('After delete, the new volume will be created with the')
+    console.error('POSTGRES_PASSWORD from your env vars, and the seed will run')
+    console.error('automatically on first boot.')
+    console.error('==========================================================')
+    console.error('')
+  } else {
+    console.error('[start] startup failed:', e)
+  }
   process.exit(1)
 }
 
