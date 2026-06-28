@@ -58,7 +58,7 @@ services:
 
 volumes:
   postgres-data:
-    name: los-postgres-data
+    name: los-postgres-data-v2
 
 networks:
   los-net:
