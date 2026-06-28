@@ -20,7 +20,15 @@ function endOfWindow(now: Date, offsetMinutes: number): Date {
 }
 
 function buildMessage(event: AgendaEventRecord): string {
-  return `[Lembrete] *${event.title}*`
+  const lines: string[] = []
+  lines.push('📅 *Lembrete*')
+  lines.push('')
+  lines.push(`*${event.title}*`)
+  if (event.description) {
+    lines.push('')
+    lines.push(event.description)
+  }
+  return lines.join('\n')
 }
 
 export class AgendaNotificationService {
