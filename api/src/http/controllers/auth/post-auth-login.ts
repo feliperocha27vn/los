@@ -37,7 +37,9 @@ export function postAuthLoginRoute(
         reply.setCookie('token', token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
+          // Frontend (Cloudflare Pages) e API ficam em domínios diferentes:
+          // cookie cross-site só é enviado com SameSite=None; Secure.
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
           path: '/',
           maxAge: 60 * 60 * 24 * 7,
         })

@@ -80,7 +80,8 @@ export function cofreRoutes(deps: CofreRoutesDeps): FastifyPluginAsync {
         reply.setCookie('cofre_token', cofreToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
+          // Cross-site (Pages -> API): SameSite=None; Secure é obrigatório.
+          sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
           path: '/cofre',
           maxAge: 60 * 5,
         })
