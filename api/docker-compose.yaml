@@ -49,6 +49,7 @@ services:
       - ADMIN_NAME=${ADMIN_NAME:-Felipe}
     networks:
       - los-net
+      - coolify
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:3333/health"]
       interval: 30s
@@ -63,3 +64,9 @@ networks:
   los-net:
     name: los-net
     driver: bridge
+  # Rede do proxy (Traefik) gerenciada pelo Coolify. Externa porque é
+  # criada pelo Coolify, não por este compose. Anexar o serviço `api`
+  # aqui garante que o Traefik alcance a porta 3333 (evita o 504 por
+  # ambiguidade de rede quando o container está em múltiplas networks).
+  coolify:
+    external: true
