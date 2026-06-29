@@ -1,44 +1,56 @@
-name: los
+# docker-compose para deploy no Coolify
+#
+# Regras do Coolify aplicadas aqui:
+#  - NÃO declarar `networks:` — o Coolify cria uma rede compartilhada por
+#    stack e conecta o Traefik nela automaticamente. Rede custom = 504.
+#  - NÃO declarar `ports:` — o Traefik roteia internamente via os labels
+#    gerados pelo SERVICE_FQDN. Expor portas burlaria o proxy.
+#  - NÃO usar `container_name:` — deixa o Coolify nomear (evita conflitos).
+#  - Serviços conversam entre si pelo nome do serviço (ex.: `postgres`).
+#  - Magic vars (SERVICE_FQDN/SERVICE_PASSWORD/SERVICE_BASE64) são geradas
+#    pelo Coolify, reutilizadas com o MESMO valor onde aparecerem e ficam
+#    visíveis na UI (exceto FQDN/URL).
 
 services:
   postgres:
     image: postgres:17-alpine
-    container_name: los-postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=${POSTGRES_USER:-los}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-los}
-      - POSTGRES_DB=${POSTGRES_DB:-los}
+      - POSTGRES_USER=los
+      - POSTGRES_DB=los
+      # Senha forte gerada pelo Coolify e reusada no DATABASE_URL abaixo —
+      # mesma origem nos dois lados, sem risco de mismatch de auth.
+      - POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
       - POSTGRES_INITDB_ARGS=--encoding=UTF8 --locale=C
-      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ../scripts/postgres-init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-los} -d ${POSTGRES_DB:-los}"]
+      test: ["CMD-SHELL", "pg_isready -U los -d los"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
-    networks:
-      - los-net
 
   api:
     build:
       context: ..
       dockerfile: api/Dockerfile
-    container_name: los-api
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
     environment:
+      # Coolify gera o FQDN e os labels do Traefik para a porta 3333.
+      # Defina o domínio (api.votipet.tech) na UI do Coolify neste serviço.
       - SERVICE_FQDN_API_3333
       - NODE_ENV=production
       - PORT=3333
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-los}@postgres:5432/${POSTGRES_DB:-los}
-      - JWT_SECRET=${JWT_SECRET}
-      - COFRE_JWT_SECRET=${COFRE_JWT_SECRET}
+      - DATABASE_URL=postgresql://los:${SERVICE_PASSWORD_POSTGRES}@postgres:5432/los
+      # Secrets gerados pelo Coolify (64 bytes hex). Visíveis/editáveis na UI.
+      - JWT_SECRET=${SERVICE_BASE64_64_JWT}
+      - COFRE_JWT_SECRET=${SERVICE_BASE64_64_COFRE}
+      # Configuráveis na UI do Coolify (deixe vazio se não usar).
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
       - TELEGRAM_BOT_USERNAME=${TELEGRAM_BOT_USERNAME:-}
       - TELEGRAM_WEBHOOK_SECRET=${TELEGRAM_WEBHOOK_SECRET:-}
@@ -47,9 +59,6 @@ services:
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-change-me-on-first-login}
       - ADMIN_PIN=${ADMIN_PIN:-123456}
       - ADMIN_NAME=${ADMIN_NAME:-Felipe}
-    networks:
-      - los-net
-      - coolify
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:3333/health"]
       interval: 30s
@@ -59,14 +68,3 @@ services:
 
 volumes:
   postgres-data:
-
-networks:
-  los-net:
-    name: los-net
-    driver: bridge
-  # Rede do proxy (Traefik) gerenciada pelo Coolify. Externa porque é
-  # criada pelo Coolify, não por este compose. Anexar o serviço `api`
-  # aqui garante que o Traefik alcance a porta 3333 (evita o 504 por
-  # ambiguidade de rede quando o container está em múltiplas networks).
-  coolify:
-    external: true
