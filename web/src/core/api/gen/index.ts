@@ -1,7 +1,3 @@
-export type { DeleteAgendaCalendarsIdMutationKey } from "./hooks/useDeleteAgendaCalendarsId.ts";
-export type { DeleteAgendaEventsIdMutationKey } from "./hooks/useDeleteAgendaEventsId.ts";
-export type { DeleteAgendaEventsIdExceptionsExceptionidMutationKey } from "./hooks/useDeleteAgendaEventsIdExceptionsExceptionid.ts";
-export type { DeleteAgendaTelegramLinkMutationKey } from "./hooks/useDeleteAgendaTelegramLink.ts";
 export type { DeleteCofreEntriesIdMutationKey } from "./hooks/useDeleteCofreEntriesId.ts";
 export type { DeleteCoursesIdMutationKey } from "./hooks/useDeleteCoursesId.ts";
 export type { DeleteFinanceCreditCardExpensesIdMutationKey } from "./hooks/useDeleteFinanceCreditCardExpensesId.ts";
@@ -12,20 +8,6 @@ export type { DeletePagesIdMutationKey } from "./hooks/useDeletePagesId.ts";
 export type { DeleteTasksIdMutationKey } from "./hooks/useDeleteTasksId.ts";
 export type { DeleteTrackerHabitsIdMutationKey } from "./hooks/useDeleteTrackerHabitsId.ts";
 export type { DeleteTrackerRecordsIdMutationKey } from "./hooks/useDeleteTrackerRecordsId.ts";
-export type { GetAgendaCalendarsQueryKey } from "./hooks/useGetAgendaCalendars.ts";
-export type { GetAgendaCalendarsIdQueryKey } from "./hooks/useGetAgendaCalendarsId.ts";
-export type { GetAgendaCalendarsIdSuspenseQueryKey } from "./hooks/useGetAgendaCalendarsIdSuspense.ts";
-export type { GetAgendaCalendarsSuspenseQueryKey } from "./hooks/useGetAgendaCalendarsSuspense.ts";
-export type { GetAgendaEventsQueryKey } from "./hooks/useGetAgendaEvents.ts";
-export type { GetAgendaEventsIdQueryKey } from "./hooks/useGetAgendaEventsId.ts";
-export type { GetAgendaEventsIdExceptionsQueryKey } from "./hooks/useGetAgendaEventsIdExceptions.ts";
-export type { GetAgendaEventsIdExceptionsSuspenseQueryKey } from "./hooks/useGetAgendaEventsIdExceptionsSuspense.ts";
-export type { GetAgendaEventsIdSuspenseQueryKey } from "./hooks/useGetAgendaEventsIdSuspense.ts";
-export type { GetAgendaEventsSuspenseQueryKey } from "./hooks/useGetAgendaEventsSuspense.ts";
-export type { GetAgendaPreferencesQueryKey } from "./hooks/useGetAgendaPreferences.ts";
-export type { GetAgendaPreferencesSuspenseQueryKey } from "./hooks/useGetAgendaPreferencesSuspense.ts";
-export type { GetAgendaTelegramLinkQueryKey } from "./hooks/useGetAgendaTelegramLink.ts";
-export type { GetAgendaTelegramLinkSuspenseQueryKey } from "./hooks/useGetAgendaTelegramLinkSuspense.ts";
 export type { GetAuthMeQueryKey } from "./hooks/useGetAuthMe.ts";
 export type { GetAuthMeSuspenseQueryKey } from "./hooks/useGetAuthMeSuspense.ts";
 export type { GetCofreEntriesQueryKey } from "./hooks/useGetCofreEntries.ts";
@@ -72,7 +54,6 @@ export type { GetTrackerHabitsIdSuspenseQueryKey } from "./hooks/useGetTrackerHa
 export type { GetTrackerHabitsSuspenseQueryKey } from "./hooks/useGetTrackerHabitsSuspense.ts";
 export type { GetTrackerTodayQueryKey } from "./hooks/useGetTrackerToday.ts";
 export type { GetTrackerTodaySuspenseQueryKey } from "./hooks/useGetTrackerTodaySuspense.ts";
-export type { PatchAgendaEventsIdStatusMutationKey } from "./hooks/usePatchAgendaEventsIdStatus.ts";
 export type { PatchCoursesIdReorderMutationKey } from "./hooks/usePatchCoursesIdReorder.ts";
 export type { PatchFinanceCreditCardExpensesIdLaunchMutationKey } from "./hooks/usePatchFinanceCreditCardExpensesIdLaunch.ts";
 export type { PatchFinanceCreditCardExpensesIdUnlaunchMutationKey } from "./hooks/usePatchFinanceCreditCardExpensesIdUnlaunch.ts";
@@ -81,10 +62,6 @@ export type { PatchPagesIdReorderMutationKey } from "./hooks/usePatchPagesIdReor
 export type { PatchTasksIdMoveMutationKey } from "./hooks/usePatchTasksIdMove.ts";
 export type { PatchTrackerHabitsIdReorderMutationKey } from "./hooks/usePatchTrackerHabitsIdReorder.ts";
 export type { PatchTrackerHabitsIdRestoreMutationKey } from "./hooks/usePatchTrackerHabitsIdRestore.ts";
-export type { PostAgendaCalendarsMutationKey } from "./hooks/usePostAgendaCalendars.ts";
-export type { PostAgendaEventsMutationKey } from "./hooks/usePostAgendaEvents.ts";
-export type { PostAgendaEventsIdExceptionsMutationKey } from "./hooks/usePostAgendaEventsIdExceptions.ts";
-export type { PostAgendaTelegramWebhookMutationKey } from "./hooks/usePostAgendaTelegramWebhook.ts";
 export type { PostAuthLoginMutationKey } from "./hooks/usePostAuthLogin.ts";
 export type { PostAuthLogoutMutationKey } from "./hooks/usePostAuthLogout.ts";
 export type { PostCofreEntriesMutationKey } from "./hooks/usePostCofreEntries.ts";
@@ -98,9 +75,6 @@ export type { PostNotesMutationKey } from "./hooks/usePostNotes.ts";
 export type { PostPagesMutationKey } from "./hooks/usePostPages.ts";
 export type { PostTasksMutationKey } from "./hooks/usePostTasks.ts";
 export type { PostTrackerHabitsMutationKey } from "./hooks/usePostTrackerHabits.ts";
-export type { PutAgendaCalendarsIdMutationKey } from "./hooks/usePutAgendaCalendarsId.ts";
-export type { PutAgendaEventsIdMutationKey } from "./hooks/usePutAgendaEventsId.ts";
-export type { PutAgendaPreferencesMutationKey } from "./hooks/usePutAgendaPreferences.ts";
 export type { PutCofreEntriesIdMutationKey } from "./hooks/usePutCofreEntriesId.ts";
 export type { PutCoursesIdMutationKey } from "./hooks/usePutCoursesId.ts";
 export type { PutFinanceCreditCardExpensesIdMutationKey } from "./hooks/usePutFinanceCreditCardExpensesId.ts";
@@ -111,93 +85,551 @@ export type { PutPagesIdMutationKey } from "./hooks/usePutPagesId.ts";
 export type { PutTasksIdMutationKey } from "./hooks/usePutTasksId.ts";
 export type { PutTrackerHabitsIdMutationKey } from "./hooks/usePutTrackerHabitsId.ts";
 export type { PutTrackerRecordsMutationKey } from "./hooks/usePutTrackerRecords.ts";
-export type { DeleteAgendaCalendarsId204, DeleteAgendaCalendarsId404, DeleteAgendaCalendarsIdMutation, DeleteAgendaCalendarsIdMutationResponse, DeleteAgendaCalendarsIdPathParams } from "./types/DeleteAgendaCalendarsId.ts";
-export type { DeleteAgendaEventsId204, DeleteAgendaEventsId404, DeleteAgendaEventsIdMutation, DeleteAgendaEventsIdMutationResponse, DeleteAgendaEventsIdPathParams } from "./types/DeleteAgendaEventsId.ts";
-export type { DeleteAgendaEventsIdExceptionsExceptionid204, DeleteAgendaEventsIdExceptionsExceptionid404, DeleteAgendaEventsIdExceptionsExceptionidMutation, DeleteAgendaEventsIdExceptionsExceptionidMutationResponse, DeleteAgendaEventsIdExceptionsExceptionidPathParams } from "./types/DeleteAgendaEventsIdExceptionsExceptionid.ts";
-export type { DeleteAgendaTelegramLink204, DeleteAgendaTelegramLink404, DeleteAgendaTelegramLinkMutation, DeleteAgendaTelegramLinkMutationResponse } from "./types/DeleteAgendaTelegramLink.ts";
-export type { DeleteCofreEntriesId204, DeleteCofreEntriesId404, DeleteCofreEntriesIdMutation, DeleteCofreEntriesIdMutationResponse, DeleteCofreEntriesIdPathParams } from "./types/DeleteCofreEntriesId.ts";
-export type { DeleteCoursesId204, DeleteCoursesId404, DeleteCoursesIdMutation, DeleteCoursesIdMutationResponse, DeleteCoursesIdPathParams } from "./types/DeleteCoursesId.ts";
-export type { DeleteFinanceCreditCardExpensesId204, DeleteFinanceCreditCardExpensesId404, DeleteFinanceCreditCardExpensesIdMutation, DeleteFinanceCreditCardExpensesIdMutationResponse, DeleteFinanceCreditCardExpensesIdPathParams } from "./types/DeleteFinanceCreditCardExpensesId.ts";
-export type { DeleteFinanceTransactionsId204, DeleteFinanceTransactionsId404, DeleteFinanceTransactionsIdMutation, DeleteFinanceTransactionsIdMutationResponse, DeleteFinanceTransactionsIdPathParams } from "./types/DeleteFinanceTransactionsId.ts";
-export type { DeleteModulesId204, DeleteModulesId404, DeleteModulesIdMutation, DeleteModulesIdMutationResponse, DeleteModulesIdPathParams } from "./types/DeleteModulesId.ts";
-export type { DeleteNotesId204, DeleteNotesId404, DeleteNotesIdMutation, DeleteNotesIdMutationResponse, DeleteNotesIdPathParams } from "./types/DeleteNotesId.ts";
-export type { DeletePagesId204, DeletePagesId404, DeletePagesIdMutation, DeletePagesIdMutationResponse, DeletePagesIdPathParams } from "./types/DeletePagesId.ts";
-export type { DeleteTasksId204, DeleteTasksId404, DeleteTasksIdMutation, DeleteTasksIdMutationResponse, DeleteTasksIdPathParams } from "./types/DeleteTasksId.ts";
-export type { DeleteTrackerHabitsId204, DeleteTrackerHabitsId404, DeleteTrackerHabitsIdMutation, DeleteTrackerHabitsIdMutationResponse, DeleteTrackerHabitsIdPathParams } from "./types/DeleteTrackerHabitsId.ts";
-export type { DeleteTrackerRecordsId204, DeleteTrackerRecordsId404, DeleteTrackerRecordsIdMutation, DeleteTrackerRecordsIdMutationResponse, DeleteTrackerRecordsIdPathParams } from "./types/DeleteTrackerRecordsId.ts";
-export type { GetAgendaCalendars200, GetAgendaCalendarsQuery, GetAgendaCalendarsQueryResponse } from "./types/GetAgendaCalendars.ts";
-export type { GetAgendaCalendarsId200, GetAgendaCalendarsId404, GetAgendaCalendarsIdPathParams, GetAgendaCalendarsIdQuery, GetAgendaCalendarsIdQueryResponse } from "./types/GetAgendaCalendarsId.ts";
-export type { EventsDescriptionEnumKey, EventsLocationEnumKey, EventsStatusEnumKey, GetAgendaEvents200, GetAgendaEventsQuery, GetAgendaEventsQueryParams, GetAgendaEventsQueryParamsStatusEnumKey, GetAgendaEventsQueryResponse } from "./types/GetAgendaEvents.ts";
-export type { EventDescriptionEnum2Key, EventLocationEnum2Key, EventRecurrenceCountEnum2Key, EventRecurrenceEndsAtEnum2Key, EventRecurrenceEnum2Key, EventStatusEnum2Key, ExceptionsActionEnumKey, ExceptionsNewEndsAtEnumKey, ExceptionsNewStartsAtEnumKey, GetAgendaEventsId200, GetAgendaEventsId404, GetAgendaEventsIdPathParams, GetAgendaEventsIdQuery, GetAgendaEventsIdQueryResponse } from "./types/GetAgendaEventsId.ts";
-export type { ExceptionsActionEnum2Key, ExceptionsNewEndsAtEnum2Key, ExceptionsNewStartsAtEnum2Key, GetAgendaEventsIdExceptions200, GetAgendaEventsIdExceptions404, GetAgendaEventsIdExceptionsPathParams, GetAgendaEventsIdExceptionsQuery, GetAgendaEventsIdExceptionsQueryResponse } from "./types/GetAgendaEventsIdExceptions.ts";
-export type { GetAgendaPreferences200, GetAgendaPreferencesQuery, GetAgendaPreferencesQueryResponse } from "./types/GetAgendaPreferences.ts";
-export type { GetAgendaTelegramLink200, GetAgendaTelegramLink503, GetAgendaTelegramLinkQuery, GetAgendaTelegramLinkQueryResponse } from "./types/GetAgendaTelegramLink.ts";
-export type { GetAuthMe200, GetAuthMe404, GetAuthMeQuery, GetAuthMeQueryResponse } from "./types/GetAuthMe.ts";
-export type { EntriesCategoryEnumKey, EntriesProviderEnumKey, EntriesUrlEnumKey, EntriesUsernameEnumKey, GetCofreEntries200, GetCofreEntriesQuery, GetCofreEntriesQueryParams, GetCofreEntriesQueryParamsCategoryEnumKey, GetCofreEntriesQueryResponse } from "./types/GetCofreEntries.ts";
-export type { EntryCategoryEnum2Key, EntryContentEnumKey, EntryPasswordEnumKey, EntryProviderEnumKey, EntryTokenEnumKey, EntryUrlEnumKey, EntryUsernameEnumKey, GetCofreEntriesId200, GetCofreEntriesId404, GetCofreEntriesIdPathParams, GetCofreEntriesIdQuery, GetCofreEntriesIdQueryResponse } from "./types/GetCofreEntriesId.ts";
-export type { GetCourses200, GetCoursesQuery, GetCoursesQueryResponse } from "./types/GetCourses.ts";
-export type { GetCoursesId200, GetCoursesId404, GetCoursesIdPathParams, GetCoursesIdQuery, GetCoursesIdQueryResponse } from "./types/GetCoursesId.ts";
-export type { CategoriesTypeEnumKey, GetFinanceCategories200, GetFinanceCategoriesQuery, GetFinanceCategoriesQueryParams, GetFinanceCategoriesQueryParamsTypeEnumKey, GetFinanceCategoriesQueryResponse } from "./types/GetFinanceCategories.ts";
-export type { ExpensesCategoryEnumKey, ExpensesLinkedTransactionIdEnumKey, GetFinanceCreditCardExpenses200, GetFinanceCreditCardExpensesQuery, GetFinanceCreditCardExpensesQueryParams, GetFinanceCreditCardExpensesQueryResponse } from "./types/GetFinanceCreditCardExpenses.ts";
-export type { ExpenseCategoryEnum2Key, ExpenseLinkedTransactionIdEnum2Key, GetFinanceCreditCardExpensesId200, GetFinanceCreditCardExpensesId404, GetFinanceCreditCardExpensesIdPathParams, GetFinanceCreditCardExpensesIdQuery, GetFinanceCreditCardExpensesIdQueryResponse } from "./types/GetFinanceCreditCardExpensesId.ts";
-export type { GetFinanceSummary200, GetFinanceSummaryQuery, GetFinanceSummaryQueryParams, GetFinanceSummaryQueryResponse } from "./types/GetFinanceSummary.ts";
-export type { GetFinanceTransactions200, GetFinanceTransactionsQuery, GetFinanceTransactionsQueryParams, GetFinanceTransactionsQueryParamsTypeEnumKey, GetFinanceTransactionsQueryResponse, TransactionsCategoryEnumKey, TransactionsCurrentInstallmentEnumKey, TransactionsSourceEnumKey, TransactionsTypeEnumKey } from "./types/GetFinanceTransactions.ts";
-export type { GetFinanceTransactionsId200, GetFinanceTransactionsId404, GetFinanceTransactionsIdPathParams, GetFinanceTransactionsIdQuery, GetFinanceTransactionsIdQueryResponse, TransactionCategoryEnum2Key, TransactionCurrentInstallmentEnum2Key, TransactionSourceEnum2Key, TransactionTypeEnum2Key } from "./types/GetFinanceTransactionsId.ts";
-export type { GetModules200, GetModulesQuery, GetModulesQueryParams, GetModulesQueryResponse } from "./types/GetModules.ts";
-export type { GetModulesId200, GetModulesId404, GetModulesIdPathParams, GetModulesIdQuery, GetModulesIdQueryResponse } from "./types/GetModulesId.ts";
-export type { GetNotes200, GetNotesQuery, GetNotesQueryParams, GetNotesQueryResponse } from "./types/GetNotes.ts";
-export type { GetNotesId200, GetNotesId404, GetNotesIdPathParams, GetNotesIdQuery, GetNotesIdQueryResponse } from "./types/GetNotesId.ts";
-export type { GetPages200, GetPagesQuery, GetPagesQueryParams, GetPagesQueryResponse } from "./types/GetPages.ts";
-export type { GetPagesId200, GetPagesId404, GetPagesIdPathParams, GetPagesIdQuery, GetPagesIdQueryResponse } from "./types/GetPagesId.ts";
-export type { GetTasks200, GetTasksQuery, GetTasksQueryParams, GetTasksQueryParamsColumnEnumKey, GetTasksQueryResponse, TasksColumnEnumKey, TasksDescriptionEnumKey } from "./types/GetTasks.ts";
-export type { GetTasksId200, GetTasksId404, GetTasksIdPathParams, GetTasksIdQuery, GetTasksIdQueryResponse, TaskColumnEnum2Key, TaskDescriptionEnum2Key } from "./types/GetTasksId.ts";
-export type { DaysEnergyEnum2Key, DaysEnergyEnumKey, DaysQualityEnum2Key, DaysQualityEnumKey, GetTrackerDays200, GetTrackerDays400, GetTrackerDaysQuery, GetTrackerDaysQueryParams, GetTrackerDaysQueryResponse } from "./types/GetTrackerDays.ts";
-export type { GetTrackerHabits200, GetTrackerHabitsQuery, GetTrackerHabitsQueryParams, GetTrackerHabitsQueryResponse } from "./types/GetTrackerHabits.ts";
-export type { GetTrackerHabitsId200, GetTrackerHabitsId404, GetTrackerHabitsIdPathParams, GetTrackerHabitsIdQuery, GetTrackerHabitsIdQueryResponse } from "./types/GetTrackerHabitsId.ts";
-export type { GetTrackerToday200, GetTrackerToday200EnergyEnum2Key, GetTrackerToday200EnergyEnumKey, GetTrackerToday200QualityEnum2Key, GetTrackerToday200QualityEnumKey, GetTrackerTodayQuery, GetTrackerTodayQueryResponse, HabitsRecordIdEnumKey } from "./types/GetTrackerToday.ts";
-export type { EventStatusEnum4Key, PatchAgendaEventsIdStatus200, PatchAgendaEventsIdStatus400, PatchAgendaEventsIdStatus404, PatchAgendaEventsIdStatusMutation, PatchAgendaEventsIdStatusMutationRequest, PatchAgendaEventsIdStatusMutationRequestStatusEnumKey, PatchAgendaEventsIdStatusMutationResponse, PatchAgendaEventsIdStatusPathParams } from "./types/PatchAgendaEventsIdStatus.ts";
-export type { PatchCoursesIdReorder200, PatchCoursesIdReorder404, PatchCoursesIdReorderMutation, PatchCoursesIdReorderMutationRequest, PatchCoursesIdReorderMutationResponse, PatchCoursesIdReorderPathParams } from "./types/PatchCoursesIdReorder.ts";
-export type { ExpenseCategoryEnum4Key, ExpenseLinkedTransactionIdEnum4Key, PatchFinanceCreditCardExpensesIdLaunch200, PatchFinanceCreditCardExpensesIdLaunch404, PatchFinanceCreditCardExpensesIdLaunch409, PatchFinanceCreditCardExpensesIdLaunchMutation, PatchFinanceCreditCardExpensesIdLaunchMutationResponse, PatchFinanceCreditCardExpensesIdLaunchPathParams, TransactionCategoryEnum4Key, TransactionCurrentInstallmentEnum3Key, TransactionSourceEnum3Key, TransactionTypeEnum3Key } from "./types/PatchFinanceCreditCardExpensesIdLaunch.ts";
-export type { ExpenseCategoryEnum5Key, ExpenseLinkedTransactionIdEnum5Key, PatchFinanceCreditCardExpensesIdUnlaunch200, PatchFinanceCreditCardExpensesIdUnlaunch404, PatchFinanceCreditCardExpensesIdUnlaunch409, PatchFinanceCreditCardExpensesIdUnlaunchMutation, PatchFinanceCreditCardExpensesIdUnlaunchMutationResponse, PatchFinanceCreditCardExpensesIdUnlaunchPathParams } from "./types/PatchFinanceCreditCardExpensesIdUnlaunch.ts";
-export type { PatchModulesIdReorder200, PatchModulesIdReorder404, PatchModulesIdReorderMutation, PatchModulesIdReorderMutationRequest, PatchModulesIdReorderMutationResponse, PatchModulesIdReorderPathParams } from "./types/PatchModulesIdReorder.ts";
-export type { PatchPagesIdReorder200, PatchPagesIdReorder404, PatchPagesIdReorderMutation, PatchPagesIdReorderMutationRequest, PatchPagesIdReorderMutationResponse, PatchPagesIdReorderPathParams } from "./types/PatchPagesIdReorder.ts";
-export type { PatchTasksIdMove200, PatchTasksIdMove404, PatchTasksIdMove409, PatchTasksIdMoveMutation, PatchTasksIdMoveMutationRequest, PatchTasksIdMoveMutationRequestColumnEnumKey, PatchTasksIdMoveMutationResponse, PatchTasksIdMovePathParams, TaskColumnEnum3Key } from "./types/PatchTasksIdMove.ts";
-export type { PatchTrackerHabitsIdReorder200, PatchTrackerHabitsIdReorder404, PatchTrackerHabitsIdReorderMutation, PatchTrackerHabitsIdReorderMutationRequest, PatchTrackerHabitsIdReorderMutationResponse, PatchTrackerHabitsIdReorderPathParams } from "./types/PatchTrackerHabitsIdReorder.ts";
-export type { PatchTrackerHabitsIdRestore200, PatchTrackerHabitsIdRestore404, PatchTrackerHabitsIdRestoreMutation, PatchTrackerHabitsIdRestoreMutationResponse, PatchTrackerHabitsIdRestorePathParams } from "./types/PatchTrackerHabitsIdRestore.ts";
-export type { PostAgendaCalendars201, PostAgendaCalendars400, PostAgendaCalendarsMutation, PostAgendaCalendarsMutationRequest, PostAgendaCalendarsMutationResponse } from "./types/PostAgendaCalendars.ts";
-export type { EventDescriptionEnumKey, EventLocationEnumKey, EventRecurrenceCountEnumKey, EventRecurrenceEndsAtEnumKey, EventRecurrenceEnumKey, EventStatusEnumKey, PostAgendaEvents201, PostAgendaEvents400, PostAgendaEvents404, PostAgendaEventsMutation, PostAgendaEventsMutationRequest, PostAgendaEventsMutationRequestDescriptionEnumKey, PostAgendaEventsMutationRequestLocationEnumKey, PostAgendaEventsMutationRequestRecurrenceCountEnumKey, PostAgendaEventsMutationRequestRecurrenceEndsAtEnumKey, PostAgendaEventsMutationRequestRecurrenceEnumKey, PostAgendaEventsMutationResponse } from "./types/PostAgendaEvents.ts";
-export type { ExceptionActionEnumKey, ExceptionNewEndsAtEnumKey, ExceptionNewStartsAtEnumKey, PostAgendaEventsIdExceptions201, PostAgendaEventsIdExceptions400, PostAgendaEventsIdExceptions404, PostAgendaEventsIdExceptions409, PostAgendaEventsIdExceptionsMutation, PostAgendaEventsIdExceptionsMutationRequest, PostAgendaEventsIdExceptionsMutationRequestActionEnumKey, PostAgendaEventsIdExceptionsMutationResponse, PostAgendaEventsIdExceptionsPathParams } from "./types/PostAgendaEventsIdExceptions.ts";
-export type { PostAgendaTelegramWebhook200, PostAgendaTelegramWebhook401, PostAgendaTelegramWebhook503, PostAgendaTelegramWebhookMutation, PostAgendaTelegramWebhookMutationResponse } from "./types/PostAgendaTelegramWebhook.ts";
-export type { PostAuthLogin200, PostAuthLogin401, PostAuthLoginMutation, PostAuthLoginMutationRequest, PostAuthLoginMutationResponse } from "./types/PostAuthLogin.ts";
-export type { PostAuthLogout200, PostAuthLogoutMutation, PostAuthLogoutMutationResponse } from "./types/PostAuthLogout.ts";
-export type { EntryCategoryEnumKey, PostCofreEntries201, PostCofreEntriesMutation, PostCofreEntriesMutationRequest, PostCofreEntriesMutationRequestCategoryEnumKey, PostCofreEntriesMutationRequestContentEnumKey, PostCofreEntriesMutationRequestPasswordEnumKey, PostCofreEntriesMutationRequestProviderEnumKey, PostCofreEntriesMutationRequestTokenEnumKey, PostCofreEntriesMutationRequestUrlEnumKey, PostCofreEntriesMutationRequestUsernameEnumKey, PostCofreEntriesMutationResponse } from "./types/PostCofreEntries.ts";
-export type { PostCofreLock200, PostCofreLockMutation, PostCofreLockMutationResponse } from "./types/PostCofreLock.ts";
-export type { PostCofreUnlock200, PostCofreUnlock401, PostCofreUnlock423, PostCofreUnlockMutation, PostCofreUnlockMutationRequest, PostCofreUnlockMutationResponse } from "./types/PostCofreUnlock.ts";
-export type { PostCourses201, PostCourses400, PostCoursesMutation, PostCoursesMutationRequest, PostCoursesMutationResponse } from "./types/PostCourses.ts";
-export type { ExpenseCategoryEnumKey, ExpenseLinkedTransactionIdEnumKey, PostFinanceCreditCardExpenses201, PostFinanceCreditCardExpenses400, PostFinanceCreditCardExpenses404, PostFinanceCreditCardExpensesMutation, PostFinanceCreditCardExpensesMutationRequest, PostFinanceCreditCardExpensesMutationRequestCategoryIdEnumKey, PostFinanceCreditCardExpensesMutationResponse } from "./types/PostFinanceCreditCardExpenses.ts";
-export type { PostFinanceTransactions201, PostFinanceTransactions400, PostFinanceTransactions404, PostFinanceTransactionsMutation, PostFinanceTransactionsMutationRequest, PostFinanceTransactionsMutationRequestCategoryIdEnumKey, PostFinanceTransactionsMutationRequestTypeEnumKey, PostFinanceTransactionsMutationResponse, TransactionCategoryEnumKey, TransactionCurrentInstallmentEnumKey, TransactionSourceEnumKey, TransactionTypeEnumKey } from "./types/PostFinanceTransactions.ts";
-export type { PostModules201, PostModules400, PostModules404, PostModulesMutation, PostModulesMutationRequest, PostModulesMutationResponse } from "./types/PostModules.ts";
-export type { PostNotes201, PostNotesMutation, PostNotesMutationRequest, PostNotesMutationResponse } from "./types/PostNotes.ts";
-export type { PostPages201, PostPages400, PostPages404, PostPagesMutation, PostPagesMutationRequest, PostPagesMutationResponse } from "./types/PostPages.ts";
-export type { PostTasks201, PostTasks400, PostTasksMutation, PostTasksMutationRequest, PostTasksMutationRequestColumnEnumKey, PostTasksMutationRequestDescriptionEnumKey, PostTasksMutationResponse, TaskColumnEnumKey, TaskDescriptionEnumKey } from "./types/PostTasks.ts";
-export type { PostTrackerHabits201, PostTrackerHabits400, PostTrackerHabitsMutation, PostTrackerHabitsMutationRequest, PostTrackerHabitsMutationResponse } from "./types/PostTrackerHabits.ts";
-export type { PutAgendaCalendarsId200, PutAgendaCalendarsId400, PutAgendaCalendarsId404, PutAgendaCalendarsIdMutation, PutAgendaCalendarsIdMutationRequest, PutAgendaCalendarsIdMutationResponse, PutAgendaCalendarsIdPathParams } from "./types/PutAgendaCalendarsId.ts";
-export type { EventDescriptionEnum3Key, EventLocationEnum3Key, EventRecurrenceCountEnum3Key, EventRecurrenceEndsAtEnum3Key, EventRecurrenceEnum3Key, EventStatusEnum3Key, PutAgendaEventsId200, PutAgendaEventsId400, PutAgendaEventsId404, PutAgendaEventsIdMutation, PutAgendaEventsIdMutationRequest, PutAgendaEventsIdMutationRequestDescriptionEnumKey, PutAgendaEventsIdMutationRequestLocationEnumKey, PutAgendaEventsIdMutationRequestRecurrenceCountEnumKey, PutAgendaEventsIdMutationRequestRecurrenceEndsAtEnumKey, PutAgendaEventsIdMutationRequestRecurrenceEnumKey, PutAgendaEventsIdMutationResponse, PutAgendaEventsIdPathParams } from "./types/PutAgendaEventsId.ts";
-export type { PutAgendaPreferences200, PutAgendaPreferences400, PutAgendaPreferencesMutation, PutAgendaPreferencesMutationRequest, PutAgendaPreferencesMutationResponse } from "./types/PutAgendaPreferences.ts";
-export type { PutCofreEntriesId200, PutCofreEntriesId404, PutCofreEntriesIdMutation, PutCofreEntriesIdMutationRequest, PutCofreEntriesIdMutationRequestContentEnumKey, PutCofreEntriesIdMutationRequestPasswordEnumKey, PutCofreEntriesIdMutationRequestProviderEnumKey, PutCofreEntriesIdMutationRequestTokenEnumKey, PutCofreEntriesIdMutationRequestUrlEnumKey, PutCofreEntriesIdMutationRequestUsernameEnumKey, PutCofreEntriesIdMutationResponse, PutCofreEntriesIdPathParams } from "./types/PutCofreEntriesId.ts";
-export type { PutCoursesId200, PutCoursesId404, PutCoursesIdMutation, PutCoursesIdMutationRequest, PutCoursesIdMutationResponse, PutCoursesIdPathParams } from "./types/PutCoursesId.ts";
-export type { ExpenseCategoryEnum3Key, ExpenseLinkedTransactionIdEnum3Key, PutFinanceCreditCardExpensesId200, PutFinanceCreditCardExpensesId404, PutFinanceCreditCardExpensesIdMutation, PutFinanceCreditCardExpensesIdMutationRequest, PutFinanceCreditCardExpensesIdMutationRequestCategoryIdEnumKey, PutFinanceCreditCardExpensesIdMutationResponse, PutFinanceCreditCardExpensesIdPathParams } from "./types/PutFinanceCreditCardExpensesId.ts";
-export type { PutFinanceTransactionsId200, PutFinanceTransactionsId404, PutFinanceTransactionsIdMutation, PutFinanceTransactionsIdMutationRequest, PutFinanceTransactionsIdMutationRequestCategoryIdEnumKey, PutFinanceTransactionsIdMutationResponse, PutFinanceTransactionsIdPathParams, TransactionCategoryEnum3Key } from "./types/PutFinanceTransactionsId.ts";
-export type { PutModulesId200, PutModulesId404, PutModulesIdMutation, PutModulesIdMutationRequest, PutModulesIdMutationResponse, PutModulesIdPathParams } from "./types/PutModulesId.ts";
-export type { PutNotesId200, PutNotesId404, PutNotesIdMutation, PutNotesIdMutationRequest, PutNotesIdMutationResponse, PutNotesIdPathParams } from "./types/PutNotesId.ts";
-export type { PutPagesId200, PutPagesId404, PutPagesIdMutation, PutPagesIdMutationRequest, PutPagesIdMutationResponse, PutPagesIdPathParams } from "./types/PutPagesId.ts";
-export type { PutTasksId200, PutTasksId404, PutTasksIdMutation, PutTasksIdMutationRequest, PutTasksIdMutationRequestDescriptionEnumKey, PutTasksIdMutationResponse, PutTasksIdPathParams, TaskDescriptionEnum3Key } from "./types/PutTasksId.ts";
-export type { PutTrackerHabitsId200, PutTrackerHabitsId404, PutTrackerHabitsIdMutation, PutTrackerHabitsIdMutationRequest, PutTrackerHabitsIdMutationResponse, PutTrackerHabitsIdPathParams } from "./types/PutTrackerHabitsId.ts";
-export type { PutTrackerRecords200, PutTrackerRecords400, PutTrackerRecords404, PutTrackerRecordsMutation, PutTrackerRecordsMutationRequest, PutTrackerRecordsMutationRequestEnergyEnum2Key, PutTrackerRecordsMutationRequestEnergyEnumKey, PutTrackerRecordsMutationRequestNoteEnumKey, PutTrackerRecordsMutationRequestQualityEnum2Key, PutTrackerRecordsMutationRequestQualityEnumKey, PutTrackerRecordsMutationResponse, RecordEnergyEnum2Key, RecordEnergyEnumKey, RecordNoteEnumKey, RecordQualityEnum2Key, RecordQualityEnumKey } from "./types/PutTrackerRecords.ts";
-export { deleteAgendaCalendarsId } from "./clients/deleteAgendaCalendarsId.ts";
-export { deleteAgendaEventsId } from "./clients/deleteAgendaEventsId.ts";
-export { deleteAgendaEventsIdExceptionsExceptionid } from "./clients/deleteAgendaEventsIdExceptionsExceptionid.ts";
-export { deleteAgendaTelegramLink } from "./clients/deleteAgendaTelegramLink.ts";
+export type {
+  DeleteCofreEntriesId204,
+  DeleteCofreEntriesId404,
+  DeleteCofreEntriesIdMutation,
+  DeleteCofreEntriesIdMutationResponse,
+  DeleteCofreEntriesIdPathParams,
+} from "./types/DeleteCofreEntriesId.ts";
+export type {
+  DeleteCoursesId204,
+  DeleteCoursesId404,
+  DeleteCoursesIdMutation,
+  DeleteCoursesIdMutationResponse,
+  DeleteCoursesIdPathParams,
+} from "./types/DeleteCoursesId.ts";
+export type {
+  DeleteFinanceCreditCardExpensesId204,
+  DeleteFinanceCreditCardExpensesId404,
+  DeleteFinanceCreditCardExpensesIdMutation,
+  DeleteFinanceCreditCardExpensesIdMutationResponse,
+  DeleteFinanceCreditCardExpensesIdPathParams,
+} from "./types/DeleteFinanceCreditCardExpensesId.ts";
+export type {
+  DeleteFinanceTransactionsId204,
+  DeleteFinanceTransactionsId404,
+  DeleteFinanceTransactionsIdMutation,
+  DeleteFinanceTransactionsIdMutationResponse,
+  DeleteFinanceTransactionsIdPathParams,
+} from "./types/DeleteFinanceTransactionsId.ts";
+export type {
+  DeleteModulesId204,
+  DeleteModulesId404,
+  DeleteModulesIdMutation,
+  DeleteModulesIdMutationResponse,
+  DeleteModulesIdPathParams,
+} from "./types/DeleteModulesId.ts";
+export type {
+  DeleteNotesId204,
+  DeleteNotesId404,
+  DeleteNotesIdMutation,
+  DeleteNotesIdMutationResponse,
+  DeleteNotesIdPathParams,
+} from "./types/DeleteNotesId.ts";
+export type {
+  DeletePagesId204,
+  DeletePagesId404,
+  DeletePagesIdMutation,
+  DeletePagesIdMutationResponse,
+  DeletePagesIdPathParams,
+} from "./types/DeletePagesId.ts";
+export type {
+  DeleteTasksId204,
+  DeleteTasksId404,
+  DeleteTasksIdMutation,
+  DeleteTasksIdMutationResponse,
+  DeleteTasksIdPathParams,
+} from "./types/DeleteTasksId.ts";
+export type {
+  DeleteTrackerHabitsId204,
+  DeleteTrackerHabitsId404,
+  DeleteTrackerHabitsIdMutation,
+  DeleteTrackerHabitsIdMutationResponse,
+  DeleteTrackerHabitsIdPathParams,
+} from "./types/DeleteTrackerHabitsId.ts";
+export type {
+  DeleteTrackerRecordsId204,
+  DeleteTrackerRecordsId404,
+  DeleteTrackerRecordsIdMutation,
+  DeleteTrackerRecordsIdMutationResponse,
+  DeleteTrackerRecordsIdPathParams,
+} from "./types/DeleteTrackerRecordsId.ts";
+export type {
+  GetAuthMe200,
+  GetAuthMe404,
+  GetAuthMeQuery,
+  GetAuthMeQueryResponse,
+} from "./types/GetAuthMe.ts";
+export type {
+  EntriesCategoryEnumKey,
+  EntriesProviderEnumKey,
+  EntriesUrlEnumKey,
+  EntriesUsernameEnumKey,
+  GetCofreEntries200,
+  GetCofreEntriesQuery,
+  GetCofreEntriesQueryParams,
+  GetCofreEntriesQueryParamsCategoryEnumKey,
+  GetCofreEntriesQueryResponse,
+} from "./types/GetCofreEntries.ts";
+export type {
+  EntryCategoryEnum2Key,
+  EntryContentEnumKey,
+  EntryPasswordEnumKey,
+  EntryProviderEnumKey,
+  EntryTokenEnumKey,
+  EntryUrlEnumKey,
+  EntryUsernameEnumKey,
+  GetCofreEntriesId200,
+  GetCofreEntriesId404,
+  GetCofreEntriesIdPathParams,
+  GetCofreEntriesIdQuery,
+  GetCofreEntriesIdQueryResponse,
+} from "./types/GetCofreEntriesId.ts";
+export type {
+  GetCourses200,
+  GetCoursesQuery,
+  GetCoursesQueryResponse,
+} from "./types/GetCourses.ts";
+export type {
+  GetCoursesId200,
+  GetCoursesId404,
+  GetCoursesIdPathParams,
+  GetCoursesIdQuery,
+  GetCoursesIdQueryResponse,
+} from "./types/GetCoursesId.ts";
+export type {
+  CategoriesTypeEnumKey,
+  GetFinanceCategories200,
+  GetFinanceCategoriesQuery,
+  GetFinanceCategoriesQueryParams,
+  GetFinanceCategoriesQueryParamsTypeEnumKey,
+  GetFinanceCategoriesQueryResponse,
+} from "./types/GetFinanceCategories.ts";
+export type {
+  ExpensesCategoryEnumKey,
+  ExpensesLinkedTransactionIdEnumKey,
+  GetFinanceCreditCardExpenses200,
+  GetFinanceCreditCardExpensesQuery,
+  GetFinanceCreditCardExpensesQueryParams,
+  GetFinanceCreditCardExpensesQueryResponse,
+} from "./types/GetFinanceCreditCardExpenses.ts";
+export type {
+  ExpenseCategoryEnum2Key,
+  ExpenseLinkedTransactionIdEnum2Key,
+  GetFinanceCreditCardExpensesId200,
+  GetFinanceCreditCardExpensesId404,
+  GetFinanceCreditCardExpensesIdPathParams,
+  GetFinanceCreditCardExpensesIdQuery,
+  GetFinanceCreditCardExpensesIdQueryResponse,
+} from "./types/GetFinanceCreditCardExpensesId.ts";
+export type {
+  GetFinanceSummary200,
+  GetFinanceSummaryQuery,
+  GetFinanceSummaryQueryParams,
+  GetFinanceSummaryQueryResponse,
+} from "./types/GetFinanceSummary.ts";
+export type {
+  GetFinanceTransactions200,
+  GetFinanceTransactionsQuery,
+  GetFinanceTransactionsQueryParams,
+  GetFinanceTransactionsQueryParamsTypeEnumKey,
+  GetFinanceTransactionsQueryResponse,
+  TransactionsCategoryEnumKey,
+  TransactionsCurrentInstallmentEnumKey,
+  TransactionsSourceEnumKey,
+  TransactionsTypeEnumKey,
+} from "./types/GetFinanceTransactions.ts";
+export type {
+  GetFinanceTransactionsId200,
+  GetFinanceTransactionsId404,
+  GetFinanceTransactionsIdPathParams,
+  GetFinanceTransactionsIdQuery,
+  GetFinanceTransactionsIdQueryResponse,
+  TransactionCategoryEnum2Key,
+  TransactionCurrentInstallmentEnum2Key,
+  TransactionSourceEnum2Key,
+  TransactionTypeEnum2Key,
+} from "./types/GetFinanceTransactionsId.ts";
+export type {
+  GetModules200,
+  GetModulesQuery,
+  GetModulesQueryParams,
+  GetModulesQueryResponse,
+} from "./types/GetModules.ts";
+export type {
+  GetModulesId200,
+  GetModulesId404,
+  GetModulesIdPathParams,
+  GetModulesIdQuery,
+  GetModulesIdQueryResponse,
+} from "./types/GetModulesId.ts";
+export type {
+  GetNotes200,
+  GetNotesQuery,
+  GetNotesQueryParams,
+  GetNotesQueryResponse,
+} from "./types/GetNotes.ts";
+export type {
+  GetNotesId200,
+  GetNotesId404,
+  GetNotesIdPathParams,
+  GetNotesIdQuery,
+  GetNotesIdQueryResponse,
+} from "./types/GetNotesId.ts";
+export type {
+  GetPages200,
+  GetPagesQuery,
+  GetPagesQueryParams,
+  GetPagesQueryResponse,
+} from "./types/GetPages.ts";
+export type {
+  GetPagesId200,
+  GetPagesId404,
+  GetPagesIdPathParams,
+  GetPagesIdQuery,
+  GetPagesIdQueryResponse,
+} from "./types/GetPagesId.ts";
+export type {
+  GetTasks200,
+  GetTasksQuery,
+  GetTasksQueryParams,
+  GetTasksQueryParamsColumnEnumKey,
+  GetTasksQueryResponse,
+  TasksColumnEnumKey,
+  TasksDescriptionEnumKey,
+} from "./types/GetTasks.ts";
+export type {
+  GetTasksId200,
+  GetTasksId404,
+  GetTasksIdPathParams,
+  GetTasksIdQuery,
+  GetTasksIdQueryResponse,
+  TaskColumnEnum2Key,
+  TaskDescriptionEnum2Key,
+} from "./types/GetTasksId.ts";
+export type {
+  DaysEnergyEnum2Key,
+  DaysEnergyEnumKey,
+  DaysQualityEnum2Key,
+  DaysQualityEnumKey,
+  GetTrackerDays200,
+  GetTrackerDays400,
+  GetTrackerDaysQuery,
+  GetTrackerDaysQueryParams,
+  GetTrackerDaysQueryResponse,
+} from "./types/GetTrackerDays.ts";
+export type {
+  GetTrackerHabits200,
+  GetTrackerHabitsQuery,
+  GetTrackerHabitsQueryParams,
+  GetTrackerHabitsQueryResponse,
+} from "./types/GetTrackerHabits.ts";
+export type {
+  GetTrackerHabitsId200,
+  GetTrackerHabitsId404,
+  GetTrackerHabitsIdPathParams,
+  GetTrackerHabitsIdQuery,
+  GetTrackerHabitsIdQueryResponse,
+} from "./types/GetTrackerHabitsId.ts";
+export type {
+  GetTrackerToday200,
+  GetTrackerToday200EnergyEnum2Key,
+  GetTrackerToday200EnergyEnumKey,
+  GetTrackerToday200QualityEnum2Key,
+  GetTrackerToday200QualityEnumKey,
+  GetTrackerTodayQuery,
+  GetTrackerTodayQueryResponse,
+  HabitsRecordIdEnumKey,
+} from "./types/GetTrackerToday.ts";
+export type {
+  PatchCoursesIdReorder200,
+  PatchCoursesIdReorder404,
+  PatchCoursesIdReorderMutation,
+  PatchCoursesIdReorderMutationRequest,
+  PatchCoursesIdReorderMutationResponse,
+  PatchCoursesIdReorderPathParams,
+} from "./types/PatchCoursesIdReorder.ts";
+export type {
+  ExpenseCategoryEnum4Key,
+  ExpenseLinkedTransactionIdEnum4Key,
+  PatchFinanceCreditCardExpensesIdLaunch200,
+  PatchFinanceCreditCardExpensesIdLaunch404,
+  PatchFinanceCreditCardExpensesIdLaunch409,
+  PatchFinanceCreditCardExpensesIdLaunchMutation,
+  PatchFinanceCreditCardExpensesIdLaunchMutationResponse,
+  PatchFinanceCreditCardExpensesIdLaunchPathParams,
+  TransactionCategoryEnum4Key,
+  TransactionCurrentInstallmentEnum3Key,
+  TransactionSourceEnum3Key,
+  TransactionTypeEnum3Key,
+} from "./types/PatchFinanceCreditCardExpensesIdLaunch.ts";
+export type {
+  ExpenseCategoryEnum5Key,
+  ExpenseLinkedTransactionIdEnum5Key,
+  PatchFinanceCreditCardExpensesIdUnlaunch200,
+  PatchFinanceCreditCardExpensesIdUnlaunch404,
+  PatchFinanceCreditCardExpensesIdUnlaunch409,
+  PatchFinanceCreditCardExpensesIdUnlaunchMutation,
+  PatchFinanceCreditCardExpensesIdUnlaunchMutationResponse,
+  PatchFinanceCreditCardExpensesIdUnlaunchPathParams,
+} from "./types/PatchFinanceCreditCardExpensesIdUnlaunch.ts";
+export type {
+  PatchModulesIdReorder200,
+  PatchModulesIdReorder404,
+  PatchModulesIdReorderMutation,
+  PatchModulesIdReorderMutationRequest,
+  PatchModulesIdReorderMutationResponse,
+  PatchModulesIdReorderPathParams,
+} from "./types/PatchModulesIdReorder.ts";
+export type {
+  PatchPagesIdReorder200,
+  PatchPagesIdReorder404,
+  PatchPagesIdReorderMutation,
+  PatchPagesIdReorderMutationRequest,
+  PatchPagesIdReorderMutationResponse,
+  PatchPagesIdReorderPathParams,
+} from "./types/PatchPagesIdReorder.ts";
+export type {
+  PatchTasksIdMove200,
+  PatchTasksIdMove404,
+  PatchTasksIdMove409,
+  PatchTasksIdMoveMutation,
+  PatchTasksIdMoveMutationRequest,
+  PatchTasksIdMoveMutationRequestColumnEnumKey,
+  PatchTasksIdMoveMutationResponse,
+  PatchTasksIdMovePathParams,
+  TaskColumnEnum3Key,
+} from "./types/PatchTasksIdMove.ts";
+export type {
+  PatchTrackerHabitsIdReorder200,
+  PatchTrackerHabitsIdReorder404,
+  PatchTrackerHabitsIdReorderMutation,
+  PatchTrackerHabitsIdReorderMutationRequest,
+  PatchTrackerHabitsIdReorderMutationResponse,
+  PatchTrackerHabitsIdReorderPathParams,
+} from "./types/PatchTrackerHabitsIdReorder.ts";
+export type {
+  PatchTrackerHabitsIdRestore200,
+  PatchTrackerHabitsIdRestore404,
+  PatchTrackerHabitsIdRestoreMutation,
+  PatchTrackerHabitsIdRestoreMutationResponse,
+  PatchTrackerHabitsIdRestorePathParams,
+} from "./types/PatchTrackerHabitsIdRestore.ts";
+export type {
+  PostAuthLogin200,
+  PostAuthLogin401,
+  PostAuthLoginMutation,
+  PostAuthLoginMutationRequest,
+  PostAuthLoginMutationResponse,
+} from "./types/PostAuthLogin.ts";
+export type {
+  PostAuthLogout200,
+  PostAuthLogoutMutation,
+  PostAuthLogoutMutationResponse,
+} from "./types/PostAuthLogout.ts";
+export type {
+  EntryCategoryEnumKey,
+  PostCofreEntries201,
+  PostCofreEntriesMutation,
+  PostCofreEntriesMutationRequest,
+  PostCofreEntriesMutationRequestCategoryEnumKey,
+  PostCofreEntriesMutationRequestContentEnumKey,
+  PostCofreEntriesMutationRequestPasswordEnumKey,
+  PostCofreEntriesMutationRequestProviderEnumKey,
+  PostCofreEntriesMutationRequestTokenEnumKey,
+  PostCofreEntriesMutationRequestUrlEnumKey,
+  PostCofreEntriesMutationRequestUsernameEnumKey,
+  PostCofreEntriesMutationResponse,
+} from "./types/PostCofreEntries.ts";
+export type {
+  PostCofreLock200,
+  PostCofreLockMutation,
+  PostCofreLockMutationResponse,
+} from "./types/PostCofreLock.ts";
+export type {
+  PostCofreUnlock200,
+  PostCofreUnlock401,
+  PostCofreUnlock423,
+  PostCofreUnlockMutation,
+  PostCofreUnlockMutationRequest,
+  PostCofreUnlockMutationResponse,
+} from "./types/PostCofreUnlock.ts";
+export type {
+  PostCourses201,
+  PostCourses400,
+  PostCoursesMutation,
+  PostCoursesMutationRequest,
+  PostCoursesMutationResponse,
+} from "./types/PostCourses.ts";
+export type {
+  ExpenseCategoryEnumKey,
+  ExpenseLinkedTransactionIdEnumKey,
+  PostFinanceCreditCardExpenses201,
+  PostFinanceCreditCardExpenses400,
+  PostFinanceCreditCardExpenses404,
+  PostFinanceCreditCardExpensesMutation,
+  PostFinanceCreditCardExpensesMutationRequest,
+  PostFinanceCreditCardExpensesMutationRequestCategoryIdEnumKey,
+  PostFinanceCreditCardExpensesMutationResponse,
+} from "./types/PostFinanceCreditCardExpenses.ts";
+export type {
+  PostFinanceTransactions201,
+  PostFinanceTransactions400,
+  PostFinanceTransactions404,
+  PostFinanceTransactionsMutation,
+  PostFinanceTransactionsMutationRequest,
+  PostFinanceTransactionsMutationRequestCategoryIdEnumKey,
+  PostFinanceTransactionsMutationRequestTypeEnumKey,
+  PostFinanceTransactionsMutationResponse,
+  TransactionCategoryEnumKey,
+  TransactionCurrentInstallmentEnumKey,
+  TransactionSourceEnumKey,
+  TransactionTypeEnumKey,
+} from "./types/PostFinanceTransactions.ts";
+export type {
+  PostModules201,
+  PostModules400,
+  PostModules404,
+  PostModulesMutation,
+  PostModulesMutationRequest,
+  PostModulesMutationResponse,
+} from "./types/PostModules.ts";
+export type {
+  PostNotes201,
+  PostNotesMutation,
+  PostNotesMutationRequest,
+  PostNotesMutationResponse,
+} from "./types/PostNotes.ts";
+export type {
+  PostPages201,
+  PostPages400,
+  PostPages404,
+  PostPagesMutation,
+  PostPagesMutationRequest,
+  PostPagesMutationResponse,
+} from "./types/PostPages.ts";
+export type {
+  PostTasks201,
+  PostTasks400,
+  PostTasksMutation,
+  PostTasksMutationRequest,
+  PostTasksMutationRequestColumnEnumKey,
+  PostTasksMutationRequestDescriptionEnumKey,
+  PostTasksMutationResponse,
+  TaskColumnEnumKey,
+  TaskDescriptionEnumKey,
+} from "./types/PostTasks.ts";
+export type {
+  PostTrackerHabits201,
+  PostTrackerHabits400,
+  PostTrackerHabitsMutation,
+  PostTrackerHabitsMutationRequest,
+  PostTrackerHabitsMutationResponse,
+} from "./types/PostTrackerHabits.ts";
+export type {
+  PutCofreEntriesId200,
+  PutCofreEntriesId404,
+  PutCofreEntriesIdMutation,
+  PutCofreEntriesIdMutationRequest,
+  PutCofreEntriesIdMutationRequestContentEnumKey,
+  PutCofreEntriesIdMutationRequestPasswordEnumKey,
+  PutCofreEntriesIdMutationRequestProviderEnumKey,
+  PutCofreEntriesIdMutationRequestTokenEnumKey,
+  PutCofreEntriesIdMutationRequestUrlEnumKey,
+  PutCofreEntriesIdMutationRequestUsernameEnumKey,
+  PutCofreEntriesIdMutationResponse,
+  PutCofreEntriesIdPathParams,
+} from "./types/PutCofreEntriesId.ts";
+export type {
+  PutCoursesId200,
+  PutCoursesId404,
+  PutCoursesIdMutation,
+  PutCoursesIdMutationRequest,
+  PutCoursesIdMutationResponse,
+  PutCoursesIdPathParams,
+} from "./types/PutCoursesId.ts";
+export type {
+  ExpenseCategoryEnum3Key,
+  ExpenseLinkedTransactionIdEnum3Key,
+  PutFinanceCreditCardExpensesId200,
+  PutFinanceCreditCardExpensesId404,
+  PutFinanceCreditCardExpensesIdMutation,
+  PutFinanceCreditCardExpensesIdMutationRequest,
+  PutFinanceCreditCardExpensesIdMutationRequestCategoryIdEnumKey,
+  PutFinanceCreditCardExpensesIdMutationResponse,
+  PutFinanceCreditCardExpensesIdPathParams,
+} from "./types/PutFinanceCreditCardExpensesId.ts";
+export type {
+  PutFinanceTransactionsId200,
+  PutFinanceTransactionsId404,
+  PutFinanceTransactionsIdMutation,
+  PutFinanceTransactionsIdMutationRequest,
+  PutFinanceTransactionsIdMutationRequestCategoryIdEnumKey,
+  PutFinanceTransactionsIdMutationResponse,
+  PutFinanceTransactionsIdPathParams,
+  TransactionCategoryEnum3Key,
+} from "./types/PutFinanceTransactionsId.ts";
+export type {
+  PutModulesId200,
+  PutModulesId404,
+  PutModulesIdMutation,
+  PutModulesIdMutationRequest,
+  PutModulesIdMutationResponse,
+  PutModulesIdPathParams,
+} from "./types/PutModulesId.ts";
+export type {
+  PutNotesId200,
+  PutNotesId404,
+  PutNotesIdMutation,
+  PutNotesIdMutationRequest,
+  PutNotesIdMutationResponse,
+  PutNotesIdPathParams,
+} from "./types/PutNotesId.ts";
+export type {
+  PutPagesId200,
+  PutPagesId404,
+  PutPagesIdMutation,
+  PutPagesIdMutationRequest,
+  PutPagesIdMutationResponse,
+  PutPagesIdPathParams,
+} from "./types/PutPagesId.ts";
+export type {
+  PutTasksId200,
+  PutTasksId404,
+  PutTasksIdMutation,
+  PutTasksIdMutationRequest,
+  PutTasksIdMutationRequestDescriptionEnumKey,
+  PutTasksIdMutationResponse,
+  PutTasksIdPathParams,
+  TaskDescriptionEnum3Key,
+} from "./types/PutTasksId.ts";
+export type {
+  PutTrackerHabitsId200,
+  PutTrackerHabitsId404,
+  PutTrackerHabitsIdMutation,
+  PutTrackerHabitsIdMutationRequest,
+  PutTrackerHabitsIdMutationResponse,
+  PutTrackerHabitsIdPathParams,
+} from "./types/PutTrackerHabitsId.ts";
+export type {
+  PutTrackerRecords200,
+  PutTrackerRecords400,
+  PutTrackerRecords404,
+  PutTrackerRecordsMutation,
+  PutTrackerRecordsMutationRequest,
+  PutTrackerRecordsMutationRequestEnergyEnum2Key,
+  PutTrackerRecordsMutationRequestEnergyEnumKey,
+  PutTrackerRecordsMutationRequestNoteEnumKey,
+  PutTrackerRecordsMutationRequestQualityEnum2Key,
+  PutTrackerRecordsMutationRequestQualityEnumKey,
+  PutTrackerRecordsMutationResponse,
+  RecordEnergyEnum2Key,
+  RecordEnergyEnumKey,
+  RecordNoteEnumKey,
+  RecordQualityEnum2Key,
+  RecordQualityEnumKey,
+} from "./types/PutTrackerRecords.ts";
 export { deleteCofreEntriesId } from "./clients/deleteCofreEntriesId.ts";
 export { deleteCoursesId } from "./clients/deleteCoursesId.ts";
 export { deleteFinanceCreditCardExpensesId } from "./clients/deleteFinanceCreditCardExpensesId.ts";
@@ -208,13 +640,6 @@ export { deletePagesId } from "./clients/deletePagesId.ts";
 export { deleteTasksId } from "./clients/deleteTasksId.ts";
 export { deleteTrackerHabitsId } from "./clients/deleteTrackerHabitsId.ts";
 export { deleteTrackerRecordsId } from "./clients/deleteTrackerRecordsId.ts";
-export { getAgendaCalendars } from "./clients/getAgendaCalendars.ts";
-export { getAgendaCalendarsId } from "./clients/getAgendaCalendarsId.ts";
-export { getAgendaEvents } from "./clients/getAgendaEvents.ts";
-export { getAgendaEventsId } from "./clients/getAgendaEventsId.ts";
-export { getAgendaEventsIdExceptions } from "./clients/getAgendaEventsIdExceptions.ts";
-export { getAgendaPreferences } from "./clients/getAgendaPreferences.ts";
-export { getAgendaTelegramLink } from "./clients/getAgendaTelegramLink.ts";
 export { getAuthMe } from "./clients/getAuthMe.ts";
 export { getCofreEntries } from "./clients/getCofreEntries.ts";
 export { getCofreEntriesId } from "./clients/getCofreEntriesId.ts";
@@ -238,7 +663,6 @@ export { getTrackerDays } from "./clients/getTrackerDays.ts";
 export { getTrackerHabits } from "./clients/getTrackerHabits.ts";
 export { getTrackerHabitsId } from "./clients/getTrackerHabitsId.ts";
 export { getTrackerToday } from "./clients/getTrackerToday.ts";
-export { patchAgendaEventsIdStatus } from "./clients/patchAgendaEventsIdStatus.ts";
 export { patchCoursesIdReorder } from "./clients/patchCoursesIdReorder.ts";
 export { patchFinanceCreditCardExpensesIdLaunch } from "./clients/patchFinanceCreditCardExpensesIdLaunch.ts";
 export { patchFinanceCreditCardExpensesIdUnlaunch } from "./clients/patchFinanceCreditCardExpensesIdUnlaunch.ts";
@@ -247,10 +671,6 @@ export { patchPagesIdReorder } from "./clients/patchPagesIdReorder.ts";
 export { patchTasksIdMove } from "./clients/patchTasksIdMove.ts";
 export { patchTrackerHabitsIdReorder } from "./clients/patchTrackerHabitsIdReorder.ts";
 export { patchTrackerHabitsIdRestore } from "./clients/patchTrackerHabitsIdRestore.ts";
-export { postAgendaCalendars } from "./clients/postAgendaCalendars.ts";
-export { postAgendaEvents } from "./clients/postAgendaEvents.ts";
-export { postAgendaEventsIdExceptions } from "./clients/postAgendaEventsIdExceptions.ts";
-export { postAgendaTelegramWebhook } from "./clients/postAgendaTelegramWebhook.ts";
 export { postAuthLogin } from "./clients/postAuthLogin.ts";
 export { postAuthLogout } from "./clients/postAuthLogout.ts";
 export { postCofreEntries } from "./clients/postCofreEntries.ts";
@@ -264,9 +684,6 @@ export { postNotes } from "./clients/postNotes.ts";
 export { postPages } from "./clients/postPages.ts";
 export { postTasks } from "./clients/postTasks.ts";
 export { postTrackerHabits } from "./clients/postTrackerHabits.ts";
-export { putAgendaCalendarsId } from "./clients/putAgendaCalendarsId.ts";
-export { putAgendaEventsId } from "./clients/putAgendaEventsId.ts";
-export { putAgendaPreferences } from "./clients/putAgendaPreferences.ts";
 export { putCofreEntriesId } from "./clients/putCofreEntriesId.ts";
 export { putCoursesId } from "./clients/putCoursesId.ts";
 export { putFinanceCreditCardExpensesId } from "./clients/putFinanceCreditCardExpensesId.ts";
@@ -277,18 +694,6 @@ export { putPagesId } from "./clients/putPagesId.ts";
 export { putTasksId } from "./clients/putTasksId.ts";
 export { putTrackerHabitsId } from "./clients/putTrackerHabitsId.ts";
 export { putTrackerRecords } from "./clients/putTrackerRecords.ts";
-export { deleteAgendaCalendarsIdMutationKey } from "./hooks/useDeleteAgendaCalendarsId.ts";
-export { deleteAgendaCalendarsIdMutationOptions } from "./hooks/useDeleteAgendaCalendarsId.ts";
-export { useDeleteAgendaCalendarsId } from "./hooks/useDeleteAgendaCalendarsId.ts";
-export { deleteAgendaEventsIdMutationKey } from "./hooks/useDeleteAgendaEventsId.ts";
-export { deleteAgendaEventsIdMutationOptions } from "./hooks/useDeleteAgendaEventsId.ts";
-export { useDeleteAgendaEventsId } from "./hooks/useDeleteAgendaEventsId.ts";
-export { deleteAgendaEventsIdExceptionsExceptionidMutationKey } from "./hooks/useDeleteAgendaEventsIdExceptionsExceptionid.ts";
-export { deleteAgendaEventsIdExceptionsExceptionidMutationOptions } from "./hooks/useDeleteAgendaEventsIdExceptionsExceptionid.ts";
-export { useDeleteAgendaEventsIdExceptionsExceptionid } from "./hooks/useDeleteAgendaEventsIdExceptionsExceptionid.ts";
-export { deleteAgendaTelegramLinkMutationKey } from "./hooks/useDeleteAgendaTelegramLink.ts";
-export { deleteAgendaTelegramLinkMutationOptions } from "./hooks/useDeleteAgendaTelegramLink.ts";
-export { useDeleteAgendaTelegramLink } from "./hooks/useDeleteAgendaTelegramLink.ts";
 export { deleteCofreEntriesIdMutationKey } from "./hooks/useDeleteCofreEntriesId.ts";
 export { deleteCofreEntriesIdMutationOptions } from "./hooks/useDeleteCofreEntriesId.ts";
 export { useDeleteCofreEntriesId } from "./hooks/useDeleteCofreEntriesId.ts";
@@ -319,48 +724,6 @@ export { useDeleteTrackerHabitsId } from "./hooks/useDeleteTrackerHabitsId.ts";
 export { deleteTrackerRecordsIdMutationKey } from "./hooks/useDeleteTrackerRecordsId.ts";
 export { deleteTrackerRecordsIdMutationOptions } from "./hooks/useDeleteTrackerRecordsId.ts";
 export { useDeleteTrackerRecordsId } from "./hooks/useDeleteTrackerRecordsId.ts";
-export { getAgendaCalendarsQueryKey } from "./hooks/useGetAgendaCalendars.ts";
-export { getAgendaCalendarsQueryOptions } from "./hooks/useGetAgendaCalendars.ts";
-export { useGetAgendaCalendars } from "./hooks/useGetAgendaCalendars.ts";
-export { getAgendaCalendarsIdQueryKey } from "./hooks/useGetAgendaCalendarsId.ts";
-export { getAgendaCalendarsIdQueryOptions } from "./hooks/useGetAgendaCalendarsId.ts";
-export { useGetAgendaCalendarsId } from "./hooks/useGetAgendaCalendarsId.ts";
-export { getAgendaCalendarsIdSuspenseQueryKey } from "./hooks/useGetAgendaCalendarsIdSuspense.ts";
-export { getAgendaCalendarsIdSuspenseQueryOptions } from "./hooks/useGetAgendaCalendarsIdSuspense.ts";
-export { useGetAgendaCalendarsIdSuspense } from "./hooks/useGetAgendaCalendarsIdSuspense.ts";
-export { getAgendaCalendarsSuspenseQueryKey } from "./hooks/useGetAgendaCalendarsSuspense.ts";
-export { getAgendaCalendarsSuspenseQueryOptions } from "./hooks/useGetAgendaCalendarsSuspense.ts";
-export { useGetAgendaCalendarsSuspense } from "./hooks/useGetAgendaCalendarsSuspense.ts";
-export { getAgendaEventsQueryKey } from "./hooks/useGetAgendaEvents.ts";
-export { getAgendaEventsQueryOptions } from "./hooks/useGetAgendaEvents.ts";
-export { useGetAgendaEvents } from "./hooks/useGetAgendaEvents.ts";
-export { getAgendaEventsIdQueryKey } from "./hooks/useGetAgendaEventsId.ts";
-export { getAgendaEventsIdQueryOptions } from "./hooks/useGetAgendaEventsId.ts";
-export { useGetAgendaEventsId } from "./hooks/useGetAgendaEventsId.ts";
-export { getAgendaEventsIdExceptionsQueryKey } from "./hooks/useGetAgendaEventsIdExceptions.ts";
-export { getAgendaEventsIdExceptionsQueryOptions } from "./hooks/useGetAgendaEventsIdExceptions.ts";
-export { useGetAgendaEventsIdExceptions } from "./hooks/useGetAgendaEventsIdExceptions.ts";
-export { getAgendaEventsIdExceptionsSuspenseQueryKey } from "./hooks/useGetAgendaEventsIdExceptionsSuspense.ts";
-export { getAgendaEventsIdExceptionsSuspenseQueryOptions } from "./hooks/useGetAgendaEventsIdExceptionsSuspense.ts";
-export { useGetAgendaEventsIdExceptionsSuspense } from "./hooks/useGetAgendaEventsIdExceptionsSuspense.ts";
-export { getAgendaEventsIdSuspenseQueryKey } from "./hooks/useGetAgendaEventsIdSuspense.ts";
-export { getAgendaEventsIdSuspenseQueryOptions } from "./hooks/useGetAgendaEventsIdSuspense.ts";
-export { useGetAgendaEventsIdSuspense } from "./hooks/useGetAgendaEventsIdSuspense.ts";
-export { getAgendaEventsSuspenseQueryKey } from "./hooks/useGetAgendaEventsSuspense.ts";
-export { getAgendaEventsSuspenseQueryOptions } from "./hooks/useGetAgendaEventsSuspense.ts";
-export { useGetAgendaEventsSuspense } from "./hooks/useGetAgendaEventsSuspense.ts";
-export { getAgendaPreferencesQueryKey } from "./hooks/useGetAgendaPreferences.ts";
-export { getAgendaPreferencesQueryOptions } from "./hooks/useGetAgendaPreferences.ts";
-export { useGetAgendaPreferences } from "./hooks/useGetAgendaPreferences.ts";
-export { getAgendaPreferencesSuspenseQueryKey } from "./hooks/useGetAgendaPreferencesSuspense.ts";
-export { getAgendaPreferencesSuspenseQueryOptions } from "./hooks/useGetAgendaPreferencesSuspense.ts";
-export { useGetAgendaPreferencesSuspense } from "./hooks/useGetAgendaPreferencesSuspense.ts";
-export { getAgendaTelegramLinkQueryKey } from "./hooks/useGetAgendaTelegramLink.ts";
-export { getAgendaTelegramLinkQueryOptions } from "./hooks/useGetAgendaTelegramLink.ts";
-export { useGetAgendaTelegramLink } from "./hooks/useGetAgendaTelegramLink.ts";
-export { getAgendaTelegramLinkSuspenseQueryKey } from "./hooks/useGetAgendaTelegramLinkSuspense.ts";
-export { getAgendaTelegramLinkSuspenseQueryOptions } from "./hooks/useGetAgendaTelegramLinkSuspense.ts";
-export { useGetAgendaTelegramLinkSuspense } from "./hooks/useGetAgendaTelegramLinkSuspense.ts";
 export { getAuthMeQueryKey } from "./hooks/useGetAuthMe.ts";
 export { getAuthMeQueryOptions } from "./hooks/useGetAuthMe.ts";
 export { useGetAuthMe } from "./hooks/useGetAuthMe.ts";
@@ -499,9 +862,6 @@ export { useGetTrackerToday } from "./hooks/useGetTrackerToday.ts";
 export { getTrackerTodaySuspenseQueryKey } from "./hooks/useGetTrackerTodaySuspense.ts";
 export { getTrackerTodaySuspenseQueryOptions } from "./hooks/useGetTrackerTodaySuspense.ts";
 export { useGetTrackerTodaySuspense } from "./hooks/useGetTrackerTodaySuspense.ts";
-export { patchAgendaEventsIdStatusMutationKey } from "./hooks/usePatchAgendaEventsIdStatus.ts";
-export { patchAgendaEventsIdStatusMutationOptions } from "./hooks/usePatchAgendaEventsIdStatus.ts";
-export { usePatchAgendaEventsIdStatus } from "./hooks/usePatchAgendaEventsIdStatus.ts";
 export { patchCoursesIdReorderMutationKey } from "./hooks/usePatchCoursesIdReorder.ts";
 export { patchCoursesIdReorderMutationOptions } from "./hooks/usePatchCoursesIdReorder.ts";
 export { usePatchCoursesIdReorder } from "./hooks/usePatchCoursesIdReorder.ts";
@@ -526,18 +886,6 @@ export { usePatchTrackerHabitsIdReorder } from "./hooks/usePatchTrackerHabitsIdR
 export { patchTrackerHabitsIdRestoreMutationKey } from "./hooks/usePatchTrackerHabitsIdRestore.ts";
 export { patchTrackerHabitsIdRestoreMutationOptions } from "./hooks/usePatchTrackerHabitsIdRestore.ts";
 export { usePatchTrackerHabitsIdRestore } from "./hooks/usePatchTrackerHabitsIdRestore.ts";
-export { postAgendaCalendarsMutationKey } from "./hooks/usePostAgendaCalendars.ts";
-export { postAgendaCalendarsMutationOptions } from "./hooks/usePostAgendaCalendars.ts";
-export { usePostAgendaCalendars } from "./hooks/usePostAgendaCalendars.ts";
-export { postAgendaEventsMutationKey } from "./hooks/usePostAgendaEvents.ts";
-export { postAgendaEventsMutationOptions } from "./hooks/usePostAgendaEvents.ts";
-export { usePostAgendaEvents } from "./hooks/usePostAgendaEvents.ts";
-export { postAgendaEventsIdExceptionsMutationKey } from "./hooks/usePostAgendaEventsIdExceptions.ts";
-export { postAgendaEventsIdExceptionsMutationOptions } from "./hooks/usePostAgendaEventsIdExceptions.ts";
-export { usePostAgendaEventsIdExceptions } from "./hooks/usePostAgendaEventsIdExceptions.ts";
-export { postAgendaTelegramWebhookMutationKey } from "./hooks/usePostAgendaTelegramWebhook.ts";
-export { postAgendaTelegramWebhookMutationOptions } from "./hooks/usePostAgendaTelegramWebhook.ts";
-export { usePostAgendaTelegramWebhook } from "./hooks/usePostAgendaTelegramWebhook.ts";
 export { postAuthLoginMutationKey } from "./hooks/usePostAuthLogin.ts";
 export { postAuthLoginMutationOptions } from "./hooks/usePostAuthLogin.ts";
 export { usePostAuthLogin } from "./hooks/usePostAuthLogin.ts";
@@ -577,15 +925,6 @@ export { usePostTasks } from "./hooks/usePostTasks.ts";
 export { postTrackerHabitsMutationKey } from "./hooks/usePostTrackerHabits.ts";
 export { postTrackerHabitsMutationOptions } from "./hooks/usePostTrackerHabits.ts";
 export { usePostTrackerHabits } from "./hooks/usePostTrackerHabits.ts";
-export { putAgendaCalendarsIdMutationKey } from "./hooks/usePutAgendaCalendarsId.ts";
-export { putAgendaCalendarsIdMutationOptions } from "./hooks/usePutAgendaCalendarsId.ts";
-export { usePutAgendaCalendarsId } from "./hooks/usePutAgendaCalendarsId.ts";
-export { putAgendaEventsIdMutationKey } from "./hooks/usePutAgendaEventsId.ts";
-export { putAgendaEventsIdMutationOptions } from "./hooks/usePutAgendaEventsId.ts";
-export { usePutAgendaEventsId } from "./hooks/usePutAgendaEventsId.ts";
-export { putAgendaPreferencesMutationKey } from "./hooks/usePutAgendaPreferences.ts";
-export { putAgendaPreferencesMutationOptions } from "./hooks/usePutAgendaPreferences.ts";
-export { usePutAgendaPreferences } from "./hooks/usePutAgendaPreferences.ts";
 export { putCofreEntriesIdMutationKey } from "./hooks/usePutCofreEntriesId.ts";
 export { putCofreEntriesIdMutationOptions } from "./hooks/usePutCofreEntriesId.ts";
 export { usePutCofreEntriesId } from "./hooks/usePutCofreEntriesId.ts";
@@ -616,12 +955,6 @@ export { usePutTrackerHabitsId } from "./hooks/usePutTrackerHabitsId.ts";
 export { putTrackerRecordsMutationKey } from "./hooks/usePutTrackerRecords.ts";
 export { putTrackerRecordsMutationOptions } from "./hooks/usePutTrackerRecords.ts";
 export { usePutTrackerRecords } from "./hooks/usePutTrackerRecords.ts";
-export { eventsStatusEnum } from "./types/GetAgendaEvents.ts";
-export { getAgendaEventsQueryParamsStatusEnum } from "./types/GetAgendaEvents.ts";
-export { eventRecurrenceEnum2 } from "./types/GetAgendaEventsId.ts";
-export { eventStatusEnum2 } from "./types/GetAgendaEventsId.ts";
-export { exceptionsActionEnum } from "./types/GetAgendaEventsId.ts";
-export { exceptionsActionEnum2 } from "./types/GetAgendaEventsIdExceptions.ts";
 export { entriesCategoryEnum } from "./types/GetCofreEntries.ts";
 export { getCofreEntriesQueryParamsCategoryEnum } from "./types/GetCofreEntries.ts";
 export { entryCategoryEnum2 } from "./types/GetCofreEntriesId.ts";
@@ -639,17 +972,10 @@ export { daysEnergyEnum } from "./types/GetTrackerDays.ts";
 export { daysQualityEnum } from "./types/GetTrackerDays.ts";
 export { getTrackerToday200EnergyEnum } from "./types/GetTrackerToday.ts";
 export { getTrackerToday200QualityEnum } from "./types/GetTrackerToday.ts";
-export { eventStatusEnum4 } from "./types/PatchAgendaEventsIdStatus.ts";
-export { patchAgendaEventsIdStatusMutationRequestStatusEnum } from "./types/PatchAgendaEventsIdStatus.ts";
 export { transactionSourceEnum3 } from "./types/PatchFinanceCreditCardExpensesIdLaunch.ts";
 export { transactionTypeEnum3 } from "./types/PatchFinanceCreditCardExpensesIdLaunch.ts";
 export { patchTasksIdMoveMutationRequestColumnEnum } from "./types/PatchTasksIdMove.ts";
 export { taskColumnEnum3 } from "./types/PatchTasksIdMove.ts";
-export { eventRecurrenceEnum } from "./types/PostAgendaEvents.ts";
-export { eventStatusEnum } from "./types/PostAgendaEvents.ts";
-export { postAgendaEventsMutationRequestRecurrenceEnum } from "./types/PostAgendaEvents.ts";
-export { exceptionActionEnum } from "./types/PostAgendaEventsIdExceptions.ts";
-export { postAgendaEventsIdExceptionsMutationRequestActionEnum } from "./types/PostAgendaEventsIdExceptions.ts";
 export { entryCategoryEnum } from "./types/PostCofreEntries.ts";
 export { postCofreEntriesMutationRequestCategoryEnum } from "./types/PostCofreEntries.ts";
 export { postFinanceTransactionsMutationRequestTypeEnum } from "./types/PostFinanceTransactions.ts";
@@ -657,9 +983,6 @@ export { transactionSourceEnum } from "./types/PostFinanceTransactions.ts";
 export { transactionTypeEnum } from "./types/PostFinanceTransactions.ts";
 export { postTasksMutationRequestColumnEnum } from "./types/PostTasks.ts";
 export { taskColumnEnum } from "./types/PostTasks.ts";
-export { eventRecurrenceEnum3 } from "./types/PutAgendaEventsId.ts";
-export { eventStatusEnum3 } from "./types/PutAgendaEventsId.ts";
-export { putAgendaEventsIdMutationRequestRecurrenceEnum } from "./types/PutAgendaEventsId.ts";
 export { putTrackerRecordsMutationRequestEnergyEnum } from "./types/PutTrackerRecords.ts";
 export { putTrackerRecordsMutationRequestQualityEnum } from "./types/PutTrackerRecords.ts";
 export { recordEnergyEnum } from "./types/PutTrackerRecords.ts";
