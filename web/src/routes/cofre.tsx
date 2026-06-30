@@ -566,7 +566,7 @@ function CofreComponent() {
           </div>
 
           {/* Listagem de itens */}
-          <div className={`flex-1 overflow-y-auto p-2 space-y-1 transition-opacity duration-200 ${isFetching ? 'opacity-60' : 'opacity-100'}`}>
+          <div className={`flex-1 overflow-y-auto p-2 pb-24 md:pb-2 space-y-1 transition-opacity duration-200 ${isFetching ? 'opacity-60' : 'opacity-100'}`}>
             {entries.length === 0 ? (
               <p className="text-center text-[10px] font-mono font-bold text-[#a1a1aa] mt-8">
                 Nenhum item encontrado.
@@ -623,7 +623,7 @@ function CofreComponent() {
           {/* SUB-VIEW 1: FORMULÁRIO DE CRIAÇÃO OU EDIÇÃO */}
           {/* ========================================================================= */}
           {(isCreating || isEditing) ? (
-            <form onSubmit={handleSaveEntry} className="flex-1 flex flex-col p-6 overflow-y-auto space-y-5 animate-fade-in">
+            <form onSubmit={handleSaveEntry} className="flex-1 flex flex-col p-6 pb-24 md:pb-6 overflow-y-auto space-y-5 animate-fade-in">
               
               <div className="border-b border-[#27272a] pb-4">
                 <h3 className="text-sm font-bold font-mono text-[#fafafa] m-0">
@@ -787,7 +787,7 @@ function CofreComponent() {
             // =========================================================================
             // SUB-VIEW 2: VISUALIZAÇÃO DETALHADA DO ITEM
             // =========================================================================
-            <div className={`flex-1 flex flex-col p-6 overflow-y-auto space-y-6 animate-fade-in ${isFetchingDetail ? 'opacity-70' : 'opacity-100'} transition-opacity duration-200`}>
+            <div className={`flex-1 flex flex-col p-6 pb-24 md:pb-6 overflow-y-auto space-y-6 animate-fade-in ${isFetchingDetail ? 'opacity-70' : 'opacity-100'} transition-opacity duration-200`}>
               
               {/* Header de Detalhes */}
               <div className="flex items-center justify-between border-b border-[#27272a] pb-4">
