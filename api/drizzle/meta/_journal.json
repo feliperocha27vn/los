@@ -57,6 +57,20 @@
       "when": 1782678293509,
       "tag": "0008_funny_cammi",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1782835747677,
+      "tag": "0009_careless_groot",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1782847234373,
+      "tag": "0010_jittery_lionheart",
+      "breakpoints": true
     }
   ]
 }

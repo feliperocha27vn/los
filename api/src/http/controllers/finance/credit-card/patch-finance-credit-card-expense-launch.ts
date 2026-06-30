@@ -60,6 +60,9 @@ export function patchFinanceCreditCardExpenseLaunchRoute(
           }
           const transactionWithCategory = {
             ...transaction,
+            installmentAmount: null,
+            installmentDate: null,
+            installmentNumber: null,
             category: transaction.categoryId
               ? await financeCategoriesRepository.findById(transaction.categoryId)
               : null,

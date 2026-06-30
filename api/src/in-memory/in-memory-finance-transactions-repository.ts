@@ -2,6 +2,7 @@ import type {
   CreateFinanceTransactionInput,
   FinanceInstallmentInput,
   FinanceInstallmentRecord,
+  FinanceTransactionListRecord,
   FinanceTransactionRecord,
   FinanceTransactionsRepository,
   FinanceTransactionType,
@@ -25,7 +26,7 @@ export class InMemoryFinanceTransactionsRepository implements FinanceTransaction
       to?: string
       search?: string
     },
-  ): Promise<FinanceTransactionRecord[]> {
+  ): Promise<FinanceTransactionListRecord[]> {
     let result = this.transactions.filter((t) => t.userId === userId)
     if (filters?.type) result = result.filter((t) => t.type === filters.type)
     if (filters?.categoryId) result = result.filter((t) => t.categoryId === filters.categoryId)
@@ -33,7 +34,29 @@ export class InMemoryFinanceTransactionsRepository implements FinanceTransaction
       const term = filters.search.toLowerCase()
       result = result.filter((t) => t.description.toLowerCase().includes(term))
     }
-    return result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+
+    if (filters?.from && filters?.to) {
+      const { from, to } = filters
+      const txIds = new Set(result.map((t) => t.id))
+      const matching = this.installments.filter(
+        (i) => txIds.has(i.transactionId) && i.date >= from && i.date <= to,
+      )
+      return matching
+        .map((i) => {
+          const tx = result.find((t) => t.id === i.transactionId)!
+          return {
+            ...tx,
+            installmentAmount: i.amount,
+            installmentDate: i.date,
+            installmentNumber: i.installmentNumber,
+          }
+        })
+        .sort((a, b) => (a.installmentDate < b.installmentDate ? -1 : 1))
+    }
+
+    return result
+      .map((t) => ({ ...t, installmentAmount: null, installmentDate: null, installmentNumber: null }))
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
   }
 
   async countByUserId(userId: string): Promise<number> {
@@ -51,6 +74,7 @@ export class InMemoryFinanceTransactionsRepository implements FinanceTransaction
       totalAmount: input.totalAmount,
       installmentsCount: input.installmentsCount,
       source: input.source,
+      isFixed: input.isFixed,
       createdAt: now,
       updatedAt: now,
     }
@@ -67,6 +91,7 @@ export class InMemoryFinanceTransactionsRepository implements FinanceTransaction
     if (!record) throw new Error('FinanceTransaction not found')
     if (input.description !== undefined) record.description = input.description
     if (input.categoryId !== undefined) record.categoryId = input.categoryId
+    if (input.isFixed !== undefined) record.isFixed = input.isFixed
     record.updatedAt = new Date()
     return record
   }
@@ -110,5 +135,11 @@ export class InMemoryFinanceTransactionsRepository implements FinanceTransaction
       (i) => txIds.has(i.transactionId) && i.date >= from && i.date <= to,
     )
     return matchingInstallments.reduce((sum, i) => sum + Number(i.amount), 0)
+  }
+
+  async deleteFutureInstallments(transactionId: string, afterDate: string): Promise<void> {
+    this.installments = this.installments.filter(
+      (i) => !(i.transactionId === transactionId && i.date > afterDate),
+    )
   }
 }

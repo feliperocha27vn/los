@@ -1,0 +1,1 @@
+ALTER TABLE "finance_transactions" ADD COLUMN "is_fixed" boolean DEFAULT false NOT NULL;

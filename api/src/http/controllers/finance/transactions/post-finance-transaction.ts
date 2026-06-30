@@ -31,6 +31,7 @@ export function postFinanceTransactionRoute(
             totalAmount: z.number().positive(),
             installmentsCount: z.number().int().min(1).max(24).optional(),
             firstInstallmentDate: z.string().optional(),
+            isFixed: z.boolean().optional(),
           }),
           response: {
             201: z.object({
@@ -52,6 +53,7 @@ export function postFinanceTransactionRoute(
             totalAmount,
             installmentsCount,
             firstInstallmentDate,
+            isFixed,
           } = request.body
 
           const useCase = new CreateFinanceTransactionUseCase(
@@ -66,10 +68,14 @@ export function postFinanceTransactionRoute(
             totalAmount,
             installmentsCount,
             firstInstallmentDate,
+            isFixed,
           })
 
           const transactionWithCategory = {
             ...transaction,
+            installmentAmount: null,
+            installmentDate: null,
+            installmentNumber: null,
             category: transaction.categoryId
               ? await financeCategoriesRepository.findById(transaction.categoryId)
               : null,

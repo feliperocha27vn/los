@@ -47,7 +47,12 @@ export function getFinanceTransactionDetailRoute(
           })
 
           return reply.status(200).send({
-            transaction: toTransactionListItem(transaction),
+            transaction: toTransactionListItem({
+              ...transaction,
+              installmentAmount: null,
+              installmentDate: null,
+              installmentNumber: null,
+            }),
             installments: installments.map(toInstallmentResponse),
           })
         } catch (error) {

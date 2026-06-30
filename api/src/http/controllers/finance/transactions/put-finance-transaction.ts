@@ -15,16 +15,18 @@ export function putFinanceTransactionRoute(
       {
         schema: {
           tags: ['Finance'],
-          summary: 'Update finance transaction (description / category)',
+          summary: 'Update finance transaction (description / category / isFixed)',
           params: z.object({ id: z.string() }),
           body: z
             .object({
               description: z.string().min(1).max(200).optional(),
               categoryId: z.string().nullable().optional(),
+              isFixed: z.boolean().optional(),
             })
-            .refine((b) => b.description !== undefined || b.categoryId !== undefined, {
-              message: 'Pelo menos um campo deve ser fornecido',
-            }),
+            .refine(
+              (b) => b.description !== undefined || b.categoryId !== undefined || b.isFixed !== undefined,
+              { message: 'Pelo menos um campo deve ser fornecido' },
+            ),
           response: {
             200: z.object({
               transaction: z.object({
@@ -33,6 +35,7 @@ export function putFinanceTransactionRoute(
                 category: z
                   .object({ id: z.string(), name: z.string(), color: z.string() })
                   .nullable(),
+                isFixed: z.boolean(),
                 updatedAt: z.string(),
               }),
             }),
@@ -44,7 +47,7 @@ export function putFinanceTransactionRoute(
         try {
           const { sub: userId } = request.user as { sub: string }
           const { id } = request.params
-          const { description, categoryId } = request.body
+          const { description, categoryId, isFixed } = request.body
 
           const useCase = new UpdateFinanceTransactionUseCase(
             financeTransactionsRepository,
@@ -55,6 +58,7 @@ export function putFinanceTransactionRoute(
             transactionId: id,
             description,
             categoryId,
+            isFixed,
           })
 
           const category = transaction.categoryId
@@ -68,6 +72,7 @@ export function putFinanceTransactionRoute(
               category: category
                 ? { id: category.id, name: category.name, color: category.color }
                 : null,
+              isFixed: transaction.isFixed,
               updatedAt: transaction.updatedAt.toISOString(),
             },
           })

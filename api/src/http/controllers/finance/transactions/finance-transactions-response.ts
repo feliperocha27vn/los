@@ -26,6 +26,7 @@ export const financeTransactionResponseSchema = z.object({
   currentInstallment: z.number().nullable(),
   date: z.string(),
   source: financeTransactionSourceSchema,
+  isFixed: z.boolean(),
   createdAt: z.string(),
   updatedAt: z.string(),
 })
@@ -47,20 +48,28 @@ export function toTransactionListItem(
     totalAmount: string
     installmentsCount: number
     source: 'principal' | 'credit_card'
+    isFixed: boolean
     createdAt: Date
     updatedAt: Date
+    installmentAmount: string | null
+    installmentDate: string | null
+    installmentNumber: number | null
   } & { category: { id: string; name: string; color: string } | null },
 ) {
+  // Quando a parcela do período está presente, mostramos o valor/data dela (não o total da
+  // compra nem a data de criação) — é o que aparece na tabela e bate com o resumo mensal.
+  const hasInstallmentMatch = record.installmentAmount !== null
   return {
     id: record.id,
     type: record.type,
     description: record.description,
     category: toEmbedded(record.category),
-    totalAmount: Number(record.totalAmount),
+    totalAmount: hasInstallmentMatch ? Number(record.installmentAmount) : Number(record.totalAmount),
     installmentsCount: record.installmentsCount,
-    currentInstallment: null,
-    date: record.createdAt.toISOString().slice(0, 10),
+    currentInstallment: record.installmentNumber,
+    date: hasInstallmentMatch ? record.installmentDate! : record.createdAt.toISOString().slice(0, 10),
     source: record.source,
+    isFixed: record.isFixed,
     createdAt: record.createdAt.toISOString(),
     updatedAt: record.updatedAt.toISOString(),
   }

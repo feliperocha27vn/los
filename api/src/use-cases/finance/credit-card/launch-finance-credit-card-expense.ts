@@ -41,6 +41,7 @@ export class LaunchFinanceCreditCardExpenseUseCase {
       totalAmount: expense.myShareAmount,
       installmentsCount: 1,
       source: 'credit_card',
+      isFixed: false,
     })
 
     await this.financeTransactionsRepository.createInstallments([

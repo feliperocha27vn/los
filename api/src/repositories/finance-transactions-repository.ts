@@ -18,19 +18,20 @@ export interface FinanceTransactionRecord {
   totalAmount: string
   installmentsCount: number
   source: FinanceTransactionSource
+  isFixed: boolean
   createdAt: Date
   updatedAt: Date
 }
 
 export type CreateFinanceTransactionInput = Pick<
   FinanceTransactionRecord,
-  'id' | 'userId' | 'type' | 'description' | 'totalAmount' | 'installmentsCount' | 'source'
+  'id' | 'userId' | 'type' | 'description' | 'totalAmount' | 'installmentsCount' | 'source' | 'isFixed'
 > & {
   categoryId: string | null
 }
 
 export type UpdateFinanceTransactionInput = Partial<
-  Pick<FinanceTransactionRecord, 'description' | 'categoryId'>
+  Pick<FinanceTransactionRecord, 'description' | 'categoryId' | 'isFixed'>
 >
 
 export interface FinanceInstallmentInput {
@@ -39,6 +40,15 @@ export interface FinanceInstallmentInput {
   installmentNumber: number
   amount: string
   date: string
+}
+
+// Quando a busca é filtrada por período (from/to), cada linha representa uma parcela
+// que cai naquele período (installmentAmount/installmentDate/installmentNumber preenchidos).
+// Sem filtro de período, cada linha representa a transação inteira (campos de parcela nulos).
+export interface FinanceTransactionListRecord extends FinanceTransactionRecord {
+  installmentAmount: string | null
+  installmentDate: string | null
+  installmentNumber: number | null
 }
 
 export interface FinanceTransactionsRepository {
@@ -52,7 +62,7 @@ export interface FinanceTransactionsRepository {
       to?: string
       search?: string
     },
-  ): Promise<FinanceTransactionRecord[]>
+  ): Promise<FinanceTransactionListRecord[]>
   countByUserId(userId: string): Promise<number>
   create(input: CreateFinanceTransactionInput): Promise<FinanceTransactionRecord>
   update(
@@ -71,4 +81,7 @@ export interface FinanceTransactionsRepository {
     from: string,
     to: string,
   ): Promise<number>
+  // Apaga parcelas com data estritamente posterior a `afterDate` — usado ao desligar
+  // uma despesa fixa, pra parar a recorrência sem mexer no histórico já vencido.
+  deleteFutureInstallments(transactionId: string, afterDate: string): Promise<void>
 }

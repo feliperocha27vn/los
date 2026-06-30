@@ -12,6 +12,9 @@ import type {
 const TRANSACTION_LIMIT_PER_USER = 500
 const MAX_INSTALLMENTS = 24
 const MAX_DESCRIPTION_LENGTH = 200
+// Despesas fixas (isFixed) não dividem o valor — repetem o totalAmount cheio todo mês,
+// materializado como parcelas reais por esse horizonte à frente da data de início.
+const FIXED_EXPENSE_HORIZON_MONTHS = 36
 
 interface CreateFinanceTransactionInput {
   userId: string
@@ -21,6 +24,7 @@ interface CreateFinanceTransactionInput {
   totalAmount: number
   installmentsCount?: number
   firstInstallmentDate?: string
+  isFixed?: boolean
 }
 
 interface CreateFinanceTransactionOutput {
@@ -53,14 +57,16 @@ export class CreateFinanceTransactionUseCase {
     totalAmount,
     installmentsCount = 1,
     firstInstallmentDate,
+    isFixed = false,
   }: CreateFinanceTransactionInput): Promise<CreateFinanceTransactionOutput> {
     if (!Number.isFinite(totalAmount) || totalAmount <= 0) {
       throw new Error('totalAmount deve ser positivo')
     }
     if (
-      !Number.isInteger(installmentsCount) ||
-      installmentsCount < 1 ||
-      installmentsCount > MAX_INSTALLMENTS
+      !isFixed &&
+      (!Number.isInteger(installmentsCount) ||
+        installmentsCount < 1 ||
+        installmentsCount > MAX_INSTALLMENTS)
     ) {
       throw new Error(`installmentsCount deve estar entre 1 e ${MAX_INSTALLMENTS}`)
     }
@@ -80,7 +86,12 @@ export class CreateFinanceTransactionUseCase {
 
     const transactionId = randomUUID()
     const firstDate = firstInstallmentDate ?? toIsoDate(new Date())
-    const installmentAmount = (totalAmount / installmentsCount).toFixed(10)
+    // Despesa fixa: valor cheio repete por FIXED_EXPENSE_HORIZON_MONTHS, sem dividir.
+    // Parcelamento normal: o total é dividido pelo número de parcelas escolhido.
+    const effectiveCount = isFixed ? FIXED_EXPENSE_HORIZON_MONTHS : installmentsCount
+    const installmentAmount = isFixed
+      ? totalAmount.toFixed(10)
+      : (totalAmount / installmentsCount).toFixed(10)
 
     const transaction = await this.financeTransactionsRepository.create({
       id: transactionId,
@@ -89,12 +100,13 @@ export class CreateFinanceTransactionUseCase {
       description,
       categoryId,
       totalAmount: totalAmount.toFixed(10),
-      installmentsCount,
+      installmentsCount: effectiveCount,
       source: 'principal',
+      isFixed,
     })
 
     const installmentInputs: FinanceInstallmentInput[] = []
-    for (let n = 1; n <= installmentsCount; n++) {
+    for (let n = 1; n <= effectiveCount; n++) {
       installmentInputs.push({
         id: randomUUID(),
         transactionId,

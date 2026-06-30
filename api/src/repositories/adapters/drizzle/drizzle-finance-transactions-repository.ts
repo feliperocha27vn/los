@@ -1,4 +1,4 @@
-import { and, asc, between, eq, ilike, sql } from 'drizzle-orm'
+import { and, asc, between, eq, gt, ilike, sql } from 'drizzle-orm'
 import { financeInstallments, financeTransactions } from '@db/schema'
 import { db } from '@lib/db'
 import type {
@@ -6,6 +6,7 @@ import type {
   FinanceInstallmentInput,
   FinanceInstallmentRecord,
   FinanceTransactionsRepository,
+  FinanceTransactionListRecord,
   FinanceTransactionRecord,
   FinanceTransactionType,
   UpdateFinanceTransactionInput,
@@ -23,6 +24,7 @@ function toTxRecord(
     totalAmount: row.totalAmount,
     installmentsCount: row.installmentsCount,
     source: row.source,
+    isFixed: row.isFixed,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   }
@@ -66,7 +68,7 @@ class DrizzleFinanceTransactionsRepository
       to?: string
       search?: string
     },
-  ): Promise<FinanceTransactionRecord[]> {
+  ): Promise<FinanceTransactionListRecord[]> {
     const conditions = [eq(financeTransactions.userId, userId)]
     if (filters?.type) conditions.push(eq(financeTransactions.type, filters.type))
     if (filters?.categoryId)
@@ -74,10 +76,24 @@ class DrizzleFinanceTransactionsRepository
     if (filters?.search) {
       conditions.push(ilike(financeTransactions.description, `%${filters.search}%`))
     }
+
+    // Quando o período é informado, listamos por parcela (uma linha por parcela que cai no
+    // período), igual o resumo mensal já faz em sumInstallmentsInRange — é o que faz o valor
+    // e a data exibidos baterem com o mês selecionado, em vez do valor total/data de criação.
     if (filters?.from && filters?.to) {
-      conditions.push(
-        between(financeTransactions.createdAt, new Date(filters.from), new Date(`${filters.to}T23:59:59.999Z`)),
-      )
+      const rows = await db
+        .select({ transaction: financeTransactions, installment: financeInstallments })
+        .from(financeInstallments)
+        .innerJoin(financeTransactions, eq(financeInstallments.transactionId, financeTransactions.id))
+        .where(and(...conditions, between(financeInstallments.date, filters.from, filters.to)))
+        .orderBy(asc(financeInstallments.date))
+
+      return rows.map(({ transaction, installment }) => ({
+        ...toTxRecord(transaction),
+        installmentAmount: installment.amount,
+        installmentDate: installment.date,
+        installmentNumber: installment.installmentNumber,
+      }))
     }
 
     const rows = await db
@@ -86,7 +102,12 @@ class DrizzleFinanceTransactionsRepository
       .where(and(...conditions))
       .orderBy(asc(financeTransactions.createdAt))
 
-    return rows.map(toTxRecord)
+    return rows.map((row) => ({
+      ...toTxRecord(row),
+      installmentAmount: null,
+      installmentDate: null,
+      installmentNumber: null,
+    }))
   }
 
   async countByUserId(userId: string): Promise<number> {
@@ -174,6 +195,17 @@ class DrizzleFinanceTransactionsRepository
         ),
       )
     return Number(result[0]?.total ?? 0)
+  }
+
+  async deleteFutureInstallments(transactionId: string, afterDate: string): Promise<void> {
+    await db
+      .delete(financeInstallments)
+      .where(
+        and(
+          eq(financeInstallments.transactionId, transactionId),
+          gt(financeInstallments.date, afterDate),
+        ),
+      )
   }
 }
 
