@@ -37,16 +37,22 @@ async function applyFile(filename: string): Promise<void> {
     try {
       await db.execute(sql.raw(statement))
     } catch (e) {
-      const err = e as { code?: string; message?: string }
+      const err = e as { cause?: { code?: string; message?: string }; code?: string; message?: string }
+      // O driver embrulha o erro real do Postgres em DrizzleQueryError — o
+      // código e a mensagem do Postgres (42710/23505/"already exists"/...)
+      // vêm de err.cause, não de err (que só tem o texto da query falhada).
+      const code = err.cause?.code ?? err.code
+      const message = err.cause?.message ?? err.message
       if (
-        err.code === '42710' ||
-        err.code === '42P07' ||
-        err.code === '42701' ||
-        err.code === '42P06' ||
-        (err.message && (
-          err.message.includes('already exists') ||
-          err.message.includes('does not exist') ||
-          err.message.includes('constraint')
+        code === '42710' || // duplicate_object
+        code === '42P07' || // duplicate_table
+        code === '42701' || // duplicate_column
+        code === '42P06' || // duplicate_schema
+        code === '23505' || // unique_violation (ex.: seed de categorias já inserido)
+        (message && (
+          message.includes('already exists') ||
+          message.includes('does not exist') ||
+          message.includes('constraint')
         ))
       ) {
         continue
@@ -58,15 +64,6 @@ async function applyFile(filename: string): Promise<void> {
   console.log(`[start] applied ${filename}`)
 }
 
-async function isSchemaInitialized(): Promise<boolean> {
-  try {
-    await db.execute(sql`SELECT 1 FROM users LIMIT 1`)
-    return true
-  } catch {
-    return false
-  }
-}
-
 async function runMigrations() {
   console.log('[start] running migrations...')
   await ensureMigrationsTable()
@@ -76,21 +73,13 @@ async function runMigrations() {
     .filter((f) => f.endsWith('.sql'))
     .sort()
 
-  const schemaExists = await isSchemaInitialized()
-
-  // DB legado: schema existe mas _los_migrations está vazio (migrations
-  // rodaram antes deste start.ts existir). Marca todas como aplicadas.
-  if (schemaExists && applied.size === 0) {
-    console.log('[start] legacy schema detected, marking migrations as applied')
-    for (const file of files) {
-      await db.execute(
-        sql`INSERT INTO _los_migrations (name) VALUES (${file}) ON CONFLICT (name) DO NOTHING`,
-      )
-    }
-    console.log('[start] no new migrations')
-    return
-  }
-
+  // Sempre tenta aplicar todo arquivo ainda não registrado em _los_migrations —
+  // nunca assume que "tabela já existe" significa "já está tudo aplicado".
+  // Statements cujo objeto já existe (schema legado, aplicado por fora deste
+  // runner) são ignorados individualmente pelo catch de applyFile; statements
+  // realmente pendentes rodam de verdade. Marcar arquivos inteiros como
+  // aplicados sem executá-los (como este código fazia antes) já deixou uma
+  // coluna nova faltando em produção.
   let count = 0
   for (const file of files) {
     if (applied.has(file)) continue
