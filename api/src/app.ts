@@ -3,10 +3,6 @@ import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
 import { controllers } from '@http/controllers'
-import type { AgendaCalendarsRepository } from '@repositories/agenda-calendars-repository'
-import type { AgendaEventExceptionsRepository } from '@repositories/agenda-event-exceptions-repository'
-import type { AgendaEventsRepository } from '@repositories/agenda-events-repository'
-import type { AgendaTelegramLinksRepository } from '@repositories/agenda-telegram-links-repository'
 import type { CofreEntriesRepository } from '@repositories/cofre-entries-repository'
 import type { FinanceCategoriesRepository } from '@repositories/finance-categories-repository'
 import type { FinanceCreditCardExpensesRepository } from '@repositories/finance-credit-card-expenses-repository'
@@ -18,7 +14,6 @@ import type { StudyPagesRepository } from '@repositories/study-pages-repository'
 import type { TasksRepository } from '@repositories/tasks-repository'
 import type { TrackerHabitsRepository } from '@repositories/tracker-habits-repository'
 import type { TrackerRecordsRepository } from '@repositories/tracker-records-repository'
-import type { UserPreferencesRepository } from '@repositories/user-preferences-repository'
 import type { UsersRepository } from '@repositories/users-repository'
 import ScalarApiReference from '@scalar/fastify-api-reference'
 import fastify from 'fastify'
@@ -43,11 +38,6 @@ export function createApp(
   financeCategoriesRepository?: FinanceCategoriesRepository,
   financeTransactionsRepository?: FinanceTransactionsRepository,
   financeCreditCardExpensesRepository?: FinanceCreditCardExpensesRepository,
-  agendaCalendarsRepository?: AgendaCalendarsRepository,
-  agendaEventsRepository?: AgendaEventsRepository,
-  agendaEventExceptionsRepository?: AgendaEventExceptionsRepository,
-  agendaTelegramLinksRepository?: AgendaTelegramLinksRepository,
-  userPreferencesRepository?: UserPreferencesRepository,
 ) {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -94,10 +84,6 @@ export function createApp(
     }
 
     if (request.url.startsWith('/docs')) {
-      return
-    }
-
-    if (request.url === '/agenda/telegram/webhook') {
       return
     }
 
@@ -153,11 +139,6 @@ export function createApp(
       financeCategoriesRepository,
       financeTransactionsRepository,
       financeCreditCardExpensesRepository,
-      agendaCalendarsRepository,
-      agendaEventsRepository,
-      agendaEventExceptionsRepository,
-      agendaTelegramLinksRepository,
-      userPreferencesRepository,
     }),
   )
 

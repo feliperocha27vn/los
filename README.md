@@ -1,12 +1,11 @@
 # Life OS
 
-Aplicação de gestão de vida pessoal com módulos: Agenda, Finanças, Cofre, Tarefas (Kanban), Hábitos (Rastreador) e Estudos.
+Aplicação de gestão de vida pessoal com módulos: Finanças, Cofre, Tarefas (Kanban), Hábitos (Rastreador) e Estudos.
 
 ## Stack
 
 - **Backend**: Fastify 5 + Drizzle ORM + PostgreSQL 17 + Zod 4
 - **Frontend**: React 19 + Vite + TanStack Router + Tailwind 4
-- **Notificações**: Telegram (polling)
 - **Deploy**: Docker Compose
 
 ## Subir localmente (Docker)
@@ -18,10 +17,6 @@ cp .env.example .env
 # 2. Gere secrets fortes para o JWT
 echo "JWT_SECRET=$(openssl rand -hex 32)" >> .env
 echo "COFRE_JWT_SECRET=$(openssl rand -hex 32)" >> .env
-
-# (Opcional) Telegram
-# echo "TELEGRAM_BOT_TOKEN=seu_token" >> .env
-# echo "TELEGRAM_BOT_USERNAME=seu_bot" >> .env
 
 # 3. Suba os containers
 docker compose up -d --build
@@ -43,7 +38,7 @@ Após subir, a aplicação estará disponível em:
 │   ├── src/
 │   │   ├── db/        # Drizzle schemas
 │   │   ├── http/      # Controllers (1 rota por arquivo)
-│   │   ├── lib/       # db, telegram
+│   │   ├── lib/       # db client
 │   │   ├── use-cases/ # Lógica de negócio
 │   │   └── repositories/  # Interfaces + Drizzle/InMemory
 │   ├── drizzle/       # SQL migrations
@@ -110,9 +105,6 @@ O arquivo `start.js` é idempotente — só aplica migrations que ainda não for
 | `JWT_SECRET` | Secret do JWT (cookie auth) | **Sim** (gere com `openssl rand -hex 32`) |
 | `COFRE_JWT_SECRET` | Secret do JWT do Cofre | **Sim** |
 | `WEB_PORT` | Porta externa do frontend | Não (default: 80) |
-| `TELEGRAM_BOT_TOKEN` | Token do @BotFather | Não (se vazio, notificações desabilitadas) |
-| `TELEGRAM_BOT_USERNAME` | Username do bot | Não |
-| `TELEGRAM_WEBHOOK_SECRET` | Secret do webhook | Não (polling mode usado por padrão) |
 
 ## Coolify
 

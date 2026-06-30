@@ -1,7 +1,3 @@
-export { agendaCalendars } from './agenda-calendars'
-export { agendaEventExceptions, agendaExceptionActionEnum } from './agenda-event-exceptions'
-export { agendaEventStatusEnum, agendaEvents } from './agenda-events'
-export { agendaTelegramLinks } from './agenda-telegram-links'
 export { cofreCategoryEnum, cofreEntries } from './cofre-entries'
 export {
   financeCategories,

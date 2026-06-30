@@ -50,10 +50,6 @@ services:
       # Secrets gerados pelo Coolify (64 bytes hex). Visíveis/editáveis na UI.
       - JWT_SECRET=${SERVICE_BASE64_64_JWT}
       - COFRE_JWT_SECRET=${SERVICE_BASE64_64_COFRE}
-      # Configuráveis na UI do Coolify (deixe vazio se não usar).
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
-      - TELEGRAM_BOT_USERNAME=${TELEGRAM_BOT_USERNAME:-}
-      - TELEGRAM_WEBHOOK_SECRET=${TELEGRAM_WEBHOOK_SECRET:-}
       - CORS_ORIGIN=${CORS_ORIGIN:-}
       - ADMIN_EMAIL=${ADMIN_EMAIL:-feliperocha.dev27@gmail.com}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-change-me-on-first-login}

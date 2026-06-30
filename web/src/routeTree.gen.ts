@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as FinancasRouteImport } from './routes/financas'
 import { Route as CofreRouteImport } from './routes/cofre'
-import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrganizacaoNotasRouteImport } from './routes/organizacao.notas'
 
@@ -23,11 +22,6 @@ const FinancasRoute = FinancasRouteImport.update({
 const CofreRoute = CofreRouteImport.update({
   id: '/cofre',
   path: '/cofre',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgendaRoute = AgendaRouteImport.update({
-  id: '/agenda',
-  path: '/agenda',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -43,14 +37,12 @@ const OrganizacaoNotasRoute = OrganizacaoNotasRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/agenda': typeof AgendaRoute
   '/cofre': typeof CofreRoute
   '/financas': typeof FinancasRoute
   '/organizacao/notas': typeof OrganizacaoNotasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/agenda': typeof AgendaRoute
   '/cofre': typeof CofreRoute
   '/financas': typeof FinancasRoute
   '/organizacao/notas': typeof OrganizacaoNotasRoute
@@ -58,28 +50,20 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/agenda': typeof AgendaRoute
   '/cofre': typeof CofreRoute
   '/financas': typeof FinancasRoute
   '/organizacao/notas': typeof OrganizacaoNotasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/agenda' | '/cofre' | '/financas' | '/organizacao/notas'
+  fullPaths: '/' | '/cofre' | '/financas' | '/organizacao/notas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/agenda' | '/cofre' | '/financas' | '/organizacao/notas'
-  id:
-    | '__root__'
-    | '/'
-    | '/agenda'
-    | '/cofre'
-    | '/financas'
-    | '/organizacao/notas'
+  to: '/' | '/cofre' | '/financas' | '/organizacao/notas'
+  id: '__root__' | '/' | '/cofre' | '/financas' | '/organizacao/notas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AgendaRoute: typeof AgendaRoute
   CofreRoute: typeof CofreRoute
   FinancasRoute: typeof FinancasRoute
   OrganizacaoNotasRoute: typeof OrganizacaoNotasRoute
@@ -101,13 +85,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CofreRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agenda': {
-      id: '/agenda'
-      path: '/agenda'
-      fullPath: '/agenda'
-      preLoaderRoute: typeof AgendaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -127,7 +104,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AgendaRoute: AgendaRoute,
   CofreRoute: CofreRoute,
   FinancasRoute: FinancasRoute,
   OrganizacaoNotasRoute: OrganizacaoNotasRoute,

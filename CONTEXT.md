@@ -13,7 +13,7 @@ A barra de navegação lateral esquerda fixa no App Shell para telas maiores (De
 _Avoid_: Menu lateral, Barra esquerda, Navegação esquerda
 
 **Dashboard**:
-A tela inicial do sistema que exibe uma visão geral consolidada das informações diárias, organizada com widgets financeiros no topo e colunas de organização e agenda abaixo.
+A tela inicial do sistema que exibe uma visão geral consolidada das informações diárias, organizada com widgets financeiros no topo e widgets de organização abaixo.
 _Avoid_: Home, Tela inicial, Painel
 
 **Widget**:
@@ -127,26 +127,6 @@ _Avoid_: Prestação, Fração
 **Lançamento no Principal**:
 O ato de marcar uma Despesa do Cartão como despesa real na tela de Transações, gerando automaticamente uma Transação tipo "expense" com descrição "Minha parte do cartão" e valor igual à Minha Parte da despesa.
 _Avoid_: Lançamento, Conciliação
-
-**Agenda**:
-O módulo do Life OS voltado para o gerenciamento pessoal de Compromissos, com suporte a múltiplos Calendários, recorrência (subset RRULE) e notificações via Telegram, organizado em duas visões: Mês e Dia.
-_Avoid_: Calendário pessoal, Schedule, Agenda pessoal
-
-**Calendário**:
-Uma categoria visual de Compromissos criada pelo user (ex: "Trabalho", "Pessoal", "Saúde"), identificada por nome e cor, usada para filtrar e organizar Compromissos na Agenda.
-_Avoid_: Agenda, Categoria, Grupo de eventos
-
-**Compromisso**:
-Um evento individual no módulo Agenda, com título, descrição opcional, localização, data/hora de início e fim, status (scheduled/done/cancelled), e opcional recorrência (com Exceções aplicáveis).
-_Avoid_: Evento, Tarefa, Lançamento, Meeting
-
-**Ocorrência**:
-Cada uma das instâncias geradas a partir de um Compromisso recorrente (ex: "toda segunda às 10h" gera 52 ocorrências no ano), visíveis no GET /agenda/events após expansão do backend.
-_Avoid_: Instância, Repetição, Slot
-
-**Exceção de Recorrência**:
-Uma modificação aplicada a uma Ocorrência específica de um Compromisso recorrente, podendo ser do tipo "cancel" (cancela só aquela Ocorrência) ou "reschedule" (a Ocorrência é adiada para novas datas).
-_Avoid_: Edição pontual, Override, Patch de recorrência
 
 
 

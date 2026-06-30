@@ -6,7 +6,6 @@ import {
   LayoutDashboard, 
   Wallet, 
   ClipboardList, 
-  Calendar, 
   Key, 
   LogOut,
   Sun,
@@ -16,7 +15,7 @@ import { cn } from '@core/utils';
 
 interface AppShellProps {
   children: React.ReactNode;
-  activeTab: 'dashboard' | 'cofre' | 'financas' | 'organizacao' | 'agenda' | 'configuracoes';
+  activeTab: 'dashboard' | 'cofre' | 'financas' | 'organizacao' | 'configuracoes';
 }
 
 export function AppShell({ children, activeTab }: AppShellProps) {
@@ -126,20 +125,6 @@ export function AppShell({ children, activeTab }: AppShellProps) {
               <span className="hidden lg:inline">Organização</span>
             </Link>
 
-            {/* Agenda */}
-            <Link 
-              to="/agenda"
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg font-mono text-sm cursor-pointer transition-smooth",
-                activeTab === 'agenda' 
-                  ? 'bg-secondary text-secondary-foreground font-medium' 
-                  : 'text-muted-foreground hover:text-foreground hover:bg-card/50 font-normal'
-              )}
-            >
-              <Calendar className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'agenda' ? 'text-[#6366f1]' : 'text-muted-foreground')} />
-              <span className="hidden lg:inline">Agenda</span>
-            </Link>
-
             {/* Cofre */}
             <Link 
               to="/cofre"
@@ -241,17 +226,6 @@ export function AppShell({ children, activeTab }: AppShellProps) {
           )}
         >
           <ClipboardList className="h-5 w-5" />
-        </Link>
-
-        {/* Agenda */}
-        <Link 
-          to="/agenda"
-          className={cn(
-            "flex items-center justify-center h-10 w-10 rounded-full cursor-pointer transition-smooth",
-            activeTab === 'agenda' ? 'bg-secondary text-primary' : 'text-muted-foreground hover:text-foreground'
-          )}
-        >
-          <Calendar className="h-5 w-5" />
         </Link>
 
         {/* Cofre */}

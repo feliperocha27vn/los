@@ -57,7 +57,7 @@ export class EnsureSeedUseCase {
         id: randomUUID(),
         userId,
         title: 'Como começar',
-        content: 'Explore os módulos: Agenda, Finanças, Cofre, Tarefas, Hábitos, Estudos e Notas.',
+        content: 'Explore os módulos: Finanças, Cofre, Tarefas, Hábitos, Estudos e Notas.',
         createdAt: now,
         updatedAt: now,
       },

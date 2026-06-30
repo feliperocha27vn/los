@@ -15,8 +15,7 @@ A comunicação entre agentes é feita via arquivos de spec em `.specs/`:
 los/
 ├── .specs/
 │   ├── auth.md          ← contrato do módulo login
-│   ├── cofre.md         ← contrato do módulo cofre
-│   └── dashboard.md     ← próximo módulo
+│   └── cofre.md         ← contrato do módulo cofre
 ├── api/                 ← backend (opencode)
 ├── web/                 ← frontend (antigravity)
 └── swagger.json         ← gerado via pnpm swagger
@@ -35,7 +34,7 @@ Leia .specs/<modulo>.md e implemente o frontend conforme o design no Pencil em
 C:\Users\felip\Documents\eu_memo\www\los\design, módulo "<Nome do Módulo>".
 
 O backend já está rodando em http://localhost:3333.
-O Vite em web/vite.config.ts já faz proxy de /auth/* e /cofre/*.
+O Vite em web/vite.config.ts já faz proxy de /auth, /cofre, /notes, /tasks, /courses, /modules, /pages, /tracker e /finance.
 ```
 
 ## Design (Pencil)
