@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-28T08:53:50Z",
+  "title": "Design System: Life OS",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Indigo Elétrico",
+        "canonical": "#6366f1",
+        "tonalRamp": [
+          "#312e81",
+          "#3730a3",
+          "#4338ca",
+          "#4f46e5",
+          "#6366f1",
+          "#818cf8",
+          "#a5b4fc",
+          "#c7d2fe"
+        ]
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "Zero-Absoluto",
+        "canonical": "#09090b",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#52525b",
+          "#71717a",
+          "#a1a1aa",
+          "#fafafa"
+        ]
+      },
+      "neutral-card": {
+        "role": "neutral",
+        "displayName": "Zinco Escuro (Card)",
+        "canonical": "#18181b",
+        "tonalRamp": [
+          "#09090b",
+          "#18181b",
+          "#27272a",
+          "#3f3f46",
+          "#52525b",
+          "#71717a",
+          "#a1a1aa",
+          "#fafafa"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Títulos de seções principais da organização, editores e cabeçalhos."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Textos de leitura, conteúdo de notas e descrições."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Rótulos de formulário, botões, tags e status."
+      }
+    },
+    "shadows": [
+      {
+        "name": "active-modal",
+        "value": "0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5)",
+        "purpose": "Usado exclusivamente em modais ativos ou popovers de sobreposição."
+      }
+    ],
+    "motion": [
+      {
+        "name": "transition-smooth",
+        "value": "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Transições suaves para estados de hover, active e foco."
+      },
+      {
+        "name": "animate-fade-in",
+        "value": "fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+        "purpose": "Animação de surgimento sutil para novos painéis ou abas."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "md",
+        "value": "768px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Botão de ação principal do sistema.",
+      "html": "<button class=\"ds-btn-primary\">Salvar Registro</button>",
+      "css": ".ds-btn-primary { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; background-color: #6366f1; color: #ffffff; border: none; border-radius: 4px; padding: 8px 16px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Botão para ações secundárias ou de cancelamento.",
+      "html": "<button class=\"ds-btn-secondary\">Cancelar</button>",
+      "css": ".ds-btn-secondary { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; background-color: transparent; color: #fafafa; border: 1px solid #27272a; border-radius: 4px; padding: 8px 16px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-secondary:hover { background-color: #18181b; } .ds-btn-secondary:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Cartão ou container padrão para agrupar conteúdos.",
+      "html": "<div class=\"ds-card\"><h4 class=\"ds-card-title\">Resumo Diário</h4><p class=\"ds-card-text\">Acompanhe o cumprimento de suas metas e hábitos hoje.</p></div>",
+      "css": ".ds-card { font-family: 'JetBrains Mono', monospace; background-color: #18181b; border: 1px solid #27272a; border-radius: 6px; padding: 16px; } .ds-card-title { font-size: 14px; font-weight: 600; color: #fafafa; margin: 0 0 8px 0; } .ds-card-text { font-size: 13px; color: #a1a1aa; margin: 0; line-height: 1.5; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "description": "Campo de entrada de texto padrão.",
+      "html": "<input type=\"text\" class=\"ds-input\" placeholder=\"Ex: Beber 2L de Água\" />",
+      "css": ".ds-input { font-family: 'JetBrains Mono', monospace; font-size: 13px; background-color: rgba(9, 9, 11, 0.4); color: #fafafa; border: 1px solid #27272a; border-radius: 4px; padding: 8px 12px; width: 100%; box-sizing: border-box; outline: none; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-input::placeholder { color: rgba(161, 161, 170, 0.3); } .ds-input:focus { border-color: #6366f1; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A Cabine de Comando Monocromática",
+    "overview": "O Life OS é concebido como uma cabine de comando pessoal, limpa e de alta densidade de informação. O design prioriza a velocidade de leitura e a utilidade imediata do usuário técnico. Toda a interface é desenhada sobre um fundo escuro profundo (\"Zero-Absoluto\"), estruturada com linhas finas e precisas de divisão (\"Zinco Escuro\") e guiada por tipografia puramente monospace (JetBrains Mono). O sistema rejeita ativamente elementos decorativos desnecessários: não há gradientes, não há desfoques de vidro (\"glassmorphism\") e não há cantos excessivamente arredondados que quebrem a rigidez geométrica da cabine de comando.",
+    "keyCharacteristics": [
+      "Estética Monospace: Uso sistemático da fonte JetBrains Mono para todos os elementos de texto.",
+      "Densidade Utilitária: Informações e ações dispostas de forma compacta e direta.",
+      "Geometria Rígida: Bordas finas de 1px e raios de canto pequenos (máximo 6px).",
+      "Acentos Funcionais: Cores vibrantes (Indigo) usadas exclusivamente para indicar foco, seleção ou estados ativos."
+    ],
+    "rules": [
+      {
+        "name": "A Regra dos 10% de Acento",
+        "body": "O Indigo Elétrico é uma ferramenta de atenção. Ele nunca deve ser usado como cor de fundo de painéis grandes ou em múltiplos botões secundários na mesma tela. Sua força vem de sua raridade.",
+        "section": "colors"
+      },
+      {
+        "name": "A Regra da Profundidade Plana",
+        "body": "A separação de elementos é feita por contraste de cor de fundo e bordas de 1px. Sombras difusas são proibidas em cards normais.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do usar sempre a fonte JetBrains Mono para manter a consistência da cabine de comando técnica.",
+      "Do manter a borda de 1px Zinco Escuro (#27272a) para separar seções de tabelas ou cards.",
+      "Do garantir contraste de pelo menos 4.5:1 para todo texto de leitura secundário usando Cinza Mudo (#a1a1aa)."
+    ],
+    "donts": [
+      "Don't usar sombras projetadas largas ou difusas em botões ou cards de informação.",
+      "Don't aplicar gradientes de cores como fundo de textos ou botões.",
+      "Don't arredondar os cantos de cards ou modais acima de 12px (o padrão do sistema é 6px para cards e 4px para botões).",
+      "Don't utilizar desfoques de fundo (\"glassmorphism\") como padrão estético decorativo."
+    ]
+  }
+}
