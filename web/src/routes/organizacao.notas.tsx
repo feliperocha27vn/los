@@ -20,7 +20,9 @@ import {
   ChevronDown,
   ChevronRight,
   ArrowUp,
-  ArrowDown
+  ArrowDown,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 import { AppShell } from '@layouts/AppShell';
 import { ConfirmModal } from '@ui/ConfirmModal';
@@ -132,6 +134,18 @@ function NotesComponent() {
   
   // Referências para inputs para aplicar foco na criação
   const titleInputRef = React.useRef<HTMLInputElement | null>(null);
+  const contentTextareaRef = React.useRef<HTMLTextAreaElement | null>(null);
+
+  // Estado da nova feature: full-width (persistido) e visibilidade do preview (mobile)
+  const [isFullWidth, setIsFullWidth] = React.useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('notes-editor-fullwidth') === 'true';
+  });
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('notes-editor-fullwidth', isFullWidth ? 'true' : 'false');
+  }, [isFullWidth]);
 
   // Queries e Mutações do TanStack Query
   const { data: listData, isFetching: isFetchingList } = useGetNotes({
@@ -184,7 +198,32 @@ function NotesComponent() {
   const createTaskMutation = usePostTasks();
   const updateTaskMutation = usePutTasksId();
   const deleteTaskMutation = useDeleteTasksId();
-  const moveTaskMutation = usePatchTasksIdMove();
+  const moveTaskMutation = usePatchTasksIdMove({
+    mutation: {
+      onMutate: async ({ id, data }) => {
+        await queryClient.cancelQueries({ queryKey: getTasksQueryKey() });
+        const previousTasks = queryClient.getQueryData(getTasksQueryKey());
+        queryClient.setQueryData(getTasksQueryKey(), (old: any) => {
+          if (!old?.tasks) return old;
+          return {
+            ...old,
+            tasks: old.tasks.map((t: any) =>
+              t.id === id ? { ...t, column: data.column, position: data.position } : t,
+            ),
+          };
+        });
+        return { previousTasks };
+      },
+      onError: (_err, _vars, context) => {
+        if (context?.previousTasks) {
+          queryClient.setQueryData(getTasksQueryKey(), context.previousTasks);
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: getTasksQueryKey() });
+      },
+    },
+  });
 
   const handleOpenCreateTask = (col: 'todo' | 'in_progress' | 'done' = 'todo') => {
     setEditingTask(null);
@@ -310,7 +349,6 @@ function NotesComponent() {
           position: newPosition
         }
       });
-      queryClient.invalidateQueries({ queryKey: getTasksQueryKey() });
     } catch (err: any) {
       if (err && typeof err === 'object' && 'status' in err && err.status === 409) {
         recalculateAndMoveTasks(taskId, targetCol, targetIndex);
@@ -339,7 +377,6 @@ function NotesComponent() {
           }
         });
       }
-      queryClient.invalidateQueries({ queryKey: getTasksQueryKey() });
       toast.success('Coluna reordenada!');
     } catch (err: any) {
       toast.error(err.data?.message || 'Erro ao reordenar tarefas');
@@ -366,7 +403,6 @@ function NotesComponent() {
           position: maxPos + 1.0
         }
       });
-      queryClient.invalidateQueries({ queryKey: getTasksQueryKey() });
       toast.success('Tarefa movida!');
     } catch (err: any) {
       toast.error(err.data?.message || 'Erro ao mover tarefa');
@@ -1253,10 +1289,10 @@ function NotesComponent() {
         {/* ========================================================================= */}
         {activeTab === 'notas' ? (
           <div className="flex-1 flex overflow-hidden gap-4 md:gap-5 lg:gap-6 h-full relative">
-            
+
             {/* COLUNA 1: Lista de Notas (Desktop/Tablet e Mobile sem seleção) */}
             <section className={`flex flex-col gap-3 w-full md:w-[240px] lg:w-[320px] shrink-0 h-full ${
-              selectedId ? 'hidden md:flex' : 'flex'
+              isFullWidth ? 'hidden' : selectedId ? 'hidden md:flex' : 'flex'
             }`}>
               
               {/* Barra de Busca + Botão Criar */}
@@ -1301,7 +1337,7 @@ function NotesComponent() {
               </div>
 
               {/* Listagem das notas */}
-              <div className={`flex-1 overflow-y-auto space-y-2 pr-1 transition-opacity duration-200 ${isFetchingList ? 'opacity-65' : 'opacity-100'}`}>
+              <div className={`flex-1 overflow-y-auto space-y-2 pr-1 pb-24 md:pb-0 transition-opacity duration-200 ${isFetchingList ? 'opacity-65' : 'opacity-100'}`}>
                 {notes.length === 0 ? (
                   <p className="text-center text-[11px] font-normal text-[#a1a1aa] mt-8">
                     Nenhuma nota encontrada.
@@ -1393,6 +1429,16 @@ function NotesComponent() {
                         <span className="text-[12px] font-normal">Nota</span>
                       </div>
 
+                      {/* Toggle Full Width */}
+                      <button
+                        onClick={() => setIsFullWidth((v) => !v)}
+                        className="p-1.5 rounded-md hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] transition-smooth cursor-pointer shrink-0"
+                        title={isFullWidth ? 'Restaurar lista lateral' : 'Expandir editor'}
+                        aria-label={isFullWidth ? 'Restaurar lista lateral' : 'Expandir editor'}
+                      >
+                        {isFullWidth ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                      </button>
+
                       {/* Botão de Excluir */}
                       <button
                         onClick={handleDeleteNote}
@@ -1409,13 +1455,14 @@ function NotesComponent() {
                   <div className="h-px bg-[#27272a] mx-6 mt-4 shrink-0" />
 
                   {/* Conteúdo */}
-                  <div className="flex-1 flex flex-col px-6 py-6 overflow-hidden">
+                  <div className="flex-1 flex flex-col px-6 py-6 overflow-hidden min-h-0">
                     <textarea
+                      ref={contentTextareaRef}
                       value={editorContent}
                       onChange={(e) => handleContentChange(e.target.value)}
                       onBlur={handleBlur}
                       placeholder="Comece a escrever sua nota aqui..."
-                      className="w-full flex-1 bg-transparent border-0 outline-none resize-none text-sm md:text-base text-[#fafafa] placeholder-[#a1a1aa]/30 leading-relaxed p-0 focus:ring-0 overflow-y-auto"
+                      className="w-full flex-1 bg-transparent border-0 outline-none resize-none text-sm md:text-base text-[#fafafa] placeholder-[#a1a1aa]/30 leading-relaxed p-0 focus:ring-0 overflow-y-auto font-mono"
                     />
 
                     {/* Status Bar do auto-save */}
@@ -1509,7 +1556,7 @@ function NotesComponent() {
             </div>
 
             {/* Kanban Columns Grid */}
-            <div className="flex-1 flex flex-col md:flex-row gap-4 lg:gap-6 overflow-y-auto md:overflow-y-hidden md:overflow-x-auto pb-6 min-h-0">
+            <div className="flex-1 flex flex-col md:flex-row gap-4 lg:gap-6 overflow-y-auto md:overflow-y-hidden md:overflow-x-auto pb-24 md:pb-6 min-h-0">
               {(['todo', 'in_progress', 'done'] as const).map((colName) => {
                 const colTasks = (tasksData?.tasks || [])
                   .filter((t: any) => t.column === colName)
@@ -1665,8 +1712,8 @@ function NotesComponent() {
           // =========================================================================
           // ESTUDOS (Tree Navigation + Study Editor)
           // =========================================================================
-          <div className="flex-1 flex flex-col md:flex-row gap-4 lg:gap-6 overflow-y-auto md:overflow-y-hidden h-full relative animate-fade-in min-h-0">
-            
+          <div className="flex-1 flex flex-col md:flex-row gap-4 lg:gap-6 overflow-y-auto md:overflow-y-hidden h-full relative animate-fade-in min-h-0 pb-24 md:pb-0">
+
             {/* COLUNA 1: Árvore de Cursos (Tree Column) */}
               <aside className={cn(
                 "w-full md:w-[280px] lg:w-[320px] shrink-0 bg-[#18181b]/40 border border-[#27272a] rounded-xl p-4 flex flex-col h-full overflow-hidden select-none",
