@@ -79,6 +79,7 @@ function FinancasComponent() {
   const [formDate, setFormDate] = React.useState(() => new Date().toISOString().split('T')[0]);
   const [formMyShareAmount, setFormMyShareAmount] = React.useState('');
   const [autoDivide, setAutoDivide] = React.useState(true);
+  const [formIsFixed, setFormIsFixed] = React.useState(false);
 
   // Queries
   const [year, month] = selectedMonth.split('-').map(Number);
@@ -149,6 +150,7 @@ function FinancasComponent() {
     setFormMyShareAmount('');
     setAutoDivide(true);
     setFormType('expense');
+    setFormIsFixed(false);
   };
 
   // Invalidar Queries
@@ -183,7 +185,8 @@ function FinancasComponent() {
           id: editingTx.id,
           data: {
             description: formDescription,
-            categoryId: formCategoryId || undefined
+            categoryId: formCategoryId || undefined,
+            isFixed: formIsFixed
           }
         });
         toast.success('Transação atualizada com sucesso.');
@@ -195,7 +198,8 @@ function FinancasComponent() {
             categoryId: formCategoryId || undefined,
             totalAmount: parseFloat(formTotalAmount),
             installmentsCount: parseInt(formInstallmentsCount, 10),
-            firstInstallmentDate: formDate
+            firstInstallmentDate: formDate,
+            isFixed: formIsFixed
           }
         });
         toast.success('Transação registrada.');
@@ -308,6 +312,7 @@ function FinancasComponent() {
     setFormInstallmentsCount(tx.installmentsCount.toString());
     setFormDate(tx.date);
     setFormType(tx.type);
+    setFormIsFixed(tx.isFixed);
     setIsCreateTxOpen(true);
   };
 
@@ -369,7 +374,7 @@ function FinancasComponent() {
       {/* ========================================================================= */}
       {/* MAIN CONTAINER */}
       {/* ========================================================================= */}
-      <div className="flex-1 flex flex-col gap-6 p-6 md:p-8 lg:px-16 lg:py-12 w-full max-w-[1440px] mx-auto overflow-y-auto">
+      <div className="flex-1 flex flex-col gap-6 p-6 pb-24 md:p-8 md:pb-8 lg:px-16 lg:py-12 w-full max-w-[1440px] mx-auto overflow-y-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <h1 className="text-2xl font-bold font-mono tracking-tight text-foreground">
@@ -540,10 +545,15 @@ function FinancasComponent() {
                           {tx.date}
                         </td>
                         <td className="p-4 text-muted-foreground">
-                          {tx.installmentsCount > 1 
-                            ? `${tx.currentInstallment || 1} / ${tx.installmentsCount}`
-                            : '-'
-                          }
+                          {tx.isFixed ? (
+                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold border bg-[#6366f1]/10 text-[#6366f1] border-[#6366f1]/20">
+                              Fixa
+                            </span>
+                          ) : tx.installmentsCount > 1 ? (
+                            `${tx.currentInstallment || 1} / ${tx.installmentsCount}`
+                          ) : (
+                            '-'
+                          )}
                         </td>
                         <td className="p-4 text-right">
                           <div className="flex items-center justify-end gap-1.5">
@@ -623,7 +633,11 @@ function FinancasComponent() {
                     <div className="flex items-center justify-between border-t border-border/50 pt-2.5 text-muted-foreground text-[10px]">
                       <div className="flex items-center gap-3">
                         <span>{tx.date}</span>
-                        {tx.installmentsCount > 1 && (
+                        {tx.isFixed ? (
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold border bg-[#6366f1]/10 text-[#6366f1] border-[#6366f1]/20">
+                            Fixa
+                          </span>
+                        ) : tx.installmentsCount > 1 && (
                           <span>Parc: {tx.currentInstallment}/{tx.installmentsCount}</span>
                         )}
                       </div>
@@ -1028,23 +1042,39 @@ function FinancasComponent() {
                 />
               </div>
 
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-[10px] text-muted-foreground cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={formIsFixed}
+                    onChange={(e) => setFormIsFixed(e.target.checked)}
+                    className="rounded bg-card border-border text-primary focus:ring-0 focus:ring-offset-0 cursor-pointer h-3.5 w-3.5"
+                  />
+                  Despesa fixa (repete todo mês com o mesmo valor)
+                </label>
+              </div>
+
               {!editingTx && (
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-muted-foreground font-semibold uppercase">Parcelas</label>
-                    <select
-                      value={formInstallmentsCount}
-                      onChange={(e) => setFormInstallmentsCount(e.target.value)}
-                      className="flex h-9 w-full rounded-md border border-border bg-card px-3 py-1 text-xs text-foreground focus-visible:outline-none cursor-pointer"
-                    >
-                      {Array.from({ length: 24 }, (_, i) => i + 1).map((n) => (
-                        <option key={n} value={n}>{n}x</option>
-                      ))}
-                    </select>
-                  </div>
+                <div className={formIsFixed ? "grid grid-cols-1 gap-4" : "grid grid-cols-2 gap-4"}>
+                  {!formIsFixed && (
+                    <div className="space-y-1">
+                      <label className="text-[10px] text-muted-foreground font-semibold uppercase">Parcelas</label>
+                      <select
+                        value={formInstallmentsCount}
+                        onChange={(e) => setFormInstallmentsCount(e.target.value)}
+                        className="flex h-9 w-full rounded-md border border-border bg-card px-3 py-1 text-xs text-foreground focus-visible:outline-none cursor-pointer"
+                      >
+                        {Array.from({ length: 24 }, (_, i) => i + 1).map((n) => (
+                          <option key={n} value={n}>{n}x</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
 
                   <div className="space-y-1">
-                    <label className="text-[10px] text-muted-foreground font-semibold uppercase">Data da Compra</label>
+                    <label className="text-[10px] text-muted-foreground font-semibold uppercase">
+                      {formIsFixed ? 'Data de Início' : 'Data da Compra'}
+                    </label>
                     <Input
                       type="date"
                       required
