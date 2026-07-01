@@ -60,7 +60,11 @@ async function applyFile(filename: string): Promise<void> {
       throw e
     }
   }
-  await db.execute(sql`INSERT INTO _los_migrations (name) VALUES (${filename})`)
+  // ON CONFLICT DO NOTHING: torna o registro idempotente/seguro sob corrida —
+  // se dois containers (ex.: deploy rolling do Coolify sobrepondo o antigo e
+  // o novo) tentarem aplicar o mesmo arquivo ao mesmo tempo, o perdedor da
+  // corrida não deve derrubar o processo, só constatar que já foi registrado.
+  await db.execute(sql`INSERT INTO _los_migrations (name) VALUES (${filename}) ON CONFLICT (name) DO NOTHING`)
   console.log(`[start] applied ${filename}`)
 }
 
