@@ -353,10 +353,10 @@ function CofreComponent() {
                 {Array.from({ length: 6 }).map((_, i) => (
                   <div
                     key={i}
-                    className={`h-3 w-3 rounded-full border transition-all duration-200 ${
+                    className={`h-3 w-3 rounded-full border-2 transition-all duration-200 ${
                       i < pin.length
                         ? 'bg-primary border-primary scale-110 shadow-[0_0_8px_rgba(99,102,241,0.5)]'
-                        : 'bg-transparent border-[#27272a]'
+                        : 'bg-transparent border-muted-foreground/40'
                     }`}
                   />
                 ))}
@@ -767,18 +767,18 @@ function CofreComponent() {
             // SUB-VIEW 2.5: SKELETON LOADER ENQUANTO CARREGA O DETALHE DO ITEM
             // =========================================================================
             <div className="flex-1 flex flex-col p-6 overflow-y-auto space-y-6 animate-pulse">
-              <div className="border-b border-[#27272a] pb-4 space-y-2.5">
-                <div className="h-6.5 w-48 bg-[#18181b] border border-[#27272a] rounded" />
-                <div className="h-4.5 w-20 bg-[#18181b] border border-[#27272a] rounded-full" />
+              <div className="border-b border-border pb-4 space-y-2.5">
+                <div className="h-6.5 w-48 bg-card border border-border rounded" />
+                <div className="h-4.5 w-20 bg-card border border-border rounded-full" />
               </div>
               <div className="space-y-5 max-w-[500px]">
                 <div className="space-y-2">
-                  <div className="h-3 w-16 bg-[#18181b] rounded" />
-                  <div className="h-11 w-full bg-[#18181b] border border-[#27272a] rounded-lg" />
+                  <div className="h-3 w-16 bg-muted rounded" />
+                  <div className="h-11 w-full bg-muted border border-border rounded-lg" />
                 </div>
                 <div className="space-y-2">
-                  <div className="h-3 w-16 bg-[#18181b] rounded" />
-                  <div className="h-11 w-full bg-[#18181b] border border-[#27272a] rounded-lg" />
+                  <div className="h-3 w-16 bg-muted rounded" />
+                  <div className="h-11 w-full bg-muted border border-border rounded-lg" />
                 </div>
               </div>
             </div>

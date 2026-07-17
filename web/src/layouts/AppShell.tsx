@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useAuth } from '@core/auth-provider';
+import { useThemeStore } from '@core/theme-store';
 import { 
   Command, 
   LayoutDashboard, 
@@ -21,11 +22,8 @@ interface AppShellProps {
 export function AppShell({ children, activeTab }: AppShellProps) {
   const auth = useAuth();
   const navigate = useNavigate();
-
-  const [theme, setTheme] = React.useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem('lifeos-theme');
-    return (saved as 'dark' | 'light') || 'dark';
-  });
+  const theme = useThemeStore((state) => state.theme);
+  const toggleTheme = useThemeStore((state) => state.toggle);
 
   React.useEffect(() => {
     if (theme === 'light') {
@@ -33,12 +31,7 @@ export function AppShell({ children, activeTab }: AppShellProps) {
     } else {
       document.documentElement.classList.remove('light');
     }
-    localStorage.setItem('lifeos-theme', theme);
   }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
-  };
 
   const handleLogout = async () => {
     try {
@@ -73,7 +66,7 @@ export function AppShell({ children, activeTab }: AppShellProps) {
         <div className="space-y-8">
           {/* Logo do App */}
           <div className="flex items-center gap-3 px-1">
-            <div className="flex h-8 w-8 items-center justify-center text-[#6366f1] shrink-0">
+            <div className="flex h-8 w-8 items-center justify-center text-primary shrink-0">
               <Command className="h-6 w-6" />
             </div>
             <span className="hidden lg:inline text-lg font-semibold tracking-tight font-mono text-foreground">
@@ -93,7 +86,7 @@ export function AppShell({ children, activeTab }: AppShellProps) {
                   : 'text-muted-foreground hover:text-foreground hover:bg-card/50 font-normal'
               )}
             >
-              <LayoutDashboard className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'dashboard' ? 'text-[#6366f1]' : 'text-muted-foreground')} />
+              <LayoutDashboard className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'dashboard' ? 'text-primary' : 'text-muted-foreground')} />
               <span className="hidden lg:inline">Dashboard</span>
             </Link>
 
@@ -107,7 +100,7 @@ export function AppShell({ children, activeTab }: AppShellProps) {
                   : 'text-muted-foreground hover:text-foreground hover:bg-card/50 font-normal'
               )}
             >
-              <Wallet className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'financas' ? 'text-[#6366f1]' : 'text-muted-foreground')} />
+              <Wallet className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'financas' ? 'text-primary' : 'text-muted-foreground')} />
               <span className="hidden lg:inline">Finanças</span>
             </Link>
 
@@ -121,7 +114,7 @@ export function AppShell({ children, activeTab }: AppShellProps) {
                   : 'text-muted-foreground hover:text-foreground hover:bg-card/50 font-normal'
               )}
             >
-              <ClipboardList className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'organizacao' ? 'text-[#6366f1]' : 'text-muted-foreground')} />
+              <ClipboardList className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'organizacao' ? 'text-primary' : 'text-muted-foreground')} />
               <span className="hidden lg:inline">Organização</span>
             </Link>
 
@@ -135,7 +128,7 @@ export function AppShell({ children, activeTab }: AppShellProps) {
                   : 'text-muted-foreground hover:text-foreground hover:bg-card/50 font-normal'
               )}
             >
-              <Key className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'cofre' ? 'text-[#6366f1]' : 'text-muted-foreground')} />
+              <Key className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'cofre' ? 'text-primary' : 'text-muted-foreground')} />
               <span className="hidden lg:inline">Cofre</span>
             </Link>
 
@@ -173,7 +166,7 @@ export function AppShell({ children, activeTab }: AppShellProps) {
             {/* Logout Button */}
             <button 
               onClick={handleLogout}
-              className="p-1.5 rounded-md hover:bg-secondary text-rose-500 hover:text-rose-600 transition-smooth cursor-pointer focus-visible:ring-2 focus-visible:ring-primary outline-none"
+              className="p-1.5 rounded-md hover:bg-secondary text-destructive hover:text-destructive/80 transition-smooth cursor-pointer focus-visible:ring-2 focus-visible:ring-primary outline-none"
               title="Sair da conta"
             >
               <LogOut className="h-[18px] w-[18px]" />
