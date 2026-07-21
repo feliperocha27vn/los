@@ -4,6 +4,7 @@ import { db } from '@lib/db'
 import type {
   CreateTaskInput,
   MoveTaskInput,
+  TaskCategory,
   TaskColumn,
   TaskRecord,
   TasksRepository,
@@ -14,6 +15,7 @@ function toRecord(row: typeof tasks.$inferSelect): TaskRecord {
   return {
     id: row.id,
     userId: row.userId,
+    category: row.category,
     column: row.column,
     title: row.title,
     description: row.description,
@@ -35,9 +37,13 @@ class DrizzleTasksRepository implements TasksRepository {
 
   async findManyByUserId(
     userId: string,
-    filters?: { column?: TaskColumn; search?: string }
+    filters?: { category?: TaskCategory; column?: TaskColumn; search?: string },
   ): Promise<TaskRecord[]> {
     const conditions = [eq(tasks.userId, userId)]
+
+    if (filters?.category) {
+      conditions.push(eq(tasks.category, filters.category))
+    }
 
     if (filters?.column) {
       conditions.push(eq(tasks.column, filters.column))
@@ -46,7 +52,7 @@ class DrizzleTasksRepository implements TasksRepository {
     if (filters?.search) {
       const term = `%${filters.search}%`
       conditions.push(
-        or(ilike(tasks.title, term), ilike(tasks.description, term))!
+        or(ilike(tasks.title, term), ilike(tasks.description, term))!,
       )
     }
 
@@ -54,7 +60,7 @@ class DrizzleTasksRepository implements TasksRepository {
       .select()
       .from(tasks)
       .where(and(...conditions))
-      .orderBy(asc(tasks.column), asc(tasks.position))
+      .orderBy(asc(tasks.category), asc(tasks.column), asc(tasks.position))
 
     return rows.map(toRecord)
   }
@@ -75,7 +81,7 @@ class DrizzleTasksRepository implements TasksRepository {
   async update(
     id: string,
     userId: string,
-    input: UpdateTaskInput
+    input: UpdateTaskInput,
   ): Promise<TaskRecord> {
     const [row] = await db
       .update(tasks)
@@ -89,11 +95,12 @@ class DrizzleTasksRepository implements TasksRepository {
   async move(
     id: string,
     userId: string,
-    input: MoveTaskInput
+    input: MoveTaskInput,
   ): Promise<TaskRecord> {
     const [row] = await db
       .update(tasks)
       .set({
+        category: input.category,
         column: input.column,
         position: input.position,
         updatedAt: new Date(),

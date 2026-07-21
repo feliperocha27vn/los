@@ -1,11 +1,17 @@
 import { ResourceNotFoundError } from '@errors/resource-not-found-error'
-import type { TaskRecord, TasksRepository, UpdateTaskInput } from '@repositories/tasks-repository'
+import type {
+  TaskCategory,
+  TaskRecord,
+  TasksRepository,
+  UpdateTaskInput,
+} from '@repositories/tasks-repository'
 
 interface UpdateTaskPayload {
   taskId: string
   userId: string
   title?: string
   description?: string | null
+  category?: TaskCategory
 }
 
 interface UpdateTaskOutput {
@@ -19,6 +25,7 @@ export class UpdateTaskUseCase {
     const input: UpdateTaskInput = {}
     if (data.title !== undefined) input.title = data.title
     if (data.description !== undefined) input.description = data.description
+    if (data.category !== undefined) input.category = data.category
 
     try {
       const task = await this.tasksRepository.update(taskId, userId, input)

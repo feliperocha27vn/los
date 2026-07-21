@@ -1,6 +1,11 @@
 import { randomUUID } from 'node:crypto'
 import { TaskLimitExceededError } from '@errors/task-limit-exceeded-error'
-import type { TaskColumn, TaskRecord, TasksRepository } from '@repositories/tasks-repository'
+import type {
+  TaskCategory,
+  TaskColumn,
+  TaskRecord,
+  TasksRepository,
+} from '@repositories/tasks-repository'
 
 const TASK_LIMIT_PER_USER = 500
 const POSITION_STEP = 1.0
@@ -10,6 +15,7 @@ interface CreateTaskInput {
   title: string
   description?: string | null
   column?: TaskColumn
+  category?: TaskCategory
 }
 
 interface CreateTaskOutput {
@@ -24,6 +30,7 @@ export class CreateTaskUseCase {
     title,
     description,
     column = 'todo',
+    category = 'other',
   }: CreateTaskInput): Promise<CreateTaskOutput> {
     const count = await this.tasksRepository.countByUserId(userId)
     if (count >= TASK_LIMIT_PER_USER) {
@@ -31,6 +38,7 @@ export class CreateTaskUseCase {
     }
 
     const columnTasks = await this.tasksRepository.findManyByUserId(userId, {
+      category,
       column,
     })
     const maxPosition = columnTasks.reduce((max, t) => {
@@ -42,6 +50,7 @@ export class CreateTaskUseCase {
     const task = await this.tasksRepository.create({
       id: randomUUID(),
       userId,
+      category,
       column,
       title,
       description: description ?? null,

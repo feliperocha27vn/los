@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import supertest from 'supertest'
-import { setupTasksE2E } from './e2e-helpers'
 import type { FastifyInstance } from 'fastify'
+import supertest from 'supertest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { setupTasksE2E } from './e2e-helpers'
 
 let app: FastifyInstance
 let authCookie: string
@@ -27,6 +27,24 @@ describe('GET /tasks', () => {
     const res = await supertest(app.server).get('/tasks?column=done').set('Cookie', authCookie)
     expect(res.status).toBe(200)
     expect(res.body.tasks.every((t: { column: string }) => t.column === 'done')).toBe(true)
+  })
+
+  it('should filter by category', async () => {
+    const res = await supertest(app.server).get('/tasks?category=work').set('Cookie', authCookie)
+    expect(res.status).toBe(200)
+    expect(res.body.tasks.every((t: { category: string }) => t.category === 'work')).toBe(true)
+  })
+
+  it('should filter by category and column combined', async () => {
+    const res = await supertest(app.server)
+      .get('/tasks?category=other&column=todo')
+      .set('Cookie', authCookie)
+    expect(res.status).toBe(200)
+    expect(
+      res.body.tasks.every(
+        (t: { category: string; column: string }) => t.category === 'other' && t.column === 'todo',
+      ),
+    ).toBe(true)
   })
 
   it('should search by title', async () => {

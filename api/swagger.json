@@ -1354,6 +1354,19 @@
             "schema": {
               "type": "string",
               "enum": [
+                "work",
+                "personal",
+                "other"
+              ]
+            },
+            "in": "query",
+            "name": "category",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
                 "todo",
                 "in_progress",
                 "done"
@@ -1388,6 +1401,14 @@
                         "properties": {
                           "id": {
                             "type": "string"
+                          },
+                          "category": {
+                            "type": "string",
+                            "enum": [
+                              "work",
+                              "personal",
+                              "other"
+                            ]
                           },
                           "column": {
                             "type": "string",
@@ -1425,6 +1446,7 @@
                         },
                         "required": [
                           "id",
+                          "category",
                           "column",
                           "title",
                           "description",
@@ -1484,6 +1506,14 @@
                       "in_progress",
                       "done"
                     ]
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "work",
+                      "personal",
+                      "other"
+                    ]
                   }
                 },
                 "required": [
@@ -1506,6 +1536,14 @@
                       "properties": {
                         "id": {
                           "type": "string"
+                        },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "work",
+                            "personal",
+                            "other"
+                          ]
                         },
                         "column": {
                           "type": "string",
@@ -1543,6 +1581,7 @@
                       },
                       "required": [
                         "id",
+                        "category",
                         "column",
                         "title",
                         "description",
@@ -1613,6 +1652,14 @@
                         "id": {
                           "type": "string"
                         },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "work",
+                            "personal",
+                            "other"
+                          ]
+                        },
                         "column": {
                           "type": "string",
                           "enum": [
@@ -1649,6 +1696,7 @@
                       },
                       "required": [
                         "id",
+                        "category",
                         "column",
                         "title",
                         "description",
@@ -1718,6 +1766,14 @@
                         ]
                       }
                     ]
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "work",
+                      "personal",
+                      "other"
+                    ]
                   }
                 }
               }
@@ -1748,6 +1804,14 @@
                         "id": {
                           "type": "string"
                         },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "work",
+                            "personal",
+                            "other"
+                          ]
+                        },
                         "title": {
                           "type": "string"
                         },
@@ -1770,6 +1834,7 @@
                       },
                       "required": [
                         "id",
+                        "category",
                         "title",
                         "description",
                         "updatedAt"
@@ -1865,6 +1930,14 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "work",
+                      "personal",
+                      "other"
+                    ]
+                  },
                   "column": {
                     "type": "string",
                     "enum": [
@@ -1880,6 +1953,7 @@
                   }
                 },
                 "required": [
+                  "category",
                   "column",
                   "position"
                 ]
@@ -1911,6 +1985,14 @@
                         "id": {
                           "type": "string"
                         },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "work",
+                            "personal",
+                            "other"
+                          ]
+                        },
                         "column": {
                           "type": "string",
                           "enum": [
@@ -1928,6 +2010,7 @@
                       },
                       "required": [
                         "id",
+                        "category",
                         "column",
                         "position",
                         "updatedAt"

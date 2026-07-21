@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { InMemoryTasksRepository } from '@in-memory/in-memory-tasks-repository'
-import { UpdateTaskUseCase } from './update-task'
 import { ResourceNotFoundError } from '@errors/resource-not-found-error'
+import { InMemoryTasksRepository } from '@in-memory/in-memory-tasks-repository'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { UpdateTaskUseCase } from './update-task'
 
 describe('update task use case', () => {
   let repository: InMemoryTasksRepository
@@ -11,6 +11,7 @@ describe('update task use case', () => {
     await repository.create({
       id: 't1',
       userId: 'user-1',
+      category: 'other',
       column: 'todo',
       title: 'Old',
       description: 'Old desc',
@@ -39,6 +40,16 @@ describe('update task use case', () => {
     })
     expect(result.task.title).toBe('Just title')
     expect(result.task.description).toBe('Old desc')
+  })
+
+  it('should reclassify category (move to another tab)', async () => {
+    const useCase = new UpdateTaskUseCase(repository)
+    const result = await useCase.execute({
+      taskId: 't1',
+      userId: 'user-1',
+      category: 'work',
+    })
+    expect(result.task.category).toBe('work')
   })
 
   it('should throw when not found', async () => {

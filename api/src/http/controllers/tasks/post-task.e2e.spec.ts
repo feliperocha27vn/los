@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import supertest from 'supertest'
-import { setupTasksE2E } from './e2e-helpers'
 import type { FastifyInstance } from 'fastify'
+import supertest from 'supertest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { setupTasksE2E } from './e2e-helpers'
 
 let app: FastifyInstance
 let authCookie: string
@@ -17,7 +17,7 @@ afterAll(async () => {
 })
 
 describe('POST /tasks', () => {
-  it('should create a task in todo by default', async () => {
+  it('should create a task in todo by default with category other', async () => {
     const response = await supertest(app.server)
       .post('/tasks')
       .set('Cookie', authCookie)
@@ -26,6 +26,7 @@ describe('POST /tasks', () => {
     expect(response.status).toBe(201)
     expect(response.body.task.title).toBe('My Task')
     expect(response.body.task.column).toBe('todo')
+    expect(response.body.task.category).toBe('other')
     expect(response.body.task.position).toBe(1)
   })
 
@@ -37,6 +38,16 @@ describe('POST /tasks', () => {
 
     expect(response.status).toBe(201)
     expect(response.body.task.column).toBe('in_progress')
+  })
+
+  it('should create a task with explicit category work', async () => {
+    const response = await supertest(app.server)
+      .post('/tasks')
+      .set('Cookie', authCookie)
+      .send({ title: 'Deploy', category: 'work' })
+
+    expect(response.status).toBe(201)
+    expect(response.body.task.category).toBe('work')
   })
 
   it('should return 401 without auth', async () => {

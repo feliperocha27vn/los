@@ -1,6 +1,7 @@
 import type {
   CreateTaskInput,
   MoveTaskInput,
+  TaskCategory,
   TaskColumn,
   TaskRecord,
   TasksRepository,
@@ -16,9 +17,13 @@ export class InMemoryTasksRepository implements TasksRepository {
 
   async findManyByUserId(
     userId: string,
-    filters?: { column?: TaskColumn; search?: string },
+    filters?: { category?: TaskCategory; column?: TaskColumn; search?: string },
   ): Promise<TaskRecord[]> {
     let result = this.tasks.filter((t) => t.userId === userId)
+
+    if (filters?.category) {
+      result = result.filter((t) => t.category === filters.category)
+    }
 
     if (filters?.column) {
       result = result.filter((t) => t.column === filters.column)
@@ -44,6 +49,7 @@ export class InMemoryTasksRepository implements TasksRepository {
     const task: TaskRecord = {
       id: input.id,
       userId: input.userId,
+      category: input.category,
       column: input.column,
       title: input.title,
       description: input.description ?? null,
@@ -60,6 +66,7 @@ export class InMemoryTasksRepository implements TasksRepository {
     if (!task) throw new Error('Task not found')
     if (input.title !== undefined) task.title = input.title
     if (input.description !== undefined) task.description = input.description
+    if (input.category !== undefined) task.category = input.category
     task.updatedAt = new Date()
     return task
   }
@@ -71,12 +78,14 @@ export class InMemoryTasksRepository implements TasksRepository {
     const collides = this.tasks.some(
       (t) =>
         t.userId === userId &&
+        t.category === input.category &&
         t.column === input.column &&
         t.id !== id &&
         t.position === input.position,
     )
     if (collides) throw new Error('Position conflict')
 
+    task.category = input.category
     task.column = input.column
     task.position = input.position
     task.updatedAt = new Date()
