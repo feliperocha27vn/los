@@ -10,6 +10,15 @@ export type GetTasksIdPathParams = {
   id: string;
 };
 
+export const taskCategoryEnum2 = {
+  work: "work",
+  personal: "personal",
+  other: "other",
+} as const;
+
+export type TaskCategoryEnum2Key =
+  (typeof taskCategoryEnum2)[keyof typeof taskCategoryEnum2];
+
 export const taskColumnEnum2 = {
   todo: "todo",
   in_progress: "in_progress",
@@ -33,6 +42,10 @@ export type GetTasksId200 = {
      * @type string
      */
     id: string;
+    /**
+     * @type string
+     */
+    category: TaskCategoryEnum2Key;
     /**
      * @type string
      */

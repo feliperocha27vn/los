@@ -22,7 +22,8 @@ import {
   ArrowUp,
   ArrowDown,
   Maximize2,
-  Minimize2
+  Minimize2,
+  MoreVertical
 } from 'lucide-react';
 import { AppShell } from '@layouts/AppShell';
 import { ConfirmModal } from '@ui/ConfirmModal';
@@ -173,6 +174,7 @@ function NotesComponent() {
   // TAREFAS (KANBAN) - ESTADOS, HOOKS E HANDLERS
   // =========================================================================
   const [taskSearchQuery, setTaskSearchQuery] = React.useState('');
+  const [taskActiveCategory, setTaskActiveCategory] = React.useState<'work' | 'personal' | 'other'>('work');
   const [activeMobileColumn, setActiveMobileColumn] = React.useState<'todo' | 'in_progress' | 'done'>('todo');
 
   const [isTaskModalOpen, setIsTaskModalOpen] = React.useState(false);
@@ -180,8 +182,10 @@ function NotesComponent() {
   const [taskFormTitle, setTaskFormTitle] = React.useState('');
   const [taskFormDescription, setTaskFormDescription] = React.useState('');
   const [taskFormColumn, setTaskFormColumn] = React.useState<'todo' | 'in_progress' | 'done'>('todo');
+  const [taskFormCategory, setTaskFormCategory] = React.useState<'work' | 'personal' | 'other'>('work');
   const [taskFormError, setTaskFormError] = React.useState<string | null>(null);
 
+  const [openCardMenuId, setOpenCardMenuId] = React.useState<string | null>(null);
   const [taskToDelete, setTaskToDelete] = React.useState<any | null>(null);
   const [isTaskDeleteModalOpen, setIsTaskDeleteModalOpen] = React.useState(false);
 
@@ -194,6 +198,11 @@ function NotesComponent() {
       staleTime: 0,
     }
   });
+
+  const allTasks = tasksData?.tasks || [];
+  const workCount = allTasks.filter((t: any) => (t.category || 'other') === 'work').length;
+  const personalCount = allTasks.filter((t: any) => (t.category || 'other') === 'personal').length;
+  const otherCount = allTasks.filter((t: any) => (t.category || 'other') === 'other').length;
 
   const createTaskMutation = usePostTasks();
   const updateTaskMutation = usePutTasksId();
@@ -208,7 +217,7 @@ function NotesComponent() {
           return {
             ...old,
             tasks: old.tasks.map((t: any) =>
-              t.id === id ? { ...t, column: data.column, position: data.position } : t,
+              t.id === id ? { ...t, column: data.column, position: data.position, category: data.category } : t,
             ),
           };
         });
@@ -230,6 +239,7 @@ function NotesComponent() {
     setTaskFormTitle('');
     setTaskFormDescription('');
     setTaskFormColumn(col);
+    setTaskFormCategory(taskActiveCategory);
     setTaskFormError(null);
     setIsTaskModalOpen(true);
   };
@@ -239,6 +249,7 @@ function NotesComponent() {
     setTaskFormTitle(task.title);
     setTaskFormDescription(task.description || '');
     setTaskFormColumn(task.column);
+    setTaskFormCategory(task.category || 'other');
     setTaskFormError(null);
     setIsTaskModalOpen(true);
   };
@@ -254,16 +265,20 @@ function NotesComponent() {
 
     try {
       if (editingTask) {
-        if (taskFormColumn !== editingTask.column) {
-          const colTasks = (tasksData?.tasks || [])
-            .filter((t: any) => t.column === taskFormColumn && t.id !== editingTask.id)
+        const categoryChanged = taskFormCategory !== (editingTask.category || 'other');
+        const columnChanged = taskFormColumn !== editingTask.column;
+
+        if (categoryChanged || columnChanged) {
+          const colTasks = allTasks
+            .filter((t: any) => (t.category || 'other') === taskFormCategory && t.column === taskFormColumn && t.id !== editingTask.id)
             .sort((a: any, b: any) => a.position - b.position);
           const maxPos = colTasks.length > 0 ? colTasks[colTasks.length - 1].position : 0.0;
           await moveTaskMutation.mutateAsync({
             id: editingTask.id,
             data: {
               column: taskFormColumn,
-              position: maxPos + 1.0
+              position: maxPos + 1.0,
+              category: taskFormCategory,
             }
           });
         }
@@ -272,7 +287,8 @@ function NotesComponent() {
           id: editingTask.id,
           data: {
             title: taskFormTitle,
-            description: taskFormDescription || undefined
+            description: taskFormDescription || undefined,
+            category: taskFormCategory,
           }
         });
         toast.success('Tarefa atualizada com sucesso!');
@@ -281,7 +297,8 @@ function NotesComponent() {
           data: {
             title: taskFormTitle,
             description: taskFormDescription || undefined,
-            column: taskFormColumn
+            column: taskFormColumn,
+            category: taskFormCategory,
           }
         });
         toast.success('Tarefa criada com sucesso!');
@@ -293,7 +310,39 @@ function NotesComponent() {
     }
   };
 
+  const handleQuickCategoryChange = async (task: any, newCategory: 'work' | 'personal' | 'other') => {
+    setOpenCardMenuId(null);
+    if ((task.category || 'other') === newCategory) return;
+    try {
+      const colTasks = allTasks
+        .filter((t: any) => (t.category || 'other') === newCategory && t.column === task.column && t.id !== task.id)
+        .sort((a: any, b: any) => a.position - b.position);
+      const maxPos = colTasks.length > 0 ? colTasks[colTasks.length - 1].position : 0.0;
+
+      await moveTaskMutation.mutateAsync({
+        id: task.id,
+        data: {
+          column: task.column,
+          position: maxPos + 1.0,
+          category: newCategory,
+        }
+      });
+
+      await updateTaskMutation.mutateAsync({
+        id: task.id,
+        data: {
+          category: newCategory,
+        }
+      });
+      toast.success('Categoria da tarefa alterada!');
+      queryClient.invalidateQueries({ queryKey: getTasksQueryKey() });
+    } catch (err: any) {
+      toast.error(err.data?.message || 'Erro ao alterar categoria da tarefa');
+    }
+  };
+
   const handleDeleteTaskClick = (task: any) => {
+    setOpenCardMenuId(null);
     setTaskToDelete(task);
     setIsTaskDeleteModalOpen(true);
   };
@@ -323,8 +372,8 @@ function NotesComponent() {
   };
 
   const handleMoveTask = async (taskId: string, targetCol: 'todo' | 'in_progress' | 'done', targetIndex?: number) => {
-    const columnTasks = [...(tasksData?.tasks || [])]
-      .filter((t: any) => t.column === targetCol && t.id !== taskId)
+    const columnTasks = [...allTasks]
+      .filter((t: any) => (t.category || 'other') === taskActiveCategory && t.column === targetCol && t.id !== taskId)
       .sort((a: any, b: any) => a.position - b.position);
 
     let newPosition = 1.0;
@@ -346,7 +395,8 @@ function NotesComponent() {
         id: taskId,
         data: {
           column: targetCol,
-          position: newPosition
+          position: newPosition,
+          category: taskActiveCategory,
         }
       });
     } catch (err: any) {
@@ -360,8 +410,8 @@ function NotesComponent() {
 
   const recalculateAndMoveTasks = async (taskId: string, targetCol: 'todo' | 'in_progress' | 'done', targetIndex?: number) => {
     toast.info('Reordenando coluna para evitar colisão...');
-    const columnTasks = [...(tasksData?.tasks || [])]
-      .filter((t: any) => t.column === targetCol && t.id !== taskId)
+    const columnTasks = [...allTasks]
+      .filter((t: any) => (t.category || 'other') === taskActiveCategory && t.column === targetCol && t.id !== taskId)
       .sort((a: any, b: any) => a.position - b.position);
 
     const insertIdx = targetIndex === undefined ? columnTasks.length : targetIndex;
@@ -373,7 +423,8 @@ function NotesComponent() {
           id: columnTasks[i].id,
           data: {
             column: targetCol,
-            position: i + 1.0
+            position: i + 1.0,
+            category: taskActiveCategory,
           }
         });
       }
@@ -389,9 +440,10 @@ function NotesComponent() {
     const targetIdx = direction === 'left' ? currentIdx - 1 : currentIdx + 1;
     if (targetIdx < 0 || targetIdx >= columns.length) return;
     const targetCol = columns[targetIdx];
-    
-    const colTasks = (tasksData?.tasks || [])
-      .filter((t: any) => t.column === targetCol)
+    const category = task.category || 'other';
+
+    const colTasks = allTasks
+      .filter((t: any) => (t.category || 'other') === category && t.column === targetCol)
       .sort((a: any, b: any) => a.position - b.position);
     const maxPos = colTasks.length > 0 ? colTasks[colTasks.length - 1].position : 0.0;
     
@@ -400,7 +452,8 @@ function NotesComponent() {
         id: task.id,
         data: {
           column: targetCol,
-          position: maxPos + 1.0
+          position: maxPos + 1.0,
+          category: category,
         }
       });
       toast.success('Tarefa movida!');
@@ -1529,11 +1582,46 @@ function NotesComponent() {
               {/* Botão Nova Tarefa */}
               <Button
                 onClick={() => handleOpenCreateTask('todo')}
-                className="h-9 font-bold bg-[#6366f1] hover:bg-[#6366f1]/95 text-white rounded-md transition-smooth font-mono text-xs flex items-center justify-center gap-1.5 px-4 shadow-md w-full sm:w-auto"
+                className="h-9 font-bold bg-[#6366f1] hover:bg-[#6366f1]/95 text-white rounded-md transition-smooth font-mono text-xs flex items-center justify-center gap-1.5 px-4 shadow-md w-full sm:w-auto cursor-pointer"
               >
                 <Plus className="h-3.5 w-3.5" />
                 Nova Tarefa
               </Button>
+            </div>
+
+            {/* Abas de Categoria (Trabalho / Pessoal / Outros) */}
+            <div className="flex items-center gap-2 pb-4 select-none shrink-0 border-b border-[#27272a]/45 mb-4 overflow-x-auto">
+              {[
+                { id: 'work', label: 'Trabalho', count: workCount },
+                { id: 'personal', label: 'Pessoal', count: personalCount },
+                { id: 'other', label: 'Outros', count: otherCount },
+              ].map((cat) => {
+                const isActive = taskActiveCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setTaskActiveCategory(cat.id as any)}
+                    className={cn(
+                      "flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-smooth cursor-pointer whitespace-nowrap",
+                      isActive
+                        ? "bg-[#6366f1] text-white font-bold shadow-md"
+                        : "bg-[#18181b] border border-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] hover:border-[#6366f1]/40 font-semibold"
+                    )}
+                  >
+                    <span>{cat.label}</span>
+                    <span
+                      className={cn(
+                        "px-1.5 py-0.5 rounded-full text-[10px] font-bold font-mono",
+                        isActive
+                          ? "bg-white/20 text-white"
+                          : "bg-[#27272a] text-[#a1a1aa]"
+                      )}
+                    >
+                      {cat.count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Mobile Column Switcher (Apenas < md) */}
@@ -1558,8 +1646,8 @@ function NotesComponent() {
             {/* Kanban Columns Grid */}
             <div className="flex-1 flex flex-col md:flex-row gap-4 lg:gap-6 overflow-y-auto md:overflow-y-hidden md:overflow-x-auto pb-24 md:pb-6 min-h-0">
               {(['todo', 'in_progress', 'done'] as const).map((colName) => {
-                const colTasks = (tasksData?.tasks || [])
-                  .filter((t: any) => t.column === colName)
+                const colTasks = allTasks
+                  .filter((t: any) => (t.category || 'other') === taskActiveCategory && t.column === colName)
                   .sort((a: any, b: any) => a.position - b.position);
 
                 return (
@@ -1573,7 +1661,7 @@ function NotesComponent() {
                       handleMoveTask(taskId, colName);
                     }}
                     className={cn(
-                      "w-full md:flex-1 md:min-w-0 flex flex-col bg-[#18181b]/40 border border-[#27272a] rounded-xl p-4 md:max-h-full",
+                      "w-full md:flex-1 md:min-w-0 md:w-[350px] flex flex-col bg-[#18181b]/40 border border-[#27272a] rounded-xl p-4 md:max-h-full shrink-0 md:shrink",
                       activeMobileColumn === colName ? "flex" : "hidden md:flex"
                     )}
                   >
@@ -1618,89 +1706,161 @@ function NotesComponent() {
                           </p>
                         </div>
                       ) : (
-                        colTasks.map((task: any, taskIdx: number) => (
-                          <div
-                            key={task.id}
-                            draggable
-                            onDragStart={(e) => handleDragStart(e, task.id, task.column)}
-                            onDragOver={handleDragOver}
-                            onDrop={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              const taskId = e.dataTransfer.getData('text/plain');
-                              if (!taskId || taskId === task.id) return;
-                              handleMoveTask(taskId, colName, taskIdx);
-                            }}
-                            className={cn(
-                              "flex flex-col bg-[#09090b]/80 border border-[#27272a] rounded-lg p-3.5 cursor-grab active:cursor-grabbing hover:border-primary/50 transition-smooth group relative",
-                              colName === 'todo' ? 'border-l-3 border-l-[#6366f1]' :
-                              colName === 'in_progress' ? 'border-l-3 border-l-amber-500' :
-                              'border-l-3 border-l-emerald-500'
-                            )}
-                          >
-                            {/* Title */}
-                            <h4 className="text-xs md:text-sm font-bold font-mono text-[#fafafa] leading-snug break-words pr-6 select-text">
-                              {task.title}
-                            </h4>
+                        colTasks.map((task: any, taskIdx: number) => {
+                          const isMenuOpen = openCardMenuId === task.id;
+                          const categoryKey = task.category || 'other';
 
-                            {/* Description snippet */}
-                            {task.description && (
-                              <p className="text-[11px] md:text-xs font-mono font-medium text-[#a1a1aa] mt-1.5 leading-normal line-clamp-3 select-text whitespace-pre-wrap">
-                                {task.description}
-                              </p>
-                            )}
+                          return (
+                            <div
+                              key={task.id}
+                              draggable
+                              onDragStart={(e) => handleDragStart(e, task.id, task.column)}
+                              onDragOver={handleDragOver}
+                              onDrop={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const taskId = e.dataTransfer.getData('text/plain');
+                                if (!taskId || taskId === task.id) return;
+                                handleMoveTask(taskId, colName, taskIdx);
+                              }}
+                              className={cn(
+                                "flex flex-col bg-[#09090b]/80 border border-[#27272a] rounded-lg p-3.5 cursor-grab active:cursor-grabbing hover:border-primary/50 transition-smooth group relative",
+                                colName === 'todo' ? 'border-l-3 border-l-[#6366f1]' :
+                                colName === 'in_progress' ? 'border-l-3 border-l-amber-500' :
+                                'border-l-3 border-l-emerald-500'
+                              )}
+                            >
+                              {/* Header Card: Title & Menu Button */}
+                              <div className="flex items-start justify-between gap-2">
+                                <h4 className="text-xs md:text-sm font-bold font-mono text-[#fafafa] leading-snug break-words flex-1 select-text">
+                                  {task.title}
+                                </h4>
 
-                            {/* Footer / Meta & Quick Actions */}
-                            <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#27272a]/40 shrink-0">
-                              <span className="text-[10px] md:text-[11px] font-mono text-[#a1a1aa]/60 font-semibold">
-                                {new Date(task.createdAt).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}
-                              </span>
-
-                              {/* Action Buttons */}
-                              <div className="flex items-center gap-1 select-none">
-                                {/* Mover para esquerda */}
-                                {colName !== 'todo' && (
+                                {/* Menu ... Button */}
+                                <div className="relative shrink-0">
                                   <button
-                                    onClick={() => moveTaskDirectly(task, 'left')}
-                                    className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer"
-                                    title="Mover para coluna anterior"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setOpenCardMenuId(isMenuOpen ? null : task.id);
+                                    }}
+                                    className="p-1 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] transition-smooth cursor-pointer"
+                                    title="Opções da tarefa"
                                   >
-                                    <ArrowLeft className="h-3.5 w-3.5" />
+                                    <MoreVertical className="h-3.5 w-3.5" />
                                   </button>
-                                )}
-                                
-                                {/* Editar */}
-                                <button
-                                  onClick={() => handleOpenEditTask(task)}
-                                  className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-[#fafafa] transition-smooth cursor-pointer"
-                                  title="Editar tarefa"
-                                >
-                                  <Edit className="h-3.5 w-3.5" />
-                                </button>
 
-                                {/* Deletar */}
-                                <button
-                                  onClick={() => handleDeleteTaskClick(task)}
-                                  className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-rose-400 transition-smooth cursor-pointer"
-                                  title="Excluir tarefa"
-                                >
-                                  <Trash2 className="h-3.5 w-3.5" />
-                                </button>
+                                  {/* Dropdown Menu */}
+                                  {isMenuOpen && (
+                                    <div
+                                      onClick={(e) => e.stopPropagation()}
+                                      className="absolute right-0 top-6 z-30 w-44 bg-[#18181b] border border-[#27272a] rounded-lg shadow-2xl p-1 font-mono text-xs animate-fade-in"
+                                    >
+                                      <div className="px-2 py-1 text-[10px] text-[#a1a1aa] font-bold uppercase tracking-wider border-b border-[#27272a]/60">
+                                        Mover para categoria
+                                      </div>
+                                      {[
+                                        { id: 'work', label: 'Trabalho' },
+                                        { id: 'personal', label: 'Pessoal' },
+                                        { id: 'other', label: 'Outros' },
+                                      ].map((cat) => (
+                                        <button
+                                          key={cat.id}
+                                          disabled={categoryKey === cat.id}
+                                          onClick={() => handleQuickCategoryChange(task, cat.id as any)}
+                                          className={cn(
+                                            "w-full text-left px-2 py-1.5 rounded text-[11px] transition-smooth flex items-center justify-between cursor-pointer",
+                                            categoryKey === cat.id
+                                              ? "text-[#a1a1aa]/40 cursor-default"
+                                              : "text-[#fafafa] hover:bg-[#27272a]"
+                                          )}
+                                        >
+                                          <span>{cat.label}</span>
+                                          {categoryKey === cat.id && <span className="text-[9px] text-[#6366f1] font-bold">Atual</span>}
+                                        </button>
+                                      ))}
 
-                                {/* Mover para direita */}
-                                {colName !== 'done' && (
-                                  <button
-                                    onClick={() => moveTaskDirectly(task, 'right')}
-                                    className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer"
-                                    title="Mover para próxima coluna"
+                                      <div className="my-1 border-t border-[#27272a]/60" />
+
+                                      <button
+                                        onClick={() => {
+                                          setOpenCardMenuId(null);
+                                          handleOpenEditTask(task);
+                                        }}
+                                        className="w-full text-left px-2 py-1.5 rounded text-[11px] text-[#fafafa] hover:bg-[#27272a] transition-smooth flex items-center gap-1.5 cursor-pointer"
+                                      >
+                                        <Edit className="h-3 w-3 text-[#a1a1aa]" />
+                                        <span>Editar</span>
+                                      </button>
+
+                                      <button
+                                        onClick={() => handleDeleteTaskClick(task)}
+                                        className="w-full text-left px-2 py-1.5 rounded text-[11px] text-rose-400 hover:bg-rose-500/10 transition-smooth flex items-center gap-1.5 cursor-pointer"
+                                      >
+                                        <Trash2 className="h-3 w-3 text-rose-400" />
+                                        <span>Excluir</span>
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Description snippet */}
+                              {task.description && (
+                                <p className="text-[11px] md:text-xs font-mono font-medium text-[#a1a1aa] mt-1.5 leading-normal line-clamp-3 select-text whitespace-pre-wrap">
+                                  {task.description}
+                                </p>
+                              )}
+
+                              {/* Footer / Category Badge & Date & Quick Move */}
+                              <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#27272a]/40 shrink-0">
+                                <div className="flex items-center gap-2">
+                                  {/* Category Badge */}
+                                  <span
+                                    className={cn(
+                                      "text-[9px] md:text-[10px] font-mono px-2 py-0.5 rounded-md font-bold uppercase tracking-wider",
+                                      categoryKey === 'work' ? 'bg-[#6366f1]/20 text-[#818cf8] border border-[#6366f1]/30' :
+                                      categoryKey === 'personal' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
+                                      'bg-zinc-700/40 text-zinc-300 border border-zinc-600/40'
+                                    )}
                                   >
-                                    <ArrowRight className="h-3.5 w-3.5" />
-                                  </button>
-                                )}
+                                    {categoryKey === 'work' ? 'Trabalho' :
+                                     categoryKey === 'personal' ? 'Pessoal' :
+                                     'Outros'}
+                                  </span>
+
+                                  <span className="text-[10px] md:text-[11px] font-mono text-[#a1a1aa]/60 font-semibold">
+                                    {new Date(task.createdAt).toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' })}
+                                  </span>
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex items-center gap-1 select-none">
+                                  {/* Mover para esquerda */}
+                                  {colName !== 'todo' && (
+                                    <button
+                                      onClick={() => moveTaskDirectly(task, 'left')}
+                                      className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer"
+                                      title="Mover para coluna anterior"
+                                    >
+                                      <ArrowLeft className="h-3.5 w-3.5" />
+                                    </button>
+                                  )}
+
+                                  {/* Mover para direita */}
+                                  {colName !== 'done' && (
+                                    <button
+                                      onClick={() => moveTaskDirectly(task, 'right')}
+                                      className="p-1.5 rounded hover:bg-[#27272a] text-[#a1a1aa] hover:text-primary transition-smooth cursor-pointer"
+                                      title="Mover para próxima coluna"
+                                    >
+                                      <ArrowRight className="h-3.5 w-3.5" />
+                                    </button>
+                                  )}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))
+                          );
+                        })
                       )}
                     </div>
                   </div>
@@ -2537,6 +2697,35 @@ function NotesComponent() {
                     className="w-full min-h-[100px] max-h-[200px] rounded-md border border-[#27272a] bg-[#09090b] px-3 py-2 text-xs shadow-sm transition-all placeholder:text-[#a1a1aa]/30 focus:outline-none focus:ring-1 focus:ring-[#6366f1] focus:border-[#6366f1]/50 text-[#fafafa] font-mono leading-relaxed"
                     disabled={createTaskMutation.isPending || updateTaskMutation.isPending}
                   />
+                </div>
+
+                {/* Categoria (Segmented Control) */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#a1a1aa] uppercase">
+                    Categoria
+                  </label>
+                  <div className="grid grid-cols-3 gap-2 bg-[#09090b] border border-[#27272a] p-1 rounded-lg">
+                    {[
+                      { id: 'work', label: 'Trabalho' },
+                      { id: 'personal', label: 'Pessoal' },
+                      { id: 'other', label: 'Outros' },
+                    ].map((cat) => (
+                      <button
+                        type="button"
+                        key={cat.id}
+                        onClick={() => setTaskFormCategory(cat.id as any)}
+                        disabled={createTaskMutation.isPending || updateTaskMutation.isPending}
+                        className={cn(
+                          "py-1.5 rounded-md text-xs font-mono transition-smooth cursor-pointer text-center font-bold",
+                          taskFormCategory === cat.id
+                            ? "bg-[#6366f1] text-white shadow-sm"
+                            : "text-[#a1a1aa] hover:text-[#fafafa] hover:bg-[#18181b]"
+                        )}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Coluna */}

@@ -118,12 +118,20 @@ function LoginComponent() {
 
   const { mutateAsync: moveTask } = usePatchTasksIdMove();
 
-  const toggleTask = async (task: { id: string; column: string }) => {
+  const toggleTask = async (task: { id: string; column: string; category?: string }) => {
     const targetColumn = task.column === 'done' ? 'todo' : 'done';
-    const siblingsInTarget = allTasks.filter((t) => t.column === targetColumn);
+    const taskCategory = (task.category || 'other') as 'work' | 'personal' | 'other';
+    const siblingsInTarget = allTasks.filter((t) => t.column === targetColumn && (t.category || 'other') === taskCategory);
     const maxPos = siblingsInTarget.length > 0 ? Math.max(...siblingsInTarget.map((t) => t.position)) : 0;
     try {
-      await moveTask({ id: task.id, data: { column: targetColumn as 'todo' | 'in_progress' | 'done', position: maxPos + 1 } });
+      await moveTask({
+        id: task.id,
+        data: {
+          column: targetColumn as 'todo' | 'in_progress' | 'done',
+          position: maxPos + 1,
+          category: taskCategory,
+        },
+      });
       queryClient.invalidateQueries({ queryKey: getTasksQueryKey() });
     } catch {
       toast.error('Erro ao atualizar tarefa.');

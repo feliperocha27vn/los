@@ -3,6 +3,15 @@
  * Do not edit manually.
  */
 
+export const getTasksQueryParamsCategoryEnum = {
+  work: "work",
+  personal: "personal",
+  other: "other",
+} as const;
+
+export type GetTasksQueryParamsCategoryEnumKey =
+  (typeof getTasksQueryParamsCategoryEnum)[keyof typeof getTasksQueryParamsCategoryEnum];
+
 export const getTasksQueryParamsColumnEnum = {
   todo: "todo",
   in_progress: "in_progress",
@@ -16,6 +25,10 @@ export type GetTasksQueryParams = {
   /**
    * @type string | undefined
    */
+  category?: GetTasksQueryParamsCategoryEnumKey;
+  /**
+   * @type string | undefined
+   */
   column?: GetTasksQueryParamsColumnEnumKey;
   /**
    * @minLength 1
@@ -23,6 +36,15 @@ export type GetTasksQueryParams = {
    */
   search?: string;
 };
+
+export const tasksCategoryEnum = {
+  work: "work",
+  personal: "personal",
+  other: "other",
+} as const;
+
+export type TasksCategoryEnumKey =
+  (typeof tasksCategoryEnum)[keyof typeof tasksCategoryEnum];
 
 export const tasksColumnEnum = {
   todo: "todo",
@@ -47,6 +69,10 @@ export type GetTasks200 = {
      * @type string
      */
     id: string;
+    /**
+     * @type string
+     */
+    category: TasksCategoryEnumKey;
     /**
      * @type string
      */

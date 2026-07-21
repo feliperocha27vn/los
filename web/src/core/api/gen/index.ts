@@ -294,8 +294,10 @@ export type {
   GetTasks200,
   GetTasksQuery,
   GetTasksQueryParams,
+  GetTasksQueryParamsCategoryEnumKey,
   GetTasksQueryParamsColumnEnumKey,
   GetTasksQueryResponse,
+  TasksCategoryEnumKey,
   TasksColumnEnumKey,
   TasksDescriptionEnumKey,
 } from "./types/GetTasks.ts";
@@ -305,6 +307,7 @@ export type {
   GetTasksIdPathParams,
   GetTasksIdQuery,
   GetTasksIdQueryResponse,
+  TaskCategoryEnum2Key,
   TaskColumnEnum2Key,
   TaskDescriptionEnum2Key,
 } from "./types/GetTasksId.ts";
@@ -396,9 +399,11 @@ export type {
   PatchTasksIdMove409,
   PatchTasksIdMoveMutation,
   PatchTasksIdMoveMutationRequest,
+  PatchTasksIdMoveMutationRequestCategoryEnumKey,
   PatchTasksIdMoveMutationRequestColumnEnumKey,
   PatchTasksIdMoveMutationResponse,
   PatchTasksIdMovePathParams,
+  TaskCategoryEnum4Key,
   TaskColumnEnum3Key,
 } from "./types/PatchTasksIdMove.ts";
 export type {
@@ -514,9 +519,11 @@ export type {
   PostTasks400,
   PostTasksMutation,
   PostTasksMutationRequest,
+  PostTasksMutationRequestCategoryEnumKey,
   PostTasksMutationRequestColumnEnumKey,
   PostTasksMutationRequestDescriptionEnumKey,
   PostTasksMutationResponse,
+  TaskCategoryEnumKey,
   TaskColumnEnumKey,
   TaskDescriptionEnumKey,
 } from "./types/PostTasks.ts";
@@ -599,9 +606,11 @@ export type {
   PutTasksId404,
   PutTasksIdMutation,
   PutTasksIdMutationRequest,
+  PutTasksIdMutationRequestCategoryEnumKey,
   PutTasksIdMutationRequestDescriptionEnumKey,
   PutTasksIdMutationResponse,
   PutTasksIdPathParams,
+  TaskCategoryEnum3Key,
   TaskDescriptionEnum3Key,
 } from "./types/PutTasksId.ts";
 export type {
@@ -965,8 +974,11 @@ export { transactionsSourceEnum } from "./types/GetFinanceTransactions.ts";
 export { transactionsTypeEnum } from "./types/GetFinanceTransactions.ts";
 export { transactionSourceEnum2 } from "./types/GetFinanceTransactionsId.ts";
 export { transactionTypeEnum2 } from "./types/GetFinanceTransactionsId.ts";
+export { getTasksQueryParamsCategoryEnum } from "./types/GetTasks.ts";
 export { getTasksQueryParamsColumnEnum } from "./types/GetTasks.ts";
+export { tasksCategoryEnum } from "./types/GetTasks.ts";
 export { tasksColumnEnum } from "./types/GetTasks.ts";
+export { taskCategoryEnum2 } from "./types/GetTasksId.ts";
 export { taskColumnEnum2 } from "./types/GetTasksId.ts";
 export { daysEnergyEnum } from "./types/GetTrackerDays.ts";
 export { daysQualityEnum } from "./types/GetTrackerDays.ts";
@@ -974,15 +986,21 @@ export { getTrackerToday200EnergyEnum } from "./types/GetTrackerToday.ts";
 export { getTrackerToday200QualityEnum } from "./types/GetTrackerToday.ts";
 export { transactionSourceEnum3 } from "./types/PatchFinanceCreditCardExpensesIdLaunch.ts";
 export { transactionTypeEnum3 } from "./types/PatchFinanceCreditCardExpensesIdLaunch.ts";
+export { patchTasksIdMoveMutationRequestCategoryEnum } from "./types/PatchTasksIdMove.ts";
 export { patchTasksIdMoveMutationRequestColumnEnum } from "./types/PatchTasksIdMove.ts";
+export { taskCategoryEnum4 } from "./types/PatchTasksIdMove.ts";
 export { taskColumnEnum3 } from "./types/PatchTasksIdMove.ts";
 export { entryCategoryEnum } from "./types/PostCofreEntries.ts";
 export { postCofreEntriesMutationRequestCategoryEnum } from "./types/PostCofreEntries.ts";
 export { postFinanceTransactionsMutationRequestTypeEnum } from "./types/PostFinanceTransactions.ts";
 export { transactionSourceEnum } from "./types/PostFinanceTransactions.ts";
 export { transactionTypeEnum } from "./types/PostFinanceTransactions.ts";
+export { postTasksMutationRequestCategoryEnum } from "./types/PostTasks.ts";
 export { postTasksMutationRequestColumnEnum } from "./types/PostTasks.ts";
+export { taskCategoryEnum } from "./types/PostTasks.ts";
 export { taskColumnEnum } from "./types/PostTasks.ts";
+export { putTasksIdMutationRequestCategoryEnum } from "./types/PutTasksId.ts";
+export { taskCategoryEnum3 } from "./types/PutTasksId.ts";
 export { putTrackerRecordsMutationRequestEnergyEnum } from "./types/PutTrackerRecords.ts";
 export { putTrackerRecordsMutationRequestQualityEnum } from "./types/PutTrackerRecords.ts";
 export { recordEnergyEnum } from "./types/PutTrackerRecords.ts";

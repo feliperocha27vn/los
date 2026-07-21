@@ -10,6 +10,15 @@ export type PatchTasksIdMovePathParams = {
   id: string;
 };
 
+export const taskCategoryEnum4 = {
+  work: "work",
+  personal: "personal",
+  other: "other",
+} as const;
+
+export type TaskCategoryEnum4Key =
+  (typeof taskCategoryEnum4)[keyof typeof taskCategoryEnum4];
+
 export const taskColumnEnum3 = {
   todo: "todo",
   in_progress: "in_progress",
@@ -31,6 +40,10 @@ export type PatchTasksIdMove200 = {
      * @type string
      */
     id: string;
+    /**
+     * @type string
+     */
+    category: TaskCategoryEnum4Key;
     /**
      * @type string
      */
@@ -66,6 +79,15 @@ export type PatchTasksIdMove409 = {
   message: string;
 };
 
+export const patchTasksIdMoveMutationRequestCategoryEnum = {
+  work: "work",
+  personal: "personal",
+  other: "other",
+} as const;
+
+export type PatchTasksIdMoveMutationRequestCategoryEnumKey =
+  (typeof patchTasksIdMoveMutationRequestCategoryEnum)[keyof typeof patchTasksIdMoveMutationRequestCategoryEnum];
+
 export const patchTasksIdMoveMutationRequestColumnEnum = {
   todo: "todo",
   in_progress: "in_progress",
@@ -76,6 +98,10 @@ export type PatchTasksIdMoveMutationRequestColumnEnumKey =
   (typeof patchTasksIdMoveMutationRequestColumnEnum)[keyof typeof patchTasksIdMoveMutationRequestColumnEnum];
 
 export type PatchTasksIdMoveMutationRequest = {
+  /**
+   * @type string
+   */
+  category: PatchTasksIdMoveMutationRequestCategoryEnumKey;
   /**
    * @type string
    */

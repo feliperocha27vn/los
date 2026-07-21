@@ -3,6 +3,15 @@
  * Do not edit manually.
  */
 
+export const taskCategoryEnum = {
+  work: "work",
+  personal: "personal",
+  other: "other",
+} as const;
+
+export type TaskCategoryEnumKey =
+  (typeof taskCategoryEnum)[keyof typeof taskCategoryEnum];
+
 export const taskColumnEnum = {
   todo: "todo",
   in_progress: "in_progress",
@@ -26,6 +35,10 @@ export type PostTasks201 = {
      * @type string
      */
     id: string;
+    /**
+     * @type string
+     */
+    category: TaskCategoryEnumKey;
     /**
      * @type string
      */
@@ -71,6 +84,15 @@ export const postTasksMutationRequestColumnEnum = {
 export type PostTasksMutationRequestColumnEnumKey =
   (typeof postTasksMutationRequestColumnEnum)[keyof typeof postTasksMutationRequestColumnEnum];
 
+export const postTasksMutationRequestCategoryEnum = {
+  work: "work",
+  personal: "personal",
+  other: "other",
+} as const;
+
+export type PostTasksMutationRequestCategoryEnumKey =
+  (typeof postTasksMutationRequestCategoryEnum)[keyof typeof postTasksMutationRequestCategoryEnum];
+
 export type PostTasksMutationRequest = {
   /**
    * @minLength 1
@@ -83,6 +105,10 @@ export type PostTasksMutationRequest = {
    * @type string | undefined
    */
   column?: PostTasksMutationRequestColumnEnumKey;
+  /**
+   * @type string | undefined
+   */
+  category?: PostTasksMutationRequestCategoryEnumKey;
 };
 
 export type PostTasksMutationResponse = PostTasks201;

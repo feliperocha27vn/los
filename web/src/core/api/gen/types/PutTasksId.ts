@@ -10,6 +10,15 @@ export type PutTasksIdPathParams = {
   id: string;
 };
 
+export const taskCategoryEnum3 = {
+  work: "work",
+  personal: "personal",
+  other: "other",
+} as const;
+
+export type TaskCategoryEnum3Key =
+  (typeof taskCategoryEnum3)[keyof typeof taskCategoryEnum3];
+
 export type TaskDescriptionEnum3Key = never;
 
 /**
@@ -24,6 +33,10 @@ export type PutTasksId200 = {
      * @type string
      */
     id: string;
+    /**
+     * @type string
+     */
+    category: TaskCategoryEnum3Key;
     /**
      * @type string
      */
@@ -48,6 +61,15 @@ export type PutTasksId404 = {
 
 export type PutTasksIdMutationRequestDescriptionEnumKey = never;
 
+export const putTasksIdMutationRequestCategoryEnum = {
+  work: "work",
+  personal: "personal",
+  other: "other",
+} as const;
+
+export type PutTasksIdMutationRequestCategoryEnumKey =
+  (typeof putTasksIdMutationRequestCategoryEnum)[keyof typeof putTasksIdMutationRequestCategoryEnum];
+
 export type PutTasksIdMutationRequest = {
   /**
    * @minLength 1
@@ -56,6 +78,10 @@ export type PutTasksIdMutationRequest = {
    */
   title?: string;
   description?: string | PutTasksIdMutationRequestDescriptionEnumKey;
+  /**
+   * @type string | undefined
+   */
+  category?: PutTasksIdMutationRequestCategoryEnumKey;
 };
 
 export type PutTasksIdMutationResponse = PutTasksId200;
