@@ -110,6 +110,18 @@ O arquivo `start.js` é idempotente — só aplica migrations que ainda não for
 
 Para deploy no Coolify:
 1. Crie um novo recurso "Docker Compose"
-2. Cole o conteúdo de `compose.yaml`
+2. Aponte para `api/docker-compose.yaml` (build context `..`, `Dockerfile.api`)
 3. Configure as env vars no painel do Coolify
 4. Coolify gerencia volumes, healthchecks e TLS automaticamente
+
+### Deploy pela linha de comando
+
+```bash
+cd api
+pnpm deploy:coolify           # dispara e acompanha até o fim
+pnpm deploy:coolify --force   # rebuild sem cache
+```
+
+Requer `COOLIFY_BASE_URL`, `COOLIFY_API_TOKEN` e `COOLIFY_APP_UUID` em `api/.env`
+(veja `api/.env.example`). Defina também `COOLIFY_HEALTH_URL` para o script validar
+o `/health` público depois do boot. Sai com código 1 e imprime os logs se falhar.
