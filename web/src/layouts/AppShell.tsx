@@ -3,11 +3,12 @@ import { Link, useNavigate } from '@tanstack/react-router';
 import { useAuth } from '@core/auth-provider';
 import { useThemeStore } from '@core/theme-store';
 import { 
-  Command, 
-  LayoutDashboard, 
-  Wallet, 
-  ClipboardList, 
-  Key, 
+  Command,
+  LayoutDashboard,
+  Wallet,
+  ClipboardList,
+  Key,
+  MonitorPlay,
   LogOut,
   Sun,
   Moon
@@ -16,7 +17,7 @@ import { cn } from '@core/utils';
 
 interface AppShellProps {
   children: React.ReactNode;
-  activeTab: 'dashboard' | 'cofre' | 'financas' | 'organizacao' | 'configuracoes';
+  activeTab: 'dashboard' | 'cofre' | 'financas' | 'organizacao' | 'midia' | 'configuracoes';
 }
 
 export function AppShell({ children, activeTab }: AppShellProps) {
@@ -118,8 +119,22 @@ export function AppShell({ children, activeTab }: AppShellProps) {
               <span className="hidden lg:inline">Organização</span>
             </Link>
 
+            {/* Mídia */}
+            <Link
+              to="/midia"
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg font-mono text-sm cursor-pointer transition-smooth",
+                activeTab === 'midia'
+                  ? 'bg-secondary text-secondary-foreground font-medium'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-card/50 font-normal'
+              )}
+            >
+              <MonitorPlay className={cn("h-[18px] w-[18px] shrink-0 transition-smooth", activeTab === 'midia' ? 'text-primary' : 'text-muted-foreground')} />
+              <span className="hidden lg:inline">Mídia</span>
+            </Link>
+
             {/* Cofre */}
-            <Link 
+            <Link
               to="/cofre"
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg font-mono text-sm cursor-pointer transition-smooth",
@@ -221,8 +236,19 @@ export function AppShell({ children, activeTab }: AppShellProps) {
           <ClipboardList className="h-5 w-5" />
         </Link>
 
+        {/* Mídia */}
+        <Link
+          to="/midia"
+          className={cn(
+            "flex items-center justify-center h-10 w-10 rounded-full cursor-pointer transition-smooth",
+            activeTab === 'midia' ? 'bg-secondary text-primary' : 'text-muted-foreground hover:text-foreground'
+          )}
+        >
+          <MonitorPlay className="h-5 w-5" />
+        </Link>
+
         {/* Cofre */}
-        <Link 
+        <Link
           to="/cofre"
           className={cn(
             "flex items-center justify-center h-10 w-10 rounded-full cursor-pointer transition-smooth",

@@ -5,6 +5,7 @@ export type { DeleteFinanceTransactionsIdMutationKey } from "./hooks/useDeleteFi
 export type { DeleteModulesIdMutationKey } from "./hooks/useDeleteModulesId.ts";
 export type { DeleteNotesIdMutationKey } from "./hooks/useDeleteNotesId.ts";
 export type { DeletePagesIdMutationKey } from "./hooks/useDeletePagesId.ts";
+export type { DeleteSeriesIdMutationKey } from "./hooks/useDeleteSeriesId.ts";
 export type { DeleteTasksIdMutationKey } from "./hooks/useDeleteTasksId.ts";
 export type { DeleteTrackerHabitsIdMutationKey } from "./hooks/useDeleteTrackerHabitsId.ts";
 export type { DeleteTrackerRecordsIdMutationKey } from "./hooks/useDeleteTrackerRecordsId.ts";
@@ -42,6 +43,10 @@ export type { GetPagesQueryKey } from "./hooks/useGetPages.ts";
 export type { GetPagesIdQueryKey } from "./hooks/useGetPagesId.ts";
 export type { GetPagesIdSuspenseQueryKey } from "./hooks/useGetPagesIdSuspense.ts";
 export type { GetPagesSuspenseQueryKey } from "./hooks/useGetPagesSuspense.ts";
+export type { GetSeriesQueryKey } from "./hooks/useGetSeries.ts";
+export type { GetSeriesIdQueryKey } from "./hooks/useGetSeriesId.ts";
+export type { GetSeriesIdSuspenseQueryKey } from "./hooks/useGetSeriesIdSuspense.ts";
+export type { GetSeriesSuspenseQueryKey } from "./hooks/useGetSeriesSuspense.ts";
 export type { GetTasksQueryKey } from "./hooks/useGetTasks.ts";
 export type { GetTasksIdQueryKey } from "./hooks/useGetTasksId.ts";
 export type { GetTasksIdSuspenseQueryKey } from "./hooks/useGetTasksIdSuspense.ts";
@@ -59,6 +64,7 @@ export type { PatchFinanceCreditCardExpensesIdLaunchMutationKey } from "./hooks/
 export type { PatchFinanceCreditCardExpensesIdUnlaunchMutationKey } from "./hooks/usePatchFinanceCreditCardExpensesIdUnlaunch.ts";
 export type { PatchModulesIdReorderMutationKey } from "./hooks/usePatchModulesIdReorder.ts";
 export type { PatchPagesIdReorderMutationKey } from "./hooks/usePatchPagesIdReorder.ts";
+export type { PatchSeriesIdAdvanceMutationKey } from "./hooks/usePatchSeriesIdAdvance.ts";
 export type { PatchTasksIdMoveMutationKey } from "./hooks/usePatchTasksIdMove.ts";
 export type { PatchTrackerHabitsIdReorderMutationKey } from "./hooks/usePatchTrackerHabitsIdReorder.ts";
 export type { PatchTrackerHabitsIdRestoreMutationKey } from "./hooks/usePatchTrackerHabitsIdRestore.ts";
@@ -73,6 +79,7 @@ export type { PostFinanceTransactionsMutationKey } from "./hooks/usePostFinanceT
 export type { PostModulesMutationKey } from "./hooks/usePostModules.ts";
 export type { PostNotesMutationKey } from "./hooks/usePostNotes.ts";
 export type { PostPagesMutationKey } from "./hooks/usePostPages.ts";
+export type { PostSeriesMutationKey } from "./hooks/usePostSeries.ts";
 export type { PostTasksMutationKey } from "./hooks/usePostTasks.ts";
 export type { PostTrackerHabitsMutationKey } from "./hooks/usePostTrackerHabits.ts";
 export type { PutCofreEntriesIdMutationKey } from "./hooks/usePutCofreEntriesId.ts";
@@ -82,6 +89,7 @@ export type { PutFinanceTransactionsIdMutationKey } from "./hooks/usePutFinanceT
 export type { PutModulesIdMutationKey } from "./hooks/usePutModulesId.ts";
 export type { PutNotesIdMutationKey } from "./hooks/usePutNotesId.ts";
 export type { PutPagesIdMutationKey } from "./hooks/usePutPagesId.ts";
+export type { PutSeriesIdMutationKey } from "./hooks/usePutSeriesId.ts";
 export type { PutTasksIdMutationKey } from "./hooks/usePutTasksId.ts";
 export type { PutTrackerHabitsIdMutationKey } from "./hooks/usePutTrackerHabitsId.ts";
 export type { PutTrackerRecordsMutationKey } from "./hooks/usePutTrackerRecords.ts";
@@ -134,6 +142,13 @@ export type {
   DeletePagesIdMutationResponse,
   DeletePagesIdPathParams,
 } from "./types/DeletePagesId.ts";
+export type {
+  DeleteSeriesId204,
+  DeleteSeriesId404,
+  DeleteSeriesIdMutation,
+  DeleteSeriesIdMutationResponse,
+  DeleteSeriesIdPathParams,
+} from "./types/DeleteSeriesId.ts";
 export type {
   DeleteTasksId204,
   DeleteTasksId404,
@@ -291,6 +306,22 @@ export type {
   GetPagesIdQueryResponse,
 } from "./types/GetPagesId.ts";
 export type {
+  GetSeries200,
+  GetSeriesQuery,
+  GetSeriesQueryParams,
+  GetSeriesQueryParamsStateEnumKey,
+  GetSeriesQueryResponse,
+  SeriesStateEnumKey,
+} from "./types/GetSeries.ts";
+export type {
+  GetSeriesId200,
+  GetSeriesId404,
+  GetSeriesIdPathParams,
+  GetSeriesIdQuery,
+  GetSeriesIdQueryResponse,
+  SeriesStateEnum3Key,
+} from "./types/GetSeriesId.ts";
+export type {
   GetTasks200,
   GetTasksQuery,
   GetTasksQueryParams,
@@ -393,6 +424,16 @@ export type {
   PatchPagesIdReorderMutationResponse,
   PatchPagesIdReorderPathParams,
 } from "./types/PatchPagesIdReorder.ts";
+export type {
+  PatchSeriesIdAdvance200,
+  PatchSeriesIdAdvance404,
+  PatchSeriesIdAdvanceMutation,
+  PatchSeriesIdAdvanceMutationRequest,
+  PatchSeriesIdAdvanceMutationRequestEnumKey,
+  PatchSeriesIdAdvanceMutationResponse,
+  PatchSeriesIdAdvancePathParams,
+  SeriesStateEnum5Key,
+} from "./types/PatchSeriesIdAdvance.ts";
 export type {
   PatchTasksIdMove200,
   PatchTasksIdMove404,
@@ -515,6 +556,14 @@ export type {
   PostPagesMutationResponse,
 } from "./types/PostPages.ts";
 export type {
+  PostSeries201,
+  PostSeries400,
+  PostSeriesMutation,
+  PostSeriesMutationRequest,
+  PostSeriesMutationResponse,
+  SeriesStateEnum2Key,
+} from "./types/PostSeries.ts";
+export type {
   PostTasks201,
   PostTasks400,
   PostTasksMutation,
@@ -602,6 +651,16 @@ export type {
   PutPagesIdPathParams,
 } from "./types/PutPagesId.ts";
 export type {
+  PutSeriesId200,
+  PutSeriesId404,
+  PutSeriesIdMutation,
+  PutSeriesIdMutationRequest,
+  PutSeriesIdMutationRequestStateEnumKey,
+  PutSeriesIdMutationResponse,
+  PutSeriesIdPathParams,
+  SeriesStateEnum4Key,
+} from "./types/PutSeriesId.ts";
+export type {
   PutTasksId200,
   PutTasksId404,
   PutTasksIdMutation,
@@ -646,6 +705,7 @@ export { deleteFinanceTransactionsId } from "./clients/deleteFinanceTransactions
 export { deleteModulesId } from "./clients/deleteModulesId.ts";
 export { deleteNotesId } from "./clients/deleteNotesId.ts";
 export { deletePagesId } from "./clients/deletePagesId.ts";
+export { deleteSeriesId } from "./clients/deleteSeriesId.ts";
 export { deleteTasksId } from "./clients/deleteTasksId.ts";
 export { deleteTrackerHabitsId } from "./clients/deleteTrackerHabitsId.ts";
 export { deleteTrackerRecordsId } from "./clients/deleteTrackerRecordsId.ts";
@@ -666,6 +726,8 @@ export { getNotes } from "./clients/getNotes.ts";
 export { getNotesId } from "./clients/getNotesId.ts";
 export { getPages } from "./clients/getPages.ts";
 export { getPagesId } from "./clients/getPagesId.ts";
+export { getSeries } from "./clients/getSeries.ts";
+export { getSeriesId } from "./clients/getSeriesId.ts";
 export { getTasks } from "./clients/getTasks.ts";
 export { getTasksId } from "./clients/getTasksId.ts";
 export { getTrackerDays } from "./clients/getTrackerDays.ts";
@@ -677,6 +739,7 @@ export { patchFinanceCreditCardExpensesIdLaunch } from "./clients/patchFinanceCr
 export { patchFinanceCreditCardExpensesIdUnlaunch } from "./clients/patchFinanceCreditCardExpensesIdUnlaunch.ts";
 export { patchModulesIdReorder } from "./clients/patchModulesIdReorder.ts";
 export { patchPagesIdReorder } from "./clients/patchPagesIdReorder.ts";
+export { patchSeriesIdAdvance } from "./clients/patchSeriesIdAdvance.ts";
 export { patchTasksIdMove } from "./clients/patchTasksIdMove.ts";
 export { patchTrackerHabitsIdReorder } from "./clients/patchTrackerHabitsIdReorder.ts";
 export { patchTrackerHabitsIdRestore } from "./clients/patchTrackerHabitsIdRestore.ts";
@@ -691,6 +754,7 @@ export { postFinanceTransactions } from "./clients/postFinanceTransactions.ts";
 export { postModules } from "./clients/postModules.ts";
 export { postNotes } from "./clients/postNotes.ts";
 export { postPages } from "./clients/postPages.ts";
+export { postSeries } from "./clients/postSeries.ts";
 export { postTasks } from "./clients/postTasks.ts";
 export { postTrackerHabits } from "./clients/postTrackerHabits.ts";
 export { putCofreEntriesId } from "./clients/putCofreEntriesId.ts";
@@ -700,6 +764,7 @@ export { putFinanceTransactionsId } from "./clients/putFinanceTransactionsId.ts"
 export { putModulesId } from "./clients/putModulesId.ts";
 export { putNotesId } from "./clients/putNotesId.ts";
 export { putPagesId } from "./clients/putPagesId.ts";
+export { putSeriesId } from "./clients/putSeriesId.ts";
 export { putTasksId } from "./clients/putTasksId.ts";
 export { putTrackerHabitsId } from "./clients/putTrackerHabitsId.ts";
 export { putTrackerRecords } from "./clients/putTrackerRecords.ts";
@@ -724,6 +789,9 @@ export { useDeleteNotesId } from "./hooks/useDeleteNotesId.ts";
 export { deletePagesIdMutationKey } from "./hooks/useDeletePagesId.ts";
 export { deletePagesIdMutationOptions } from "./hooks/useDeletePagesId.ts";
 export { useDeletePagesId } from "./hooks/useDeletePagesId.ts";
+export { deleteSeriesIdMutationKey } from "./hooks/useDeleteSeriesId.ts";
+export { deleteSeriesIdMutationOptions } from "./hooks/useDeleteSeriesId.ts";
+export { useDeleteSeriesId } from "./hooks/useDeleteSeriesId.ts";
 export { deleteTasksIdMutationKey } from "./hooks/useDeleteTasksId.ts";
 export { deleteTasksIdMutationOptions } from "./hooks/useDeleteTasksId.ts";
 export { useDeleteTasksId } from "./hooks/useDeleteTasksId.ts";
@@ -835,6 +903,18 @@ export { useGetPagesIdSuspense } from "./hooks/useGetPagesIdSuspense.ts";
 export { getPagesSuspenseQueryKey } from "./hooks/useGetPagesSuspense.ts";
 export { getPagesSuspenseQueryOptions } from "./hooks/useGetPagesSuspense.ts";
 export { useGetPagesSuspense } from "./hooks/useGetPagesSuspense.ts";
+export { getSeriesQueryKey } from "./hooks/useGetSeries.ts";
+export { getSeriesQueryOptions } from "./hooks/useGetSeries.ts";
+export { useGetSeries } from "./hooks/useGetSeries.ts";
+export { getSeriesIdQueryKey } from "./hooks/useGetSeriesId.ts";
+export { getSeriesIdQueryOptions } from "./hooks/useGetSeriesId.ts";
+export { useGetSeriesId } from "./hooks/useGetSeriesId.ts";
+export { getSeriesIdSuspenseQueryKey } from "./hooks/useGetSeriesIdSuspense.ts";
+export { getSeriesIdSuspenseQueryOptions } from "./hooks/useGetSeriesIdSuspense.ts";
+export { useGetSeriesIdSuspense } from "./hooks/useGetSeriesIdSuspense.ts";
+export { getSeriesSuspenseQueryKey } from "./hooks/useGetSeriesSuspense.ts";
+export { getSeriesSuspenseQueryOptions } from "./hooks/useGetSeriesSuspense.ts";
+export { useGetSeriesSuspense } from "./hooks/useGetSeriesSuspense.ts";
 export { getTasksQueryKey } from "./hooks/useGetTasks.ts";
 export { getTasksQueryOptions } from "./hooks/useGetTasks.ts";
 export { useGetTasks } from "./hooks/useGetTasks.ts";
@@ -886,6 +966,9 @@ export { usePatchModulesIdReorder } from "./hooks/usePatchModulesIdReorder.ts";
 export { patchPagesIdReorderMutationKey } from "./hooks/usePatchPagesIdReorder.ts";
 export { patchPagesIdReorderMutationOptions } from "./hooks/usePatchPagesIdReorder.ts";
 export { usePatchPagesIdReorder } from "./hooks/usePatchPagesIdReorder.ts";
+export { patchSeriesIdAdvanceMutationKey } from "./hooks/usePatchSeriesIdAdvance.ts";
+export { patchSeriesIdAdvanceMutationOptions } from "./hooks/usePatchSeriesIdAdvance.ts";
+export { usePatchSeriesIdAdvance } from "./hooks/usePatchSeriesIdAdvance.ts";
 export { patchTasksIdMoveMutationKey } from "./hooks/usePatchTasksIdMove.ts";
 export { patchTasksIdMoveMutationOptions } from "./hooks/usePatchTasksIdMove.ts";
 export { usePatchTasksIdMove } from "./hooks/usePatchTasksIdMove.ts";
@@ -928,6 +1011,9 @@ export { usePostNotes } from "./hooks/usePostNotes.ts";
 export { postPagesMutationKey } from "./hooks/usePostPages.ts";
 export { postPagesMutationOptions } from "./hooks/usePostPages.ts";
 export { usePostPages } from "./hooks/usePostPages.ts";
+export { postSeriesMutationKey } from "./hooks/usePostSeries.ts";
+export { postSeriesMutationOptions } from "./hooks/usePostSeries.ts";
+export { usePostSeries } from "./hooks/usePostSeries.ts";
 export { postTasksMutationKey } from "./hooks/usePostTasks.ts";
 export { postTasksMutationOptions } from "./hooks/usePostTasks.ts";
 export { usePostTasks } from "./hooks/usePostTasks.ts";
@@ -955,6 +1041,9 @@ export { usePutNotesId } from "./hooks/usePutNotesId.ts";
 export { putPagesIdMutationKey } from "./hooks/usePutPagesId.ts";
 export { putPagesIdMutationOptions } from "./hooks/usePutPagesId.ts";
 export { usePutPagesId } from "./hooks/usePutPagesId.ts";
+export { putSeriesIdMutationKey } from "./hooks/usePutSeriesId.ts";
+export { putSeriesIdMutationOptions } from "./hooks/usePutSeriesId.ts";
+export { usePutSeriesId } from "./hooks/usePutSeriesId.ts";
 export { putTasksIdMutationKey } from "./hooks/usePutTasksId.ts";
 export { putTasksIdMutationOptions } from "./hooks/usePutTasksId.ts";
 export { usePutTasksId } from "./hooks/usePutTasksId.ts";
@@ -974,6 +1063,9 @@ export { transactionsSourceEnum } from "./types/GetFinanceTransactions.ts";
 export { transactionsTypeEnum } from "./types/GetFinanceTransactions.ts";
 export { transactionSourceEnum2 } from "./types/GetFinanceTransactionsId.ts";
 export { transactionTypeEnum2 } from "./types/GetFinanceTransactionsId.ts";
+export { getSeriesQueryParamsStateEnum } from "./types/GetSeries.ts";
+export { seriesStateEnum } from "./types/GetSeries.ts";
+export { seriesStateEnum3 } from "./types/GetSeriesId.ts";
 export { getTasksQueryParamsCategoryEnum } from "./types/GetTasks.ts";
 export { getTasksQueryParamsColumnEnum } from "./types/GetTasks.ts";
 export { tasksCategoryEnum } from "./types/GetTasks.ts";
@@ -986,6 +1078,7 @@ export { getTrackerToday200EnergyEnum } from "./types/GetTrackerToday.ts";
 export { getTrackerToday200QualityEnum } from "./types/GetTrackerToday.ts";
 export { transactionSourceEnum3 } from "./types/PatchFinanceCreditCardExpensesIdLaunch.ts";
 export { transactionTypeEnum3 } from "./types/PatchFinanceCreditCardExpensesIdLaunch.ts";
+export { seriesStateEnum5 } from "./types/PatchSeriesIdAdvance.ts";
 export { patchTasksIdMoveMutationRequestCategoryEnum } from "./types/PatchTasksIdMove.ts";
 export { patchTasksIdMoveMutationRequestColumnEnum } from "./types/PatchTasksIdMove.ts";
 export { taskCategoryEnum4 } from "./types/PatchTasksIdMove.ts";
@@ -995,10 +1088,13 @@ export { postCofreEntriesMutationRequestCategoryEnum } from "./types/PostCofreEn
 export { postFinanceTransactionsMutationRequestTypeEnum } from "./types/PostFinanceTransactions.ts";
 export { transactionSourceEnum } from "./types/PostFinanceTransactions.ts";
 export { transactionTypeEnum } from "./types/PostFinanceTransactions.ts";
+export { seriesStateEnum2 } from "./types/PostSeries.ts";
 export { postTasksMutationRequestCategoryEnum } from "./types/PostTasks.ts";
 export { postTasksMutationRequestColumnEnum } from "./types/PostTasks.ts";
 export { taskCategoryEnum } from "./types/PostTasks.ts";
 export { taskColumnEnum } from "./types/PostTasks.ts";
+export { putSeriesIdMutationRequestStateEnum } from "./types/PutSeriesId.ts";
+export { seriesStateEnum4 } from "./types/PutSeriesId.ts";
 export { putTasksIdMutationRequestCategoryEnum } from "./types/PutTasksId.ts";
 export { taskCategoryEnum3 } from "./types/PutTasksId.ts";
 export { putTrackerRecordsMutationRequestEnergyEnum } from "./types/PutTrackerRecords.ts";

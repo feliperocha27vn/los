@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MidiaRouteImport } from './routes/midia'
 import { Route as FinancasRouteImport } from './routes/financas'
 import { Route as CofreRouteImport } from './routes/cofre'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OrganizacaoNotasRouteImport } from './routes/organizacao.notas'
 
+const MidiaRoute = MidiaRouteImport.update({
+  id: '/midia',
+  path: '/midia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FinancasRoute = FinancasRouteImport.update({
   id: '/financas',
   path: '/financas',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cofre': typeof CofreRoute
   '/financas': typeof FinancasRoute
+  '/midia': typeof MidiaRoute
   '/organizacao/notas': typeof OrganizacaoNotasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cofre': typeof CofreRoute
   '/financas': typeof FinancasRoute
+  '/midia': typeof MidiaRoute
   '/organizacao/notas': typeof OrganizacaoNotasRoute
 }
 export interface FileRoutesById {
@@ -52,25 +60,40 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/cofre': typeof CofreRoute
   '/financas': typeof FinancasRoute
+  '/midia': typeof MidiaRoute
   '/organizacao/notas': typeof OrganizacaoNotasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cofre' | '/financas' | '/organizacao/notas'
+  fullPaths: '/' | '/cofre' | '/financas' | '/midia' | '/organizacao/notas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cofre' | '/financas' | '/organizacao/notas'
-  id: '__root__' | '/' | '/cofre' | '/financas' | '/organizacao/notas'
+  to: '/' | '/cofre' | '/financas' | '/midia' | '/organizacao/notas'
+  id:
+    | '__root__'
+    | '/'
+    | '/cofre'
+    | '/financas'
+    | '/midia'
+    | '/organizacao/notas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CofreRoute: typeof CofreRoute
   FinancasRoute: typeof FinancasRoute
+  MidiaRoute: typeof MidiaRoute
   OrganizacaoNotasRoute: typeof OrganizacaoNotasRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/midia': {
+      id: '/midia'
+      path: '/midia'
+      fullPath: '/midia'
+      preLoaderRoute: typeof MidiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/financas': {
       id: '/financas'
       path: '/financas'
@@ -106,6 +129,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CofreRoute: CofreRoute,
   FinancasRoute: FinancasRoute,
+  MidiaRoute: MidiaRoute,
   OrganizacaoNotasRoute: OrganizacaoNotasRoute,
 }
 export const routeTree = rootRouteImport
