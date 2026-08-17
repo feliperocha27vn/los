@@ -14,6 +14,7 @@ import { trackerRecordsRepository } from '@repositories/adapters/drizzle/drizzle
 import { financeCategoriesRepository } from '@repositories/adapters/drizzle/drizzle-finance-categories-repository'
 import { financeTransactionsRepository } from '@repositories/adapters/drizzle/drizzle-finance-transactions-repository'
 import { financeCreditCardExpensesRepository } from '@repositories/adapters/drizzle/drizzle-finance-credit-card-expenses-repository'
+import { seriesRepository } from '@repositories/adapters/drizzle/drizzle-series-repository'
 
 const app = createApp(
   usersRepository,
@@ -28,6 +29,7 @@ const app = createApp(
   financeCategoriesRepository,
   financeTransactionsRepository,
   financeCreditCardExpensesRepository,
+  seriesRepository,
 )
 
 app

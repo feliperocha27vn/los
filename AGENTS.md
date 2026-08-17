@@ -34,7 +34,7 @@ Leia .specs/<modulo>.md e implemente o frontend conforme o design no Pencil em
 C:\Users\felip\Documents\eu_memo\www\los\design, módulo "<Nome do Módulo>".
 
 O backend já está rodando em http://localhost:3333.
-O Vite em web/vite.config.ts já faz proxy de /auth, /cofre, /notes, /tasks, /courses, /modules, /pages, /tracker e /finance.
+O Vite em web/vite.config.ts já faz proxy de /auth, /cofre, /notes, /tasks, /courses, /modules, /pages, /tracker, /finance e /series.
 ```
 
 ## Design (Pencil)
@@ -47,10 +47,15 @@ Arquivo: `C:\Users\felip\Documents\eu_memo\www\los\design`
 | Dashboard | `pogZh` | Módulo Dashboard |
 | Cofre | `C5hXs` | Módulo Cofre |
 | Organização | `GHgxZ` | Módulo Organização |
+| Mídia | — | **ainda não desenhado** — criar antes de programar (ver `.specs/midia.md`) |
 
 ## Domínio (CONTEXT.md)
 
 `CONTEXT.md` na raiz contém o glossário de termos do Life OS. Usar os termos canônicos em specs e código.
+
+## Decisões (docs/adr/)
+
+`docs/adr/` registra decisões de arquitetura difíceis de reverter, com as alternativas rejeitadas e o porquê. Ler antes de propor mudanças estruturais num módulo.
 
 ## Convenções
 

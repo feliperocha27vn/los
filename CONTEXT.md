@@ -53,7 +53,7 @@ O módulo do Life OS dedicado à gestão pessoal do usuário, englobando a lista
 _Avoid_: Tarefas, Todo List, Afazeres
 
 **Abas de Organização**:
-A barra de navegação horizontal no topo da área de conteúdo principal do módulo de Organização, utilizada para alternar entre os sub-módulos (Notas, Tarefas, Hábitos).
+A barra de navegação horizontal no topo da área de conteúdo principal do módulo de Organização, utilizada para alternar entre os sub-módulos (Notas, Tarefas, Hábitos, Estudo).
 _Avoid_: Menu de sub-módulos, Abas superiores, Abas de navegação
 
 **Nota**:
@@ -127,6 +127,30 @@ _Avoid_: Prestação, Fração
 **Lançamento no Principal**:
 O ato de marcar uma Despesa do Cartão como despesa real na tela de Transações, gerando automaticamente uma Transação tipo "expense" com descrição "Minha parte do cartão" e valor igual à Minha Parte da despesa.
 _Avoid_: Lançamento, Conciliação
+
+**Mídia**:
+O módulo do Life OS dedicado a acompanhar o consumo pessoal de séries, registrando onde o usuário parou em cada uma. É um módulo de primeiro nível na Sidebar, irmão de Organização e Finanças, e não um sub-módulo de Organização — Organização trata do que o usuário produz, Mídia do que ele consome. Filmes estão fora de escopo.
+_Avoid_: Entretenimento, Streaming, Watchlist
+
+**Série**:
+Uma obra audiovisual serializada acompanhada no módulo Mídia. Abrange qualquer produção dividida em episódios (série, anime, dorama, minissérie, documentário em partes) — o critério é a estrutura serializada, não o gênero.
+_Avoid_: Título, Obra, Show
+
+**Estado da Série**:
+A situação de acompanhamento de uma Série, entre Assistindo (em curso, única que aparece na listagem principal), Pausada (interrompida por tempo indeterminado, incluindo séries abandonadas) e Concluída (o usuário viu tudo que pretendia ver). Avançar o Marcador devolve a Série para Assistindo, qualquer que fosse o estado anterior.
+_Avoid_: Status, Situação, Largada
+
+**Marcador**:
+A posição de retomada de uma Série: a temporada, o episódio e a Minutagem de onde o usuário deve **voltar a assistir** — nunca o último ponto que ele já viu. Ao terminar um episódio, o Marcador passa para o episódio seguinte com Minutagem zero, ou seja, aponta para um episódio ainda não aberto. Cada Série tem exatamente um Marcador, sobrescrito a cada atualização, sem histórico de passagens anteriores.
+_Avoid_: Progresso, Checkpoint, Bookmark, Último episódio
+
+**Minutagem**:
+O tempo decorrido dentro do episódio apontado pelo Marcador, contado desde o início do episódio. Zero significa que o episódio ainda não foi começado.
+_Avoid_: Tempo, Timestamp, Duração
+
+**Avanço**:
+A operação de mover o Marcador de uma Série para o próximo episódio (ou para o primeiro episódio da temporada seguinte), zerando a Minutagem. É a ação de uso diário do módulo Mídia, correspondente a "terminei mais um episódio".
+_Avoid_: Próximo, Incrementar, Next
 
 
 

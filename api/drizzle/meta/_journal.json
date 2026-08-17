@@ -78,6 +78,13 @@
       "when": 1784637681938,
       "tag": "0011_overrated_jocasta",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1786995806075,
+      "tag": "0012_bent_secret_warriors",
+      "breakpoints": true
     }
   ]
 }

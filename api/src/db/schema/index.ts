@@ -11,6 +11,7 @@ export {
   financeTransactionTypeEnum,
 } from './finance-transactions'
 export { notes } from './notes'
+export { series, seriesStateEnum } from './series'
 export { studyCourses } from './study-courses'
 export { studyModules } from './study-modules'
 export { studyPages } from './study-pages'

@@ -8,6 +8,7 @@ import type { FinanceCategoriesRepository } from '@repositories/finance-categori
 import type { FinanceCreditCardExpensesRepository } from '@repositories/finance-credit-card-expenses-repository'
 import type { FinanceTransactionsRepository } from '@repositories/finance-transactions-repository'
 import type { NotesRepository } from '@repositories/notes-repository'
+import type { SeriesRepository } from '@repositories/series-repository'
 import type { StudyCoursesRepository } from '@repositories/study-courses-repository'
 import type { StudyModulesRepository } from '@repositories/study-modules-repository'
 import type { StudyPagesRepository } from '@repositories/study-pages-repository'
@@ -38,6 +39,7 @@ export function createApp(
   financeCategoriesRepository?: FinanceCategoriesRepository,
   financeTransactionsRepository?: FinanceTransactionsRepository,
   financeCreditCardExpensesRepository?: FinanceCreditCardExpensesRepository,
+  seriesRepository?: SeriesRepository,
 ) {
   const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -139,6 +141,7 @@ export function createApp(
       financeCategoriesRepository,
       financeTransactionsRepository,
       financeCreditCardExpensesRepository,
+      seriesRepository,
     }),
   )
 

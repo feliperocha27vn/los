@@ -3,6 +3,7 @@ import { InMemoryFinanceCategoriesRepository } from '@in-memory/in-memory-financ
 import { InMemoryFinanceCreditCardExpensesRepository } from '@in-memory/in-memory-finance-credit-card-expenses-repository'
 import { InMemoryFinanceTransactionsRepository } from '@in-memory/in-memory-finance-transactions-repository'
 import { InMemoryNotesRepository } from '@in-memory/in-memory-notes-repository'
+import { InMemorySeriesRepository } from '@in-memory/in-memory-series-repository'
 import { InMemoryStudyCoursesRepository } from '@in-memory/in-memory-study-courses-repository'
 import { InMemoryStudyModulesRepository } from '@in-memory/in-memory-study-modules-repository'
 import { InMemoryStudyPagesRepository } from '@in-memory/in-memory-study-pages-repository'
@@ -14,6 +15,7 @@ import type { FinanceCategoriesRepository } from '@repositories/finance-categori
 import type { FinanceCreditCardExpensesRepository } from '@repositories/finance-credit-card-expenses-repository'
 import type { FinanceTransactionsRepository } from '@repositories/finance-transactions-repository'
 import type { NotesRepository } from '@repositories/notes-repository'
+import type { SeriesRepository } from '@repositories/series-repository'
 import type { StudyCoursesRepository } from '@repositories/study-courses-repository'
 import type { StudyModulesRepository } from '@repositories/study-modules-repository'
 import type { StudyPagesRepository } from '@repositories/study-pages-repository'
@@ -26,6 +28,7 @@ import { registerAuthRoutes } from './auth/index.routes'
 import { registerCofreRoutes } from './cofre/index.routes'
 import { registerFinanceRoutes } from './finance/index.routes'
 import { registerNotesRoutes } from './notes/index.routes'
+import { registerSeriesRoutes } from './series/index.routes'
 import { registerStudyCoursesRoutes } from './study-courses/index.routes'
 import { registerStudyModulesRoutes } from './study-modules/index.routes'
 import { registerStudyPagesRoutes } from './study-pages/index.routes'
@@ -47,6 +50,7 @@ interface ControllersDeps {
   financeCategoriesRepository?: FinanceCategoriesRepository
   financeTransactionsRepository?: FinanceTransactionsRepository
   financeCreditCardExpensesRepository?: FinanceCreditCardExpensesRepository
+  seriesRepository?: SeriesRepository
 }
 
 export function controllers(deps: ControllersDeps): FastifyPluginAsync {
@@ -64,6 +68,7 @@ export function controllers(deps: ControllersDeps): FastifyPluginAsync {
     deps.financeTransactionsRepository ?? new InMemoryFinanceTransactionsRepository()
   const financeCreditCardExpensesRepo =
     deps.financeCreditCardExpensesRepository ?? new InMemoryFinanceCreditCardExpensesRepository()
+  const seriesRepo = deps.seriesRepository ?? new InMemorySeriesRepository()
 
   return async (app: FastifyInstance) => {
     registerAuthRoutes(app, deps.usersRepository)
@@ -76,6 +81,7 @@ export function controllers(deps: ControllersDeps): FastifyPluginAsync {
     registerTrackerHabitsRoutes(app, trackerHabitsRepo)
     registerTrackerRecordsRoutes(app, trackerRecordsRepo, trackerHabitsRepo)
     registerTrackerViewsRoutes(app, trackerRecordsRepo, trackerHabitsRepo)
+    registerSeriesRoutes(app, seriesRepo)
     registerFinanceRoutes(app, {
       financeCategoriesRepository: financeCategoriesRepo,
       financeTransactionsRepository: financeTransactionsRepo,
