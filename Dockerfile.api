@@ -31,4 +31,7 @@ WORKDIR /app/api
 EXPOSE 3333
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD curl -fsS http://localhost:3333/health || exit 1
-CMD ["sh", "-c", "node dist/start.js"]
+# Padrão da imagem: só serve. Migrations são um passo explícito
+# (node dist/migrate.js), rodado como Cloud Run Job antes do deploy.
+# O compose local sobrescreve com dist/start.js, que faz os dois.
+CMD ["node", "dist/server.js"]
