@@ -26,6 +26,7 @@ import {
   MoreVertical
 } from 'lucide-react';
 import { AppShell } from '@layouts/AppShell';
+import { BlockEditor } from '@features/notes/BlockEditor';
 import { ConfirmModal } from '@ui/ConfirmModal';
 import { Input } from '@ui/input';
 import { Button } from '@ui/button';
@@ -135,7 +136,6 @@ function NotesComponent() {
   
   // Referências para inputs para aplicar foco na criação
   const titleInputRef = React.useRef<HTMLInputElement | null>(null);
-  const contentTextareaRef = React.useRef<HTMLTextAreaElement | null>(null);
 
   // Estado da nova feature: full-width (persistido) e visibilidade do preview (mobile)
   const [isFullWidth, setIsFullWidth] = React.useState<boolean>(() => {
@@ -1509,13 +1509,11 @@ function NotesComponent() {
 
                   {/* Conteúdo */}
                   <div className="flex-1 flex flex-col px-6 py-6 overflow-hidden min-h-0">
-                    <textarea
-                      ref={contentTextareaRef}
+                    <BlockEditor
                       value={editorContent}
-                      onChange={(e) => handleContentChange(e.target.value)}
+                      onChange={handleContentChange}
                       onBlur={handleBlur}
-                      placeholder="Comece a escrever sua nota aqui..."
-                      className="w-full flex-1 bg-transparent border-0 outline-none resize-none text-sm md:text-base text-[#fafafa] placeholder-[#a1a1aa]/30 leading-relaxed p-0 focus:ring-0 overflow-y-auto font-mono"
+                      placeholder="Comece a escrever ou digite / para inserir um bloco..."
                     />
 
                     {/* Status Bar do auto-save */}
@@ -1539,7 +1537,7 @@ function NotesComponent() {
                         )}
                       </div>
                       <span className="text-[10px] not-italic text-[#a1a1aa]/50 font-normal">
-                        Markdown suportado
+                        Markdown suportado · digite / para inserir um bloco
                       </span>
                     </div>
                   </div>
